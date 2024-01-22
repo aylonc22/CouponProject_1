@@ -10,10 +10,6 @@ public class DButils {
         Connection connection = null;
 
         try {
-            if (sql.toLowerCase().contains("delete")){
-                System.out.println("Roni please stop");
-                return false;
-            }
             //get a connection from connection pool
             connection = ConnectionPool.getInstance().getConnection();
 
@@ -68,7 +64,7 @@ public class DButils {
         }
     }
 
-    public static ResultSet runQueryFromResult(String sql,Map<Integer,Object> params){
+    public static ResultSet runQueryForResult(String sql,Map<Integer,Object> params){
         Connection connection = null;
 
         try {

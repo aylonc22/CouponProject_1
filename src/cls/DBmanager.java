@@ -7,5 +7,5 @@ public class DBmanager {
     public static final String SQL_PASSWORD = "12345678";
 
     //database name (schema)
-    public static final String SQL_DB = "CuponsDB";
+    public static final String SQL_DB = "cuponsdb";
 }
