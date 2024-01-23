@@ -23,7 +23,7 @@ public class DButils {
             System.out.println(e.getMessage());
             return false;
         } finally {
-            ConnectionPool.getInstance().returnConnection(connection);
+            ConnectionPool.getInstance().restoreConnection(connection);
         }
 
     }
@@ -60,7 +60,7 @@ public class DButils {
             System.out.println(e.getMessage());
             return false;
         } finally {
-            ConnectionPool.getInstance().returnConnection(connection);
+            ConnectionPool.getInstance().restoreConnection(connection);
         }
     }
 
@@ -96,6 +96,9 @@ public class DButils {
             return preparedStatement.executeQuery();
         } catch (InterruptedException | SQLException e) {
             throw new RuntimeException(e);
+        }
+        finally {
+            ConnectionPool.getInstance().restoreConnection(connection);
         }
     }
 }

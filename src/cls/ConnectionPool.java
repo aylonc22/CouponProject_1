@@ -6,14 +6,13 @@ import java.sql.SQLException;
 import java.util.Stack;
 
 public class ConnectionPool {
-    //singleTon
     //number of connection to sql (maximum is 20, default is 10)
     private static final int NUMBER_OF_CONNECTION=10;
     public static ConnectionPool instance=null;
     private final Stack<Connection> connections = new Stack<>();
 
     private ConnectionPool() {
-        System.out.println("We created new connection pool instance");
+        System.out.println("Connection pool was created");
         try {
             openAllConnections();
         } catch (SQLException e) {
@@ -24,7 +23,7 @@ public class ConnectionPool {
     private void openAllConnections() throws SQLException {
         //create connections according to NUMBER_OF_CONNECTION variable
         for (int counter=0;counter<NUMBER_OF_CONNECTION;counter++){
-            //we creating a new connection using the DriverManger
+            //we are creating a new connection using the DriverManger
             Connection connection = DriverManager.getConnection(DBmanager.URL,DBmanager.SQL_USER,DBmanager.SQL_PASSWORD);
             connections.push(connection);
         }
@@ -47,7 +46,7 @@ public class ConnectionPool {
         //lock connections, that we will not give any new connection
         synchronized (connections){
             while (connections.size()<NUMBER_OF_CONNECTION){
-                //wait until all connection is done..
+                //wait until all connection is done...
                 connections.wait();
             }
             connections.removeAllElements();
@@ -66,7 +65,7 @@ public class ConnectionPool {
         }
     }
 
-    public void returnConnection(Connection connection){
+    public void restoreConnection(Connection connection){
         synchronized (connections){
             //return the connection to the stack collection
             connections.push(connection);
