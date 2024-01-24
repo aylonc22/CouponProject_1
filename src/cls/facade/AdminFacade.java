@@ -45,13 +45,13 @@ public class AdminFacade extends ClientFacade{
         else
             throw new ClientNotLoggedInException("Admin is not logged in");
     }
-    public List<Company> getAllCompanies() throws ClientNotLoggedInException {
+    public List<Company> getAllCompanies() throws ClientNotLoggedInException, SQLException {
         if(super.isLogged())
             return  super.companiesDBDAO.getAllCompanies();
         else
             throw new ClientNotLoggedInException("Admin is not logged in");
     }
-    public Company getOneCompany(int companyID) throws ClientNotLoggedInException {
+    public Company getOneCompany(int companyID) throws ClientNotLoggedInException, SQLException {
         if(super.isLogged())
             return  super.companiesDBDAO.getOneCompany(companyID);
         else

@@ -1,5 +1,6 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Company {
@@ -18,6 +19,10 @@ public class Company {
        setEmail(email);
        setPassword(password);
        setCoupons(coupons);
+    }
+    //for adding new company to the database
+    public Company(String name, String email, String password) {
+        this(-1,name,email,password,new ArrayList<>());
     }
     //endregion
 
@@ -59,8 +64,8 @@ public class Company {
     @Override
     public String toString() {
         return "Company{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                (id != -1?("id=" + id+","):"") +
+                "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", coupons=" + coupons +

@@ -32,7 +32,6 @@ public class CustomerDBDAO implements CustomersDAO{
             System.out.println("Customer added\n" + customer);
         else
             System.out.println("Customer wasn't added");
-
     }
 
     @Override

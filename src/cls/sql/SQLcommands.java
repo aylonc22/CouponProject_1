@@ -97,7 +97,7 @@ public static final String CREATE_TABLE_CVC=
     public static String IS_EXISTS_IN_TABLE(String table){
         return "SELECT * FROM " +DBmanager.SQL_DB + "." + table +" WHERE email=? and password=?";
     }
-//region CRUD Implementation for Customer
+//region CRUD Implementation for Customers table
     public static final String ADD_CUSTOMER = "INSERT INTO " + DBmanager.SQL_DB + "." + DBmanager.SQL_CUSTOMERS +
         "(first_Name,last_Name,email,password) VALUES (?,?,?,?)";
     public static final String UPDATE_CUSTOMER = "UPDATE " + DBmanager.SQL_DB + "." + DBmanager.SQL_CUSTOMERS +
@@ -106,4 +106,13 @@ public static final String CREATE_TABLE_CVC=
     public static final String GET_ALL_CUSTOMERS = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_CUSTOMERS;
     public static final String GET_ONE_CUSTOMERS = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_CUSTOMERS + " WHERE ID=?";
 //region
+// region CRUD Implementation for Companies table
+public static final String ADD_COMPANY = "INSERT INTO " + DBmanager.SQL_DB + "." + DBmanager.SQL_COMPANIES +
+        "(name,email,password) VALUES (?,?,?)";
+    public static final String UPDATE_COMPANY = "UPDATE " + DBmanager.SQL_DB + "." + DBmanager.SQL_COMPANIES +
+            " SET name=?,email=?,password=? WHERE ID = ?";
+    public static final String DELETE_COMPANY = "DELETE FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COMPANIES + " WHERE ID=?";
+    public static final String GET_ALL_COMPANY = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COMPANIES;
+    public static final String GET_ONE_COMPANY = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COMPANIES + " WHERE ID=?";
+// endregion
 }
