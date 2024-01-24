@@ -27,7 +27,7 @@ public class CustomerDBDAO implements CustomersDAO{
     }
 
     @Override
-    public List<Customer> getAllCompanies() {
+    public List<Customer> getAllCustomers() {
         return null;
     }
 

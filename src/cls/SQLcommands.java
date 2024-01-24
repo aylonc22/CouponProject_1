@@ -1,79 +1,81 @@
 package cls;
 
 public class SQLcommands {
+    //region SQL init // initializing data base and tables
     //create DataBase
-    public static final String CREATE_DB = "CREATE DATABASE IF NOT EXISTS `cuponsdb`";
+    public static final String CREATE_DB = "CREATE DATABASE IF NOT EXISTS " + DBmanager.SQL_DB;
     //create companies table
     public static final String CREATE_TABLE_COMPANIES =
-            "CREATE TABLE IF NOT EXISTS `cuponsdb`.`companies` (\n" +
-                    "  `ID` INT NOT NULL AUTO_INCREMENT,\n" +
-                    "  `Name` VARCHAR(45) NULL,\n" +
-                    "  `Email` VARCHAR(45) NULL,\n" +
-                    "  `Password` VARCHAR(45) NULL,\n" +
-                    "  PRIMARY KEY (`ID`),\n" +
-                    "  UNIQUE INDEX `Name_UNIQUE` (`Name` ASC) VISIBLE,\n" +
+            "CREATE TABLE IF NOT EXISTS " +  DBmanager.SQL_DB + ".`companies`(" +
+                    "  `ID` INT NOT NULL AUTO_INCREMENT," +
+                    "  `Name` VARCHAR(45) NULL," +
+                    "  `Email` VARCHAR(45) NULL," +
+                    "  `Password` VARCHAR(45) NULL," +
+                    "  PRIMARY KEY (`ID`)," +
+                    "  UNIQUE INDEX `Name_UNIQUE` (`Name` ASC) VISIBLE," +
                     "  UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE);";
     //create customers table
     public static final String CREATE_TABLE_CUSTOMERS =
-            "CREATE TABLE IF NOT EXISTS `cuponsdb`.`customers` (\n" +
-            "  `ID` INT NOT NULL AUTO_INCREMENT,\n" +
-            "  `First_Name` VARCHAR(45) NULL,\n" +
-            "  `Last_Name` VARCHAR(45) NULL,\n" +
-            "  `Email` VARCHAR(45) NULL,\n" +
-            "  `Password` VARCHAR(45) NULL,\n" +
-            "  PRIMARY KEY (`ID`),\n" +
+            "CREATE TABLE IF NOT EXISTS " +  DBmanager.SQL_DB + ".`customers`(" +
+            "  `ID` INT NOT NULL AUTO_INCREMENT," +
+            "  `First_Name` VARCHAR(45) NULL," +
+            "  `Last_Name` VARCHAR(45) NULL," +
+            "  `Email` VARCHAR(45) NULL," +
+            "  `Password` VARCHAR(45) NULL," +
+            "  PRIMARY KEY (`ID`)," +
             "  UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE);";
     //create categories table
     public static final String CREATE_TABLE_CATEGORIES =
-            "CREATE TABLE IF NOT EXISTS `cuponsdb`.`categories` (\n" +
-            "  `ID` INT NOT NULL AUTO_INCREMENT,\n" +
-            "  `Name` VARCHAR(45) NOT NULL,\n" +
-            "  PRIMARY KEY (`ID`),\n" +
+            "CREATE TABLE IF NOT EXISTS " +  DBmanager.SQL_DB + ".`categories`(" +
+            "  `ID` INT NOT NULL AUTO_INCREMENT," +
+            "  `Name` VARCHAR(45) NOT NULL," +
+            "  PRIMARY KEY (`ID`)," +
             "  UNIQUE INDEX `Name_UNIQUE` (`Name` ASC) VISIBLE);";
     //create coupons table
     public static final String CREATE_TABLE_COUPONS =
-        "CREATE TABLE IF NOT EXISTS `cuponsdb`.`coupons` (\n" +
-                "  `ID` INT NOT NULL,\n" +
-                "  `Company_ID` INT NOT NULL,\n" +
-                "  `Category_ID` INT NOT NULL,\n" +
-                "  `Title` VARCHAR(45) NOT NULL,\n" +
-                "  `Description` VARCHAR(45) NULL,\n" +
-                "  `Start_Date` DATETIME NOT NULL,\n" +
-                "  `End_Date` DATETIME NOT NULL,\n" +
-                "  `Amount` INT NOT NULL,\n" +
-                "  `Price` DOUBLE NOT NULL,\n" +
-                "  `Image` VARCHAR(45) NULL,\n" +
-                "  PRIMARY KEY (`ID`),\n" +
-                "  UNIQUE INDEX `Company_ID_UNIQUE` (`Company_ID` ASC) VISIBLE,\n" +
-                "  UNIQUE INDEX `Category_ID_UNIQUE` (`Category_ID` ASC) VISIBLE,\n" +
-                "  CONSTRAINT `Company_ID`\n" +
-                "    FOREIGN KEY (`Company_ID`)\n" +
-                "    REFERENCES `cuponsdb`.`companies` (`ID`)\n" +
-                "    ON DELETE CASCADE\n" +
-                "    ON UPDATE CASCADE,\n" +
-                "  CONSTRAINT `Category_ID`\n" +
-                "    FOREIGN KEY (`Category_ID`)\n" +
-                "    REFERENCES `cuponsdb`.`categories` (`ID`)\n" +
-                "    ON DELETE CASCADE\n" +
-                "    ON UPDATE CASCADE);\n";
+        "CREATE TABLE IF NOT EXISTS " +  DBmanager.SQL_DB + ".`coupons`(" +
+                "  `ID` INT NOT NULL," +
+                "  `Company_ID` INT NOT NULL," +
+                "  `Category_ID` INT NOT NULL," +
+                "  `Title` VARCHAR(45) NOT NULL," +
+                "  `Description` VARCHAR(45) NULL," +
+                "  `Start_Date` DATETIME NOT NULL," +
+                "  `End_Date` DATETIME NOT NULL," +
+                "  `Amount` INT NOT NULL," +
+                "  `Price` DOUBLE NOT NULL," +
+                "  `Image` VARCHAR(45) NULL," +
+                "  PRIMARY KEY (`ID`)," +
+                "  UNIQUE INDEX `Company_ID_UNIQUE` (`Company_ID` ASC) VISIBLE," +
+                "  UNIQUE INDEX `Category_ID_UNIQUE` (`Category_ID` ASC) VISIBLE," +
+                "  CONSTRAINT `Company_ID`" +
+                "    FOREIGN KEY (`Company_ID`)" +
+                "    REFERENCES " + DBmanager.SQL_DB + ".`companies` (`ID`)" +
+                "    ON DELETE CASCADE" +
+                "    ON UPDATE CASCADE," +
+                "  CONSTRAINT `Category_ID`" +
+                "    FOREIGN KEY (`Category_ID`)" +
+                "    REFERENCES " + DBmanager.SQL_DB + ".`categories` (`ID`)" +
+                "    ON DELETE CASCADE" +
+                "    ON UPDATE CASCADE);";
 
 // create customers_vs_coupons table
 public static final String CREATE_TABLE_CVC=
-        "CREATE TABLE IF NOT EXISTS`cuponsdb`.`customers_vs_coupons` (\n" +
-                "  `Customer_ID` INT NOT NULL,\n" +
-                "  `Coupon_ID` INT NOT NULL,\n" +
-                "  PRIMARY KEY (`Customer_ID`, `Coupon_ID`),\n" +
-                "  INDEX `Coupons_ID_idx` (`Coupon_ID` ASC) VISIBLE,\n" +
-                "  CONSTRAINT `Customer_ID`\n" +
-                "    FOREIGN KEY (`Customer_ID`)\n" +
-                "    REFERENCES `cuponsdb`.`customers` (`ID`)\n" +
-                "    ON DELETE CASCADE\n" +
-                "    ON UPDATE CASCADE,\n" +
-                "  CONSTRAINT `Coupons_ID`\n" +
-                "    FOREIGN KEY (`Coupon_ID`)\n" +
-                "    REFERENCES `cuponsdb`.`coupons` (`ID`)\n" +
-                "    ON DELETE CASCADE\n" +
+        "CREATE TABLE IF NOT EXISTS " + DBmanager.SQL_DB + ".`customers_vs_coupons`(" +
+                "  `Customer_ID` INT NOT NULL," +
+                "  `Coupon_ID` INT NOT NULL," +
+                "  PRIMARY KEY (`Customer_ID`, `Coupon_ID`)," +
+                "  INDEX `Coupons_ID_idx` (`Coupon_ID` ASC) VISIBLE," +
+                "  CONSTRAINT `Customer_ID`" +
+                "    FOREIGN KEY (`Customer_ID`)" +
+                "    REFERENCES " + DBmanager.SQL_DB + ".`customers` (`ID`)" +
+                "    ON DELETE CASCADE" +
+                "    ON UPDATE CASCADE," +
+                "  CONSTRAINT `Coupons_ID`" +
+                "    FOREIGN KEY (`Coupon_ID`)" +
+                "    REFERENCES " +DBmanager.SQL_DB +".`coupons` (`ID`)" +
+                "    ON DELETE CASCADE" +
                 "    ON UPDATE CASCADE);";
+    //endregion
     public static final String addStudent = "INSERT INTO `class169`.`students` " +
             "(`name`, `tel`, `avgGrade`, `city`, `married`) " +
             "VALUES (?, ?, ?, ?, ?);";

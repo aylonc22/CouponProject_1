@@ -3,12 +3,15 @@ package beans;
 import java.util.List;
 
 public class Company {
+    //region Field Declaration
     private final  Integer id;
     private final String name;
     private String email;
     private String password;
     private List<Coupon> coupons;
+    //endregion
 
+    //region Constructors
     public Company(Integer id, String name, String email, String password, List<Coupon> coupons) {
         this.id = id;
         this.name = name;
@@ -16,7 +19,9 @@ public class Company {
        setPassword(password);
        setCoupons(coupons);
     }
+    //endregion
 
+    //region Setters && Getters
     public Integer getId() {
         return id;
     }
@@ -48,7 +53,9 @@ public class Company {
     public void setCoupons(List<Coupon> coupons) {
         this.coupons = coupons;
     }
+    //endregion
 
+    //region Overrides
     @Override
     public String toString() {
         return "Company{" +
@@ -59,4 +66,5 @@ public class Company {
                 ", coupons=" + coupons +
                 "}\n";
     }
+    //endregion
 }

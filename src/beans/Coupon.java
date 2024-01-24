@@ -3,6 +3,7 @@ package beans;
 import java.sql.Date;
 
 public class Coupon {
+    //region Field Declarations
     private final Integer id;
     private final  Integer companyId;
     private Category category;
@@ -13,7 +14,9 @@ public class Coupon {
     private Integer amount;
     private Double price;
     private String image;
+    //endregion
 
+    //region Constructors
     public Coupon(Integer id, Integer companyId, Category category, String title, String description, Date startDate, Date endDate, Integer amount, Double price, String image) {
         this.id = id;
         this.companyId = companyId;
@@ -26,7 +29,9 @@ public class Coupon {
         setPrice(price);
         setImage(image);
     }
+    //endregion
 
+    //region Setters && Getters
     public Integer getId() {
         return id;
     }
@@ -98,7 +103,9 @@ public class Coupon {
     public void setImage(String image) {
         this.image = image;
     }
+    //endregion
 
+    //region Overrides
     @Override
     public String toString() {
         return "Coupon{" +
@@ -114,4 +121,5 @@ public class Coupon {
                 ", image='" + image + '\'' +
                 "}\n";
     }
+    //endregion
 }
