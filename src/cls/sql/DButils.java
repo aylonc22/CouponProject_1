@@ -22,12 +22,21 @@ public class DButils {
             preparedStatement.execute();
             return true;
         } catch (InterruptedException | SQLException e) {
+            //for specials occasions where even though there is an exception it's actually fine
+            if(specials(e.getMessage()))
+                return true;
             System.out.println(e.getMessage());
             return false;
         } finally {
             ConnectionPool.getInstance().restoreConnection(connection);
         }
 
+    }
+
+    private static boolean specials(String message) {
+        if(message.contains("'categories.Name_UNIQUE'"))
+            return true;
+        return false;
     }
 
     public static boolean runQuery(String sql, Map<Integer, Object> params){
@@ -66,6 +75,21 @@ public class DButils {
         }
     }
 
+    public static ResultSet runQueryForResult(String sql){
+        Connection connection = null;
+
+        try {
+            connection = ConnectionPool.getInstance().getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            return preparedStatement.executeQuery();
+        } catch (InterruptedException | SQLException e) {
+            throw new RuntimeException(e);
+        }
+        finally {
+            ConnectionPool.getInstance().restoreConnection(connection);
+        }
+    }
     public static ResultSet runQueryForResult(String sql,Map<Integer,Object> params){
         Connection connection = null;
 
@@ -92,9 +116,6 @@ public class DButils {
                     throw new RuntimeException(e);
                 }
             });
-
-
-            System.out.println(preparedStatement);
             return preparedStatement.executeQuery();
         } catch (InterruptedException | SQLException e) {
             throw new RuntimeException(e);

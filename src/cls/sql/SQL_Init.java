@@ -1,5 +1,11 @@
 package cls.sql;
 
+import beans.Category;
+
+import java.util.HashMap;
+import java.util.Map;
+
+
 public class SQL_Init {
     private static void createDB(){
         if( DButils.runQuery(SQLcommands.CREATE_DB))
@@ -37,6 +43,18 @@ public class SQL_Init {
         else
             System.out.println("TABLE customers is not created");
     }
+    private static void  insertCategories(){
+        Map<Integer,Object> params = new HashMap<>();
+        //iterating through all the categories and adding them to params in order to insert them
+        for(int index = 0;index<Category.values().length;index++)
+        {
+            params.put(index+1,Category.values()[index].toString());
+        }
+        if( DButils.runQuery(SQLcommands.INSERT_CATEGORIES(params.size()),params))
+            System.out.println("Categories were inserted or already existed");
+        else
+            System.out.println("Categories weren't inserted");
+    }
     public static void initSQL(){
         createDB();
         createCompaniesTable();
@@ -44,5 +62,7 @@ public class SQL_Init {
         createCustomersTable();
         createCouponsTable();
         createCvcTable();
+        //insertCategories();
+
     }
 }

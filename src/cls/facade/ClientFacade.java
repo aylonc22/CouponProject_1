@@ -5,18 +5,21 @@ import dao.CouponDBDAO;
 import dao.CustomerDBDAO;
 import exception.CustomerIsNotAdminException;
 
+import java.sql.SQLException;
+
 public abstract class ClientFacade {
     //region Field Declarations
-    protected CustomerDBDAO customerDBDAO;
-    protected CompaniesDBDAO companiesDBDAO;
+    protected CustomerDBDAO customerDBDAO = new CustomerDBDAO();
+    protected CompaniesDBDAO companiesDBDAO = new CompaniesDBDAO();
     protected CouponDBDAO couponDBDAO;
     private boolean isLogged;
     //endregion
 
     //region Constructor
-    //TODO check if login in abstract works for each facade
-    public ClientFacade(String email,String password) throws CustomerIsNotAdminException {
+    // TODO switch login protocol to jwt (for now it's with boolean)
+    public ClientFacade(String email,String password) throws CustomerIsNotAdminException, SQLException {
         setLogged(login(email,password));
+        System.out.println(isLogged ? "Logged in successfully" : "Login failed");
     }
     //endregion
 
@@ -31,7 +34,7 @@ public abstract class ClientFacade {
     //endregion
 
     //region Abstracted Methods
-    public abstract boolean login(String email, String password) throws CustomerIsNotAdminException;
+    public abstract boolean login(String email, String password) throws CustomerIsNotAdminException, SQLException;
     //endregion
 
 }

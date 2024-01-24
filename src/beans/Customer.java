@@ -1,5 +1,6 @@
 package beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Customer {
@@ -8,16 +9,23 @@ public class Customer {
     private String firstName;
     private String lastName;
     private String email;
+    private String password;
     private List<Coupon> coupons;
     //endregion
 
     //region Constructors
-    public Customer(Integer id, String firstName, String lastName, String email, List<Coupon> coupons) {
+    public Customer(Integer id, String firstName, String lastName, String email,String password, List<Coupon> coupons) {
         this.id = id;
        setFirstName(firstName);
        setLastName(lastName);
        setEmail(email);
+       setPassword(password);
        setCoupons(coupons);
+    }
+
+    //for adding new customer to the database
+    public Customer(String firstName, String lastName, String email, String password) {
+        this(-1,firstName,lastName,email,password,new ArrayList<>());
     }
     //endregion
 
@@ -50,6 +58,14 @@ public class Customer {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public List<Coupon> getCoupons() {
         return coupons;
     }
@@ -63,8 +79,8 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
+                (id != -1?("id=" + id+","):"") +
+                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", coupons=" + coupons +

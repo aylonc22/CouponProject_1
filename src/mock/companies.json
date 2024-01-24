@@ -1,0 +1,256 @@
+{
+  "companies": [
+    {
+      "name": "Tasty Bites Catering",
+      "category": "Food",
+      "email": "tastybitescatering@gmail.com",
+      "password": "T@styBitesC@tering123",
+      "coupons": []
+    },
+    {
+      "name": "EcoPower Solutions",
+      "category": "Electricity",
+      "email": "ecopowersolutions@yahoo.com",
+      "password": "EcoP0werSolut!ons456",
+      "coupons": []
+    },
+    {
+      "name": "Gourmet Delight Restaurant",
+      "category": "Restaurant",
+      "email": "gourmetdelightrestaurant@walla.com",
+      "password": "G0urmetD3light789",
+      "coupons": []
+    },
+    {
+      "name": "Dream Escapes Vacations",
+      "category": "Vacation",
+      "email": "dreamescapesvacations@gmail.com",
+      "password": "Dr3amEsc@pesVacation234",
+      "coupons": []
+    },
+    {
+      "name": "Healthy Life Healthcare",
+      "category": "Healthcare",
+      "email": "healthylifehealthcare@yahoo.com",
+      "password": "HealthyLifeH3althcare567",
+      "coupons": []
+    },
+    {
+      "name": "Gaming Galaxy Entertainment",
+      "category": "Gaming",
+      "email": "gaminggalaxyentertainment@walla.com",
+      "password": "G@mingGalaxy890",
+      "coupons": []
+    },
+    {
+      "name": "Fresh Harvest Groceries",
+      "category": "Food",
+      "email": "freshharvestgroceries@gmail.com",
+      "password": "Fr3shHarvestGr0ceries123",
+      "coupons": []
+    },
+    {
+      "name": "EcoEnergy Solutions",
+      "category": "Electricity",
+      "email": "ecoenergysolutions@yahoo.com",
+      "password": "EcoEnergySolut!ons456",
+      "coupons": []
+    },
+    {
+      "name": "Urban Spice Grill",
+      "category": "Restaurant",
+      "email": "urbanspicegrill@walla.com",
+      "password": "UrbanSp1ceGr!ll789",
+      "coupons": []
+    },
+    {
+      "name": "Sunset Retreats",
+      "category": "Vacation",
+      "email": "sunsetretreats@gmail.com",
+      "password": "SunsetRetr3ats234",
+      "coupons": []
+    },
+    {
+      "name": "WellCare Wellness Center",
+      "category": "Healthcare",
+      "email": "wellcarewellness@yahoo.com",
+      "password": "WellCareH3althcare567",
+      "coupons": []
+    },
+    {
+      "name": "GameTime Interactive",
+      "category": "Gaming",
+      "email": "gametimeinteractive@walla.com",
+      "password": "GameT!meEntertainment890",
+      "coupons": []
+    },
+    {
+      "name": "Spice Fusion Catering",
+      "category": "Food",
+      "email": "spicefusioncatering@gmail.com",
+      "password": "Sp1ceFusionC@tering123",
+      "coupons": []
+    },
+    {
+      "name": "EcoTech Innovations",
+      "category": "Electricity",
+      "email": "ecotechinnovations@yahoo.com",
+      "password": "EcoTechInnovations456",
+      "coupons": []
+    },
+    {
+      "name": "Rustic Flavors Restaurant",
+      "category": "Restaurant",
+      "email": "rusticflavorsrestaurant@walla.com",
+      "password": "RusticFl@vors789",
+      "coupons": []
+    },
+    {
+      "name": "Adventure Seekers Getaways",
+      "category": "Vacation",
+      "email": "adventureseekersgetaways@gmail.com",
+      "password": "Adv3ntureGet@ways234",
+      "coupons": []
+    },
+    {
+      "name": "VitalCare Health Clinic",
+      "category": "Healthcare",
+      "email": "vitalcarehealthclinic@yahoo.com",
+      "password": "VitalCareH3alth567",
+      "coupons": []
+    },
+    {
+      "name": "Infinity Arcade Games",
+      "category": "Gaming",
+      "email": "infinityarcadegames@walla.com",
+      "password": "Inf1nityG@ming890",
+      "coupons": []
+    },
+    {
+      "name": "Green Gourmet Groceries",
+      "category": "Food",
+      "email": "greengourmetgroceries@gmail.com",
+      "password": "GreenGr0cery123",
+      "coupons": []
+    },
+    {
+      "name": "EcoPower Innovations",
+      "category": "Electricity",
+      "email": "ecopowerinnovations@yahoo.com",
+      "password": "EcoP0werInnov@tions456",
+      "coupons": []
+    },
+    {
+      "name": "Sizzling Salsa Grill",
+      "category": "Restaurant",
+      "email": "sizzlingsalsagrill@walla.com",
+      "password": "S!zzlingS@lsa789",
+      "coupons": []
+    },
+    {
+      "name": "Serene Escapes Travels",
+      "category": "Vacation",
+      "email": "sereneescapestravels@gmail.com",
+      "password": "S3r3neEsc@pes234",
+      "coupons": []
+    },
+    {
+      "name": "Nature's Touch Wellness",
+      "category": "Healthcare",
+      "email": "naturestouchwellness@yahoo.com",
+      "password": "NatureT0uchH3alth567",
+      "coupons": []
+    },
+    {
+      "name": "GameCraft Studios",
+      "category": "Gaming",
+      "email": "gamecraftstudios@walla.com",
+      "password": "GameCraftG@ming890",
+      "coupons": []
+    },
+    {
+      "name": "Deliciously Yours Catering",
+      "category": "Food",
+      "email": "deliciouslyyourscatering@gmail.com",
+      "password": "DeliciousC@tering123",
+      "coupons": []
+    },
+    {
+      "name": "EcoFriendly Power",
+      "category": "Electricity",
+      "email": "ecofriendlypower@yahoo.com",
+      "password": "EcoFr!endlyP0wer456",
+      "coupons": []
+    },
+    {
+      "name": "Savor Spice Restaurant",
+      "category": "Restaurant",
+      "email": "savorspicerestaurant@walla.com",
+      "password": "SavorSp!ce789",
+      "coupons": []
+    },
+    {
+      "name": "Dream Destinations Vacations",
+      "category": "Vacation",
+      "email": "dreamdestinationsvacations@gmail.com",
+      "password": "Dr3amD3st!nations234",
+      "coupons": []
+    },
+    {
+      "name": "WellFit Health Center",
+      "category": "Healthcare",
+      "email": "wellfithealthcenter@yahoo.com",
+      "password": "WellF!tH3alth567",
+      "coupons": []
+    },
+    {
+      "name": "Virtual Thrills Gaming",
+      "category": "Gaming",
+      "email": "virtualthrillsgaming@walla.com",
+      "password": "V1rtualThr!lls890",
+      "coupons": []
+    },
+    {
+      "name": "Organic Harvest Groceries",
+      "category": "Food",
+      "email": "organicharvestgroceries@gmail.com",
+      "password": "0rganicHarvest123",
+      "coupons": []
+    },
+    {
+      "name": "EcoInnovate Solutions",
+      "category": "Electricity",
+      "email": "ecoinnovatesolutions@yahoo.com",
+      "password": "EcoInnovateS0lutions456",
+      "coupons": []
+    },
+    {
+      "name": "Mystic Spices Grill",
+      "category": "Restaurant",
+      "email": "mysticspicesgrill@walla.com",
+      "password": "MysticSp!ces789",
+      "coupons": []
+    },
+    {
+      "name": "Exotic Retreats Vacations",
+      "category": "Vacation",
+      "email": "exoticretreatsvacations@gmail.com",
+      "password": "ExoticRetr3ats234",
+      "coupons": []
+    },
+    {
+      "name": "Vitality Health Hub",
+      "category": "Healthcare",
+      "email": "vitalityhealthhub@yahoo.com",
+      "password": "V!talityH3alth567",
+      "coupons": []
+    },
+    {
+      "name": "Future Play Games",
+      "category": "Gaming",
+      "email": "futureplaygames@walla.com",
+      "password": "FuturePlayG@mes890",
+      "coupons": []
+    }
+  ]
+}

@@ -5,16 +5,17 @@ import beans.Customer;
 import exception.ClientNotLoggedInException;
 import exception.CustomerIsNotAdminException;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class AdminFacade extends ClientFacade{
-    public AdminFacade(String email,String password) throws CustomerIsNotAdminException {
+    public AdminFacade(String email,String password) throws CustomerIsNotAdminException, SQLException {
         super(email,password);
     }
 
     //region Overrides
     @Override
-    public boolean login(String email, String password) throws CustomerIsNotAdminException {
+    public boolean login(String email, String password) throws CustomerIsNotAdminException, SQLException {
         //hard coded check to check if the client is answering the criteria to be an admin
         //not best practice!! BUT, that's what they asked for...
         if(email.equals("admin@admin.com") && password.equals("admin"))
@@ -79,14 +80,14 @@ public class AdminFacade extends ClientFacade{
         else
             throw new ClientNotLoggedInException("Admin is not logged in");
     }
-    public List<Customer> getAllCustomers() throws ClientNotLoggedInException {
+    public List<Customer> getAllCustomers() throws ClientNotLoggedInException, SQLException {
         if(isLogged()){
             return  super.customerDBDAO.getAllCustomers();
         }
         else
             throw new ClientNotLoggedInException("Admin is not logged in");
     }
-    public Customer getOneCustomer(int customerID) throws ClientNotLoggedInException {
+    public Customer getOneCustomer(int customerID) throws ClientNotLoggedInException, SQLException {
         if(isLogged()){
             return super.customerDBDAO.getOneCustomer(customerID);
         }
