@@ -1,4 +1,4 @@
-package cls;
+package cls.sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

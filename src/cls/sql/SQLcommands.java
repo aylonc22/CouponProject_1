@@ -1,4 +1,6 @@
-package cls;
+package cls.sql;
+
+import cls.sql.DBmanager;
 
 public class SQLcommands {
     //region SQL init // initializing data base and tables

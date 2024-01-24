@@ -1,4 +1,4 @@
-package cls;
+package cls.sql;
 
 public class DBmanager {
     //connection credentials to the Data Base

@@ -1,7 +1,7 @@
 package dao;
 
 import beans.Customer;
-import cls.ConnectionPool;
+import cls.sql.ConnectionPool;
 import java.util.List;
 
 public class CustomerDBDAO implements CustomersDAO{

@@ -1,12 +1,11 @@
 package dao;
 
 import beans.Company;
-import cls.ConnectionPool;
+import cls.sql.ConnectionPool;
 
 import java.util.List;
 
 public class CompaniesDBDAO implements CompaniesDAO{
-    //TODO ask zeev about connectionpool as a var in the daoes instead of implementing it in each method as he prefered
 private final ConnectionPool connectionPool = ConnectionPool.getInstance();
     @Override
     public boolean isCompanyExists(String email, String password) {

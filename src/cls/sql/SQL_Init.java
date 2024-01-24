@@ -1,10 +1,6 @@
-package cls;
-
-import java.util.HashMap;
-import java.util.Map;
+package cls.sql;
 
 public class SQL_Init {
-    //TODO ask zeev about inserting DB NAME in params
     private static void createDB(){
         if( DButils.runQuery(SQLcommands.CREATE_DB))
            System.out.println("DB Created or already exist");

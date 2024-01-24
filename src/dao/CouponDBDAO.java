@@ -1,7 +1,7 @@
 package dao;
 
 import beans.Coupon;
-import cls.ConnectionPool;
+import cls.sql.ConnectionPool;
 
 import java.util.List;
 
