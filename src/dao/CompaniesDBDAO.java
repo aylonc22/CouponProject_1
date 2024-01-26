@@ -2,8 +2,6 @@ package dao;
 
 //region Imports
 import beans.Company;
-import beans.Customer;
-import cls.sql.ConnectionPool;
 import cls.sql.DBmanager;
 import cls.sql.DButils;
 import cls.sql.SQLcommands;
@@ -78,6 +76,7 @@ public class CompaniesDBDAO implements CompaniesDAO{
         return null;
     }
 
+
     @Override
     public Map<Integer, Object> companyToParams(Company company) {
         Map<Integer, Object> params = new HashMap<>();
@@ -86,7 +85,6 @@ public class CompaniesDBDAO implements CompaniesDAO{
         params.put(3,company.getPassword());
         return params;
     }
-
     @Override
     public Company resultSetToCompany(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt(1);

@@ -11,16 +11,16 @@ import java.util.Map;
 
 public interface CompaniesDAO {
     //region Core Methods
-    public  boolean isCompanyExists(String email,String password) throws SQLException;
-    public void addCompany(Company company);
-    public void updateCompany(Company company);
-    public void deleteCompany(int companyID);
-    public List<Company> getAllCompanies() throws SQLException;
-    public Company getOneCompany(int companyID) throws SQLException;
+      boolean isCompanyExists(String email,String password) throws SQLException;
+     void addCompany(Company company);
+     void updateCompany(Company company);
+     void deleteCompany(int companyID);
+     List<Company> getAllCompanies() throws SQLException;
+     Company getOneCompany(int companyID) throws SQLException;
     //endregion
     //region Auxiliary Methods
-    public Map<Integer,Object> companyToParams(Company company);
-    public Company resultSetToCompany(ResultSet resultSet) throws SQLException;
+     Map<Integer,Object> companyToParams(Company company);
+     Company resultSetToCompany(ResultSet resultSet) throws SQLException;
     //endregion
 
 }

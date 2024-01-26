@@ -62,7 +62,7 @@ public class SQL_Init {
         createCustomersTable();
         createCouponsTable();
         createCvcTable();
-        //insertCategories();
+        insertCategories();
 
     }
 }

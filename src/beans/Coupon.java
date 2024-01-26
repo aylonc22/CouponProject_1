@@ -29,6 +29,10 @@ public class Coupon {
         setPrice(price);
         setImage(image);
     }
+
+    public Coupon(Integer companyId, Category category, String title, String description, Date startDate, Date endDate, Integer amount, Double price, String image) {
+        this(-1,companyId,category,title,description,startDate,endDate,amount,price,image);
+    }
     //endregion
 
     //region Setters && Getters
@@ -109,8 +113,8 @@ public class Coupon {
     @Override
     public String toString() {
         return "Coupon{" +
-                "id=" + id +
-                ", companyId=" + companyId +
+                (id != -1?("id=" + id+", "):"") +
+                "companyId=" + companyId +
                 ", category=" + category +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

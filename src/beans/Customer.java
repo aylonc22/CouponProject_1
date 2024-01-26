@@ -79,7 +79,7 @@ public class Customer {
     @Override
     public String toString() {
         return "Customer{" +
-                (id != -1?("id=" + id+","):"") +
+                (id != -1?("id=" + id+", "):"") +
                  "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +

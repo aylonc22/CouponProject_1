@@ -64,7 +64,7 @@ public class Company {
     @Override
     public String toString() {
         return "Company{" +
-                (id != -1?("id=" + id+","):"") +
+                (id != -1?("id=" + id+", "):"") +
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +

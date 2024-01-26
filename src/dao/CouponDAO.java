@@ -13,8 +13,8 @@ public interface CouponDAO {
     public void addCoupon(Coupon coupon);
     public void updateCoupon(Coupon coupon);
     public void deleteCoupon(int couponID);
-    public List<Coupon> getAllCoupons();
-    public Coupon getOneCoupon(int couponID);
+    public List<Coupon> getAllCoupons() throws SQLException;
+    public Coupon getOneCoupon(int couponID) throws SQLException;
     public void addCouponPurchase(int customerID,int couponID);
     public void deleteCouponPurchase(int customerID,int couponID);
     //endregion
@@ -23,4 +23,4 @@ public interface CouponDAO {
     public Coupon resultSetToCoupon(ResultSet resultSet) throws SQLException;
     //endregion
 }
-}
+

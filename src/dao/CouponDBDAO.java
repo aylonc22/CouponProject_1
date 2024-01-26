@@ -1,12 +1,10 @@
 package dao;
 
+//region Imports
 import beans.Category;
 import beans.Coupon;
-import beans.Customer;
 import cls.sql.DButils;
 import cls.sql.SQLcommands;
-
-
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,10 +12,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+//endregion
 
 public class CouponDBDAO implements  CouponDAO{
 
     @Override
+            //TODO in company facade you cannot add coupon with same title in the same company
     public void addCoupon(Coupon coupon) {
         Map<Integer, Object> params = couponToParams(coupon);
         if(DButils.runQuery(SQLcommands.ADD_COUPON,params))
@@ -28,39 +28,73 @@ public class CouponDBDAO implements  CouponDAO{
 
     @Override
     public void updateCoupon(Coupon coupon) {
-
+        Map<Integer, Object> params = couponToParams(coupon);
+        // adding id in order to update directly from id
+        params.put(params.size()+1,coupon.getId());
+        if(DButils.runQuery(SQLcommands.UPDATE_COUPON,params))
+            System.out.println("Coupon updated\n" + coupon);
+        else
+            System.out.println("Coupon wasn't updated");
     }
 
     @Override
     public void deleteCoupon(int couponID) {
-
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1,couponID);
+        if(DButils.runQuery(SQLcommands.DELETE_COUPON,params))
+            System.out.println("Coupon deleted");
+        else
+            System.out.println("Coupon wasn't deleted");
     }
 
     @Override
-    public List<Coupon> getAllCoupons() {
-        return null;
+    public List<Coupon> getAllCoupons() throws SQLException {
+        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON);
+        List<Coupon> coupons = new ArrayList<>();
+        while(resultSet.next())
+        {
+            coupons.add(resultSetToCoupon(resultSet));
+        }
+        return coupons;
     }
 
     @Override
-    public Coupon getOneCoupon(int couponID) {
+    public Coupon getOneCoupon(int couponID) throws SQLException {
+        Map<Integer,Object> params = new HashMap<>();
+        params.put(1,couponID);
+        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ONE_COUPON,params);
+        if(resultSet.next())
+            return resultSetToCoupon(resultSet);
         return null;
     }
 
     @Override
     public void addCouponPurchase(int customerID, int couponID) {
-
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1,customerID);
+        params.put(2,couponID);
+        if(DButils.runQuery(SQLcommands.ADD_CVC,params))
+            System.out.println("Customer_Vs_Coupon added");
+        else
+            System.out.println("Customer_Vs_Coupon wasn't added");
     }
 
     @Override
     public void deleteCouponPurchase(int customerID, int couponID) {
-
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1,customerID);
+        params.put(2,couponID);
+        if(DButils.runQuery(SQLcommands.DELETE_CVC,params))
+            System.out.println("Customer_Vs_Coupon deleted");
+        else
+            System.out.println("Customer_Vs_Coupon wasn't deleted");
     }
 
     @Override
     public Map<Integer, Object> couponToParams(Coupon coupon) {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,coupon.getCompanyId());
-        params.put(2,coupon.getCategory());
+        params.put(2,Category.valueOf(coupon.getCategory().toString()).ordinal() +1);
         params.put(3,coupon.getTitle());
         params.put(4,coupon.getDescription());
         params.put(5,coupon.getStartDate());

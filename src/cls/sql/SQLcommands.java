@@ -43,7 +43,7 @@ public class SQLcommands {
     //create coupons table
     public static final String CREATE_TABLE_COUPONS =
         "CREATE TABLE IF NOT EXISTS " +  DBmanager.SQL_DB + "."+ DBmanager.SQL_COUPONS + "(" +
-                "  `ID` INT NOT NULL," +
+                "  `ID` INT NOT NULL AUTO_INCREMENT," +
                 "  `Company_ID` INT NOT NULL," +
                 "  `Category_ID` INT NOT NULL," +
                 "  `Title` VARCHAR(45) NOT NULL," +
@@ -54,8 +54,6 @@ public class SQLcommands {
                 "  `Price` DOUBLE NOT NULL," +
                 "  `Image` VARCHAR(45) NULL," +
                 "  PRIMARY KEY (`ID`)," +
-                "  UNIQUE INDEX `Company_ID_UNIQUE` (`Company_ID` ASC) VISIBLE," +
-                "  UNIQUE INDEX `Category_ID_UNIQUE` (`Category_ID` ASC) VISIBLE," +
                 "  CONSTRAINT `Company_ID`" +
                 "    FOREIGN KEY (`Company_ID`)" +
                 "    REFERENCES " + DBmanager.SQL_DB + "." + DBmanager.SQL_COMPANIES+ " (`ID`)" +
@@ -105,7 +103,7 @@ public static final String CREATE_TABLE_CVC=
     public static final String DELETE_CUSTOMER = "DELETE FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_CUSTOMERS + " WHERE ID=?";
     public static final String GET_ALL_CUSTOMERS = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_CUSTOMERS;
     public static final String GET_ONE_CUSTOMERS = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_CUSTOMERS + " WHERE ID=?";
-//region
+//endregion
 // region CRUD Implementation for Companies table
 public static final String ADD_COMPANY = "INSERT INTO " + DBmanager.SQL_DB + "." + DBmanager.SQL_COMPANIES +
         "(name,email,password) VALUES (?,?,?)";
@@ -115,4 +113,19 @@ public static final String ADD_COMPANY = "INSERT INTO " + DBmanager.SQL_DB + "."
     public static final String GET_ALL_COMPANY = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COMPANIES;
     public static final String GET_ONE_COMPANY = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COMPANIES + " WHERE ID=?";
 // endregion
+
+    //region Implementation for Coupons table
+    public static final String ADD_COUPON = "INSERT INTO " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
+            "(Company_ID,Category_ID,Title,Description,Start_Date,End_Date,Amount,Price,Image) VALUES (?,?,?,?,?,?,?,?,?)";
+    public static final String UPDATE_COUPON = "UPDATE " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
+            " SET Company_ID=?,Category_ID=?,Title=?,Description=?,Start_Date=?,End_Date=?,Amount=?,Price=?,Image=? WHERE ID = ?";
+    public static final String DELETE_COUPON = "DELETE FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS + " WHERE ID=?";
+    public static final String GET_ALL_COUPON = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS;
+    public static final String GET_ONE_COUPON = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS + " WHERE ID=?";
+    //endregion
+    //region Implementation for Customer_Vs_Coupon table
+    public static final String ADD_CVC = "INSERT INTO " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC +
+            "(Customer_ID,Coupon_ID) VALUES (?,?)";
+    public static final String DELETE_CVC = "DELETE FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC + " WHERE Customer_ID=? AND Coupon_ID=?";
+    //endregion
 }
