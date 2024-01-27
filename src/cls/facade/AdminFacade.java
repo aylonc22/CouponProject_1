@@ -1,5 +1,7 @@
 package cls.facade;
 
+import beans.Client;
+import beans.ClientType;
 import beans.Company;
 import beans.Customer;
 import exception.ClientNotLoggedInException;
@@ -9,17 +11,19 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class AdminFacade extends ClientFacade{
+    //region Constructors
     public AdminFacade(String email,String password) throws CustomerIsNotAdminException, SQLException {
         super(email,password);
     }
+    //endregion
 
     //region Overrides
     @Override
-    public boolean login(String email, String password) throws CustomerIsNotAdminException, SQLException {
+    public Client login(String email, String password) throws CustomerIsNotAdminException, SQLException {
         //hard coded check to check if the client is answering the criteria to be an admin
         //not best practice!! BUT, that's what they asked for...
         if(email.equals("admin@admin.com") && password.equals("admin"))
-            return super.customerDBDAO.isCustomerExists(email,password);
+            return customerDBDAO.isCustomerExists(email,password);
         else
             throw new CustomerIsNotAdminException("The client is not an administrator");
     }
@@ -28,71 +32,71 @@ public class AdminFacade extends ClientFacade{
     //region Company CRUD Methods
     public void addCompany(Company company) throws ClientNotLoggedInException {
        if(super.isLogged())
-           super.companiesDBDAO.addCompany(company);
+           companiesDBDAO.addCompany(company);
        else
-           throw new ClientNotLoggedInException("Admin is not logged in");
+           throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public void updateCompany(Company company) throws ClientNotLoggedInException {
         if(super.isLogged())
-            super.companiesDBDAO.updateCompany(company);
+            companiesDBDAO.updateCompany(company);
         else
-            throw new ClientNotLoggedInException("Admin is not logged in");
+            throw new ClientNotLoggedInException(ClientType.Adminstrator);
 
     }
     public void deleteCompany(int companyID) throws ClientNotLoggedInException {
         if(super.isLogged())
-            super.companiesDBDAO.deleteCompany(companyID);
+            companiesDBDAO.deleteCompany(companyID);
         else
-            throw new ClientNotLoggedInException("Admin is not logged in");
+            throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public List<Company> getAllCompanies() throws ClientNotLoggedInException, SQLException {
         if(super.isLogged())
-            return  super.companiesDBDAO.getAllCompanies();
+            return  companiesDBDAO.getAllCompanies();
         else
-            throw new ClientNotLoggedInException("Admin is not logged in");
+            throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public Company getOneCompany(int companyID) throws ClientNotLoggedInException, SQLException {
         if(super.isLogged())
-            return  super.companiesDBDAO.getOneCompany(companyID);
+            return  companiesDBDAO.getOneCompany(companyID);
         else
-            throw new ClientNotLoggedInException("Admin is not logged in");
+            throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     //endregion
     //region Customer CRUD Methods
     public void addCustomer(Customer customer) throws ClientNotLoggedInException {
         if(isLogged()){
-            super.customerDBDAO.addCustomer(customer);
+            customerDBDAO.addCustomer(customer);
         }
         else
-            throw new ClientNotLoggedInException("Admin is not logged in");
+            throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public void updateCustomer(Customer customer) throws ClientNotLoggedInException {
         if(isLogged()){
-            super.customerDBDAO.updateCustomer(customer);
+            customerDBDAO.updateCustomer(customer);
         }
         else
-            throw new ClientNotLoggedInException("Admin is not logged in");
+            throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public void deleteCustomer(int customerID) throws ClientNotLoggedInException {
         if(isLogged()){
-            super.customerDBDAO.deleteCustomer(customerID);
+            customerDBDAO.deleteCustomer(customerID);
         }
         else
-            throw new ClientNotLoggedInException("Admin is not logged in");
+            throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public List<Customer> getAllCustomers() throws ClientNotLoggedInException, SQLException {
         if(isLogged()){
-            return  super.customerDBDAO.getAllCustomers();
+            return  customerDBDAO.getAllCustomers();
         }
         else
-            throw new ClientNotLoggedInException("Admin is not logged in");
+            throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public Customer getOneCustomer(int customerID) throws ClientNotLoggedInException, SQLException {
         if(isLogged()){
-            return super.customerDBDAO.getOneCustomer(customerID);
+            return customerDBDAO.getOneCustomer(customerID);
         }
         else
-            throw new ClientNotLoggedInException("Admin is not logged in");
+            throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     //endregion
     //endregion

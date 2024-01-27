@@ -1,6 +1,7 @@
 package dao;
 
 //region Imports
+import beans.Client;
 import beans.Company;
 import beans.Customer;
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.util.Map;
 
 public interface CompaniesDAO {
     //region Core Methods
-      boolean isCompanyExists(String email,String password) throws SQLException;
+      Client isCompanyExists(String email, String password) throws SQLException;
      void addCompany(Company company);
      void updateCompany(Company company);
      void deleteCompany(int companyID);

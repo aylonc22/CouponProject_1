@@ -1,6 +1,7 @@
 package dao;
 
 //region Imports
+import beans.Client;
 import beans.Customer;
 import cls.sql.DBmanager;
 import cls.sql.DButils;
@@ -16,13 +17,14 @@ import java.util.Map;
 public class CustomerDBDAO implements CustomersDAO{
 
     @Override
-    public boolean isCustomerExists(String email, String password) throws SQLException {
+    public Client isCustomerExists(String email, String password) throws SQLException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,email);
         params.put(2,password);
 
         ResultSet resultSet = DButils.runQueryForResult(SQLcommands.IS_EXISTS_IN_TABLE(DBmanager.SQL_CUSTOMERS),params);
-        return resultSet.next();
+
+        return resultSet.next()?resultSetToCustomer(resultSet):null;
     }
 
     @Override

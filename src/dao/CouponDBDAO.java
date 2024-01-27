@@ -20,6 +20,9 @@ public class CouponDBDAO implements  CouponDAO{
             //TODO in company facade you cannot add coupon with same title in the same company
     public void addCoupon(Coupon coupon) {
         Map<Integer, Object> params = couponToParams(coupon);
+        params.put(1,coupon.getCompanyId());
+        params.put(10,coupon.getCompanyId());
+        params.put(11,coupon.getTitle());
         if(DButils.runQuery(SQLcommands.ADD_COUPON,params))
             System.out.println("Coupon added\n" + coupon);
         else
@@ -50,6 +53,89 @@ public class CouponDBDAO implements  CouponDAO{
     @Override
     public List<Coupon> getAllCoupons() throws SQLException {
         ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON);
+        List<Coupon> coupons = new ArrayList<>();
+        while(resultSet.next())
+        {
+            coupons.add(resultSetToCoupon(resultSet));
+        }
+        return coupons;
+    }
+
+    @Override
+    public List<Coupon> getAllCouponsOfCompany(int companyID) throws SQLException {
+        Map<Integer,Object> params = new HashMap<>();
+        params.put(1,companyID);
+        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON_OF_COMPANY,params);
+        List<Coupon> coupons = new ArrayList<>();
+        while(resultSet.next())
+        {
+            coupons.add(resultSetToCoupon(resultSet));
+        }
+        return coupons;
+    }
+
+    @Override
+    public List<Coupon> getAllCouponsOfCompanyByCategory(int companyID,Category category) throws SQLException {
+        Map<Integer,Object> params = new HashMap<>();
+        params.put(1,companyID);
+        params.put(2,category.ordinal());
+        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON_OF_COMPANY_BY_CATEGORY,params);
+        List<Coupon> coupons = new ArrayList<>();
+        while(resultSet.next())
+        {
+            coupons.add(resultSetToCoupon(resultSet));
+        }
+        return coupons;
+    }
+
+    @Override
+    // return all the coupons of the company which price are below or equal to the criteria
+    public List<Coupon> getAllCouponsOfCompanyUpToPrice(int companyID, double price) throws SQLException {
+        Map<Integer,Object> params = new HashMap<>();
+        params.put(1,companyID);
+        params.put(2,price);
+        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON_OF_COMPANY_UP_TO_PRICE,params);
+        List<Coupon> coupons = new ArrayList<>();
+        while(resultSet.next())
+        {
+            coupons.add(resultSetToCoupon(resultSet));
+        }
+        return coupons;
+    }
+
+    @Override
+    public List<Coupon> getAllCouponsOfCustomer(int customerID) throws SQLException {
+        Map<Integer,Object> params = new HashMap<>();
+        params.put(1,customerID);
+        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON_OF_CUSTOMER,params);
+        List<Coupon> coupons = new ArrayList<>();
+        while(resultSet.next())
+        {
+            coupons.add(resultSetToCoupon(resultSet));
+        }
+        return coupons;
+    }
+
+    @Override
+    public List<Coupon> getAllCouponsOfCustomerByCategory(int customerID, Category category) throws SQLException {
+        Map<Integer,Object> params = new HashMap<>();
+        params.put(1,customerID);
+        params.put(2,category.ordinal());
+        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON_OF_CUSTOMER_BY_CATEGORY,params);
+        List<Coupon> coupons = new ArrayList<>();
+        while(resultSet.next())
+        {
+            coupons.add(resultSetToCoupon(resultSet));
+        }
+        return coupons;
+    }
+
+    @Override
+    public List<Coupon> getAllCouponsOfCustomerUpToPrice(int customerID, double price) throws SQLException {
+        Map<Integer,Object> params = new HashMap<>();
+        params.put(1,customerID);
+        params.put(2,price);
+        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON_OF_CUSTOMER_UP_TO_PRICE,params);
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
@@ -93,7 +179,6 @@ public class CouponDBDAO implements  CouponDAO{
     @Override
     public Map<Integer, Object> couponToParams(Coupon coupon) {
         Map<Integer, Object> params = new HashMap<>();
-        params.put(1,coupon.getCompanyId());
         params.put(2,Category.valueOf(coupon.getCategory().toString()).ordinal() +1);
         params.put(3,coupon.getTitle());
         params.put(4,coupon.getDescription());
@@ -102,6 +187,8 @@ public class CouponDBDAO implements  CouponDAO{
         params.put(7,coupon.getAmount());
         params.put(8,coupon.getPrice());
         params.put(9,coupon.getImage());
+
+
 
         return params;
     }

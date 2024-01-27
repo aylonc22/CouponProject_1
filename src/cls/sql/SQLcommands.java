@@ -1,13 +1,9 @@
 package cls.sql;
 
-import cls.sql.DBmanager;
-
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+//region Imports
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+//endregion
 
 public class SQLcommands {
     //region SQL init // initializing data base and tables
@@ -115,17 +111,40 @@ public static final String ADD_COMPANY = "INSERT INTO " + DBmanager.SQL_DB + "."
 // endregion
 
     //region Implementation for Coupons table
+    // adding coupon ONLY if the same company does not have already a coupon with the exact same title
     public static final String ADD_COUPON = "INSERT INTO " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
-            "(Company_ID,Category_ID,Title,Description,Start_Date,End_Date,Amount,Price,Image) VALUES (?,?,?,?,?,?,?,?,?)";
+            "(Company_ID,Category_ID,Title,Description,Start_Date,End_Date,Amount,Price,Image) SELECT (?,?,?,?,?,?,?,?,?) " +
+            "WHERE NOT EXISTS (" +
+            "    SELECT * FROM "+DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +" WHERE Company_ID = ? AND Title = ?);";
     public static final String UPDATE_COUPON = "UPDATE " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
-            " SET Company_ID=?,Category_ID=?,Title=?,Description=?,Start_Date=?,End_Date=?,Amount=?,Price=?,Image=? WHERE ID = ?";
+            " SET Category_ID=?,Title=?,Description=?,Start_Date=?,End_Date=?,Amount=?,Price=?,Image=? WHERE ID = ?";
     public static final String DELETE_COUPON = "DELETE FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS + " WHERE ID=?";
     public static final String GET_ALL_COUPON = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS;
+    public static final String GET_ALL_COUPON_OF_COMPANY = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS + " WHERE Company_ID = ?";
+    public static final String GET_ALL_COUPON_OF_COMPANY_BY_CATEGORY = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
+            " WHERE Company_ID = ? AND Category_ID = ?";
+    public static final String GET_ALL_COUPON_OF_COMPANY_UP_TO_PRICE = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
+            " WHERE Company_ID = ? AND Price <= ?";
     public static final String GET_ONE_COUPON = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS + " WHERE ID=?";
     //endregion
     //region Implementation for Customer_Vs_Coupon table
     public static final String ADD_CVC = "INSERT INTO " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC +
             "(Customer_ID,Coupon_ID) VALUES (?,?)";
     public static final String DELETE_CVC = "DELETE FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC + " WHERE Customer_ID=? AND Coupon_ID=?";
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    // aliases
+    //cvc stands for customer_vs_coupon
+    //coup stands for coupon
+    //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    // TODO CHECK THIS actually works!
+    public static final String GET_ALL_COUPON_OF_CUSTOMER = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
+            " coup JOIN " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC + " cvc ON coup.ID=cvc.Coupon_ID"+
+            " WHERE cvc.Customer_ID = ?";
+    public static final String GET_ALL_COUPON_OF_CUSTOMER_BY_CATEGORY = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
+            " coup JOIN " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC + " cvc ON coup.ID=cvc.Coupon_ID"+
+            " WHERE cvc.Customer_ID = ? AND coup.Category_ID = ?";
+    public static final String GET_ALL_COUPON_OF_CUSTOMER_UP_TO_PRICE = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
+            " coup JOIN " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC + " cvc ON coup.ID=cvc.Coupon_ID"+
+            " WHERE cvc.Customer_ID = ? AND coup.Price <=";;
     //endregion
 }

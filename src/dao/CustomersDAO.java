@@ -1,5 +1,6 @@
 package dao;
 
+import beans.Client;
 import beans.Customer;
 
 import java.sql.ResultSet;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public interface CustomersDAO {
     //region Core Methods
-    public  boolean isCustomerExists(String email,String password) throws SQLException;
+    public Client isCustomerExists(String email, String password) throws SQLException;
     public void addCustomer(Customer customer);
     public void updateCustomer(Customer customer);
     public void deleteCustomer(int customerID);

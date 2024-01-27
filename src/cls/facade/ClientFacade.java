@@ -1,24 +1,28 @@
 package cls.facade;
 
+//region Imports
+import beans.Client;
 import dao.CompaniesDBDAO;
 import dao.CouponDBDAO;
 import dao.CustomerDBDAO;
 import exception.CustomerIsNotAdminException;
-
 import java.sql.SQLException;
+//endregion
 
 public abstract class ClientFacade {
     //region Field Declarations
-    protected CustomerDBDAO customerDBDAO = new CustomerDBDAO();
-    protected CompaniesDBDAO companiesDBDAO = new CompaniesDBDAO();
-    protected CouponDBDAO couponDBDAO;
+    protected static CustomerDBDAO customerDBDAO = new CustomerDBDAO();
+    protected static CompaniesDBDAO companiesDBDAO = new CompaniesDBDAO();
+    protected static CouponDBDAO couponDBDAO = new CouponDBDAO();
     private boolean isLogged;
+    private final Client client;
     //endregion
 
     //region Constructor
     // TODO switch login protocol to jwt (for now it's with boolean)
     public ClientFacade(String email,String password) throws CustomerIsNotAdminException, SQLException {
-        setLogged(login(email,password));
+        client = login(email,password);
+        setLogged(client.getId()!=-1);
         System.out.println(isLogged ? "Logged in successfully" : "Login failed");
     }
     //endregion
@@ -31,10 +35,12 @@ public abstract class ClientFacade {
     public void setLogged(boolean logged) {
         isLogged = logged;
     }
+
+    public Client getClient() {return client;}
     //endregion
 
     //region Abstracted Methods
-    public abstract boolean login(String email, String password) throws CustomerIsNotAdminException, SQLException;
+    public abstract Client login(String email, String password) throws CustomerIsNotAdminException, SQLException;
     //endregion
 
 }

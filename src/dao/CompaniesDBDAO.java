@@ -1,6 +1,7 @@
 package dao;
 
 //region Imports
+import beans.Client;
 import beans.Company;
 import cls.sql.DBmanager;
 import cls.sql.DButils;
@@ -16,13 +17,13 @@ import java.util.Map;
 
 public class CompaniesDBDAO implements CompaniesDAO{
     @Override
-    public boolean isCompanyExists(String email, String password) throws SQLException {
+    public Client isCompanyExists(String email, String password) throws SQLException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,email);
         params.put(2,password);
 
         ResultSet resultSet = DButils.runQueryForResult(SQLcommands.IS_EXISTS_IN_TABLE(DBmanager.SQL_COMPANIES),params);
-        return resultSet.next();
+        return resultSet.next()?resultSetToCompany(resultSet):null;
     }
 
     @Override
