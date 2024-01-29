@@ -1,4 +1,4 @@
-package dao;
+package database.dao;
 
 import beans.Client;
 import beans.Customer;

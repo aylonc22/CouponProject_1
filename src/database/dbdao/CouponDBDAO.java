@@ -1,10 +1,12 @@
-package dao;
+package database.dbdao;
 
 //region Imports
 import beans.Category;
 import beans.Coupon;
-import cls.sql.DButils;
-import cls.sql.SQLcommands;
+import database.sql.DButils;
+import database.sql.SQLcommands;
+import database.dao.CouponDAO;
+
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 //endregion
 
-public class CouponDBDAO implements  CouponDAO{
+public class CouponDBDAO implements CouponDAO {
 
     @Override
             //TODO in company facade you cannot add coupon with same title in the same company
@@ -174,6 +176,14 @@ public class CouponDBDAO implements  CouponDAO{
             System.out.println("Customer_Vs_Coupon deleted");
         else
             System.out.println("Customer_Vs_Coupon wasn't deleted");
+    }
+
+    @Override
+    public void deleteExpiredCoupons() {
+        if(DButils.runQuery(SQLcommands.DELETE_EXPIRED_COUPON))
+            System.out.println("Coupons and their purchase history deleted");
+        else
+            System.out.println("Coupons and their purchase history weren't deleted");
     }
 
     @Override

@@ -1,4 +1,4 @@
-package dao;
+package database.dao;
 
 //region Imports
 import beans.Category;
@@ -26,6 +26,7 @@ public interface CouponDAO {
      Coupon getOneCoupon(int couponID) throws SQLException;
      void addCouponPurchase(int customerID,int couponID);
      void deleteCouponPurchase(int customerID,int couponID);
+     void deleteExpiredCoupons();
     //endregion
     //region Auxiliary Methods
      Map<Integer,Object> couponToParams(Coupon coupon);

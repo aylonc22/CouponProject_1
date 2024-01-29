@@ -1,9 +1,14 @@
 package beans;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
-
+@Getter
+@Setter
 public class Customer extends Client {
+    //region Setters && Getters
     //region Field Declarations
     private String firstName;
     private String lastName;
@@ -20,24 +25,6 @@ public class Customer extends Client {
     //for adding new customer to the database
     public Customer(String firstName, String lastName, String email, String password) {
         this(-1,firstName,lastName,email,password,new ArrayList<>());
-    }
-    //endregion
-
-    //region Setters && Getters
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
     //endregion
 

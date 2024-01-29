@@ -1,4 +1,4 @@
-package cls.facade;
+package facade;
 
 import beans.Category;
 import beans.Client;
@@ -55,4 +55,12 @@ public class CustomerFacade extends ClientFacade {
             throw new ClientNotLoggedInException(ClientType.Customer);
     }
     //endregion
+    public String getCustomerDetails() throws ClientNotLoggedInException {
+        if(isLogged()){
+            return getClient().toString();
+        }
+        else
+            throw new ClientNotLoggedInException(ClientType.Customer);
+
+    }
 }

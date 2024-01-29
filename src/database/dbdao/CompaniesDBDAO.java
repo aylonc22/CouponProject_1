@@ -1,11 +1,12 @@
-package dao;
+package database.dbdao;
 
 //region Imports
 import beans.Client;
 import beans.Company;
-import cls.sql.DBmanager;
-import cls.sql.DButils;
-import cls.sql.SQLcommands;
+import database.sql.DBmanager;
+import database.sql.DButils;
+import database.sql.SQLcommands;
+import database.dao.CompaniesDAO;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 //endregion
 
-public class CompaniesDBDAO implements CompaniesDAO{
+public class CompaniesDBDAO implements CompaniesDAO {
     @Override
     public Client isCompanyExists(String email, String password) throws SQLException {
         Map<Integer, Object> params = new HashMap<>();

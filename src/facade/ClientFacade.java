@@ -1,10 +1,10 @@
-package cls.facade;
+package facade;
 
 //region Imports
 import beans.Client;
-import dao.CompaniesDBDAO;
-import dao.CouponDBDAO;
-import dao.CustomerDBDAO;
+import database.dbdao.CompaniesDBDAO;
+import database.dbdao.CouponDBDAO;
+import database.dbdao.CustomerDBDAO;
 import exception.CustomerIsNotAdminException;
 import java.sql.SQLException;
 //endregion

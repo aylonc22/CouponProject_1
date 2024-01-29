@@ -1,8 +1,10 @@
 package beans;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
-
+@Getter
 public class Company extends Client{
     //region Field Declaration
         private final String name;
@@ -18,13 +20,6 @@ public class Company extends Client{
     public Company(String name, String email, String password) {
         this(-1,name,email,password,new ArrayList<>());
     }
-    //endregion
-
-    //region Setters && Getters
-    public String getName() {
-        return name;
-    }
-
     //endregion
 
     //region Overrides

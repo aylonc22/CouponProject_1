@@ -1,4 +1,4 @@
-package cls.facade;
+package facade;
 
 import beans.Client;
 import beans.ClientType;
@@ -10,7 +10,7 @@ import exception.CustomerIsNotAdminException;
 import java.sql.SQLException;
 import java.util.List;
 
-public class AdminFacade extends ClientFacade{
+public class AdminFacade extends ClientFacade {
     //region Constructors
     public AdminFacade(String email,String password) throws CustomerIsNotAdminException, SQLException {
         super(email,password);

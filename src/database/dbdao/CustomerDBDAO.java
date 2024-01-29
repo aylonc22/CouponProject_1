@@ -1,11 +1,13 @@
-package dao;
+package database.dbdao;
 
 //region Imports
 import beans.Client;
 import beans.Customer;
-import cls.sql.DBmanager;
-import cls.sql.DButils;
-import cls.sql.SQLcommands;
+import database.sql.DBmanager;
+import database.sql.DButils;
+import database.sql.SQLcommands;
+import database.dao.CustomersDAO;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 //endregion
 
-public class CustomerDBDAO implements CustomersDAO{
+public class CustomerDBDAO implements CustomersDAO {
 
     @Override
     public Client isCustomerExists(String email, String password) throws SQLException {

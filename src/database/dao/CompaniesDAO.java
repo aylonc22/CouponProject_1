@@ -1,9 +1,9 @@
-package dao;
+package database.dao;
 
 //region Imports
 import beans.Client;
 import beans.Company;
-import beans.Customer;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;

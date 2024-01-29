@@ -1,5 +1,5 @@
-import cls.facade.CompanyFacade;
-import cls.sql.SQL_Init;
+import facade.CompanyFacade;
+import database.sql.SQL_Init;
 import exception.CustomerIsNotAdminException;
 
 import java.sql.SQLException;

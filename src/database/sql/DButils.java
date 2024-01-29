@@ -1,6 +1,4 @@
-package cls.sql;
-
-import cls.sql.ConnectionPool;
+package database.sql;
 
 import java.sql.*;
 import java.util.Map;
