@@ -23,7 +23,6 @@ public class AdminFacade extends ClientFacade {
         //hard coded check to check if the client is answering the criteria to be an admin
         //not best practice!! BUT, that's what they asked for...
         if(email.equals("admin@admin.com") && password.equals("admin")) {
-            System.out.println(customerDBDAO.isCustomerExists(email, password));
             if (customerDBDAO.isCustomerExists(email, password))
                 return customerDBDAO.getClient(email, password);
             else

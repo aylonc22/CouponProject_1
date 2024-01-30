@@ -46,7 +46,7 @@ public class CompanyFacade extends ClientFacade {
         else
             throw new ClientNotLoggedInException(ClientType.Company);
     }
-    public List<Coupon> getALlCoupons() throws ClientNotLoggedInException, SQLException {
+    public List<Coupon> getAllCoupons() throws ClientNotLoggedInException, SQLException {
         if(isLogged())
         {
             return couponDBDAO.getAllCouponsOfCompany(getClient().getId());
@@ -54,7 +54,7 @@ public class CompanyFacade extends ClientFacade {
         else
             throw new ClientNotLoggedInException(ClientType.Company);
     }
-    public List<Coupon> getALlCouponsByCategory(Category category) throws ClientNotLoggedInException, SQLException {
+    public List<Coupon> getAllCouponsByCategory(Category category) throws ClientNotLoggedInException, SQLException {
         if(isLogged())
         {
             return couponDBDAO.getAllCouponsOfCompanyByCategory(getClient().getId(), category);
@@ -63,7 +63,7 @@ public class CompanyFacade extends ClientFacade {
             throw new ClientNotLoggedInException(ClientType.Company);
     }
     // return all the coupons of the company which price are below or equal to the criteria
-    public List<Coupon> getALlCouponsByUpToPrice(int price) throws ClientNotLoggedInException, SQLException {
+    public List<Coupon> getAllCouponsByUpToPrice(double price) throws ClientNotLoggedInException, SQLException {
         if(isLogged())
         {
             return couponDBDAO.getAllCouponsOfCompanyUpToPrice(getClient().getId(), price);
