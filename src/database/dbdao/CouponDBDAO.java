@@ -4,8 +4,9 @@ package database.dbdao;
 import beans.Category;
 import beans.Coupon;
 import database.sql.DButils;
-import database.sql.SQLcommands;
 import database.dao.CouponDAO;
+import database.sql.commands.Coupons;
+import database.sql.commands.Cvc;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -25,7 +26,7 @@ public class CouponDBDAO implements CouponDAO {
         params.put(1,coupon.getCompanyId());
         params.put(10,coupon.getCompanyId());
         params.put(11,coupon.getTitle());
-        if(DButils.runQuery(SQLcommands.ADD_COUPON,params))
+        if(DButils.runQuery(Coupons.ADD_COUPON,params))
             System.out.println("Coupon added\n" + coupon);
         else
             System.out.println("Coupon wasn't added");
@@ -36,7 +37,7 @@ public class CouponDBDAO implements CouponDAO {
         Map<Integer, Object> params = couponToParams(coupon);
         // adding id in order to update directly from id
         params.put(params.size()+1,coupon.getId());
-        if(DButils.runQuery(SQLcommands.UPDATE_COUPON,params))
+        if(DButils.runQuery(Coupons.UPDATE_COUPON,params))
             System.out.println("Coupon updated\n" + coupon);
         else
             System.out.println("Coupon wasn't updated");
@@ -46,7 +47,7 @@ public class CouponDBDAO implements CouponDAO {
     public void deleteCoupon(int couponID) {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,couponID);
-        if(DButils.runQuery(SQLcommands.DELETE_COUPON,params))
+        if(DButils.runQuery(Coupons.DELETE_COUPON,params))
             System.out.println("Coupon deleted");
         else
             System.out.println("Coupon wasn't deleted");
@@ -54,7 +55,7 @@ public class CouponDBDAO implements CouponDAO {
 
     @Override
     public List<Coupon> getAllCoupons() throws SQLException {
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON);
+        ResultSet resultSet = DButils.runQueryForResult(Coupons.GET_ALL_COUPON);
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
@@ -67,7 +68,7 @@ public class CouponDBDAO implements CouponDAO {
     public List<Coupon> getAllCouponsOfCompany(int companyID) throws SQLException {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,companyID);
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON_OF_COMPANY,params);
+        ResultSet resultSet = DButils.runQueryForResult(Coupons.GET_ALL_COUPON_OF_COMPANY,params);
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
@@ -81,7 +82,7 @@ public class CouponDBDAO implements CouponDAO {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,companyID);
         params.put(2,category.ordinal());
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON_OF_COMPANY_BY_CATEGORY,params);
+        ResultSet resultSet = DButils.runQueryForResult(Coupons.GET_ALL_COUPON_OF_COMPANY_BY_CATEGORY,params);
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
@@ -96,7 +97,7 @@ public class CouponDBDAO implements CouponDAO {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,companyID);
         params.put(2,price);
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON_OF_COMPANY_UP_TO_PRICE,params);
+        ResultSet resultSet = DButils.runQueryForResult(Coupons.GET_ALL_COUPON_OF_COMPANY_UP_TO_PRICE,params);
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
@@ -109,7 +110,7 @@ public class CouponDBDAO implements CouponDAO {
     public List<Coupon> getAllCouponsOfCustomer(int customerID) throws SQLException {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,customerID);
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON_OF_CUSTOMER,params);
+        ResultSet resultSet = DButils.runQueryForResult(Cvc.GET_ALL_COUPON_OF_CUSTOMER,params);
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
@@ -123,7 +124,7 @@ public class CouponDBDAO implements CouponDAO {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,customerID);
         params.put(2,category.ordinal());
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON_OF_CUSTOMER_BY_CATEGORY,params);
+        ResultSet resultSet = DButils.runQueryForResult(Cvc.GET_ALL_COUPON_OF_CUSTOMER_BY_CATEGORY,params);
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
@@ -137,7 +138,7 @@ public class CouponDBDAO implements CouponDAO {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,customerID);
         params.put(2,price);
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COUPON_OF_CUSTOMER_UP_TO_PRICE,params);
+        ResultSet resultSet = DButils.runQueryForResult(Cvc.GET_ALL_COUPON_OF_CUSTOMER_UP_TO_PRICE,params);
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
@@ -150,9 +151,10 @@ public class CouponDBDAO implements CouponDAO {
     public Coupon getOneCoupon(int couponID) throws SQLException {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,couponID);
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ONE_COUPON,params);
-        if(resultSet.next())
+        ResultSet resultSet = DButils.runQueryForResult(Coupons.GET_ONE_COUPON,params);
+        while (resultSet.next()) {
             return resultSetToCoupon(resultSet);
+        }
         return null;
     }
 
@@ -161,7 +163,7 @@ public class CouponDBDAO implements CouponDAO {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,customerID);
         params.put(2,couponID);
-        if(DButils.runQuery(SQLcommands.ADD_CVC,params))
+        if(DButils.runQuery(Cvc.ADD_CVC,params))
             System.out.println("Customer_Vs_Coupon added");
         else
             System.out.println("Customer_Vs_Coupon wasn't added");
@@ -172,7 +174,7 @@ public class CouponDBDAO implements CouponDAO {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,customerID);
         params.put(2,couponID);
-        if(DButils.runQuery(SQLcommands.DELETE_CVC,params))
+        if(DButils.runQuery(Cvc.DELETE_CVC,params))
             System.out.println("Customer_Vs_Coupon deleted");
         else
             System.out.println("Customer_Vs_Coupon wasn't deleted");
@@ -180,7 +182,7 @@ public class CouponDBDAO implements CouponDAO {
 
     @Override
     public void deleteExpiredCoupons() {
-        if(DButils.runQuery(SQLcommands.DELETE_EXPIRED_COUPON))
+        if(DButils.runQuery(Coupons.DELETE_EXPIRED_COUPON))
             System.out.println("Coupons and their purchase history deleted");
         else
             System.out.println("Coupons and their purchase history weren't deleted");

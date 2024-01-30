@@ -10,7 +10,8 @@ import java.util.Map;
 
 public interface CustomersDAO {
     //region Core Methods
-    public Client isCustomerExists(String email, String password) throws SQLException;
+    public boolean isCustomerExists(String email, String password) throws SQLException;
+    public Client getClient(String email, String password) throws SQLException;
     public void addCustomer(Customer customer);
     public void updateCustomer(Customer customer);
     public void deleteCustomer(int customerID);

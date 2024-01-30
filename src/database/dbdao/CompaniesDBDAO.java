@@ -5,8 +5,9 @@ import beans.Client;
 import beans.Company;
 import database.sql.DBmanager;
 import database.sql.DButils;
-import database.sql.SQLcommands;
+import database.sql.commands.General;
 import database.dao.CompaniesDAO;
+import database.sql.commands.Companies;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,19 +19,35 @@ import java.util.Map;
 
 public class CompaniesDBDAO implements CompaniesDAO {
     @Override
-    public Client isCompanyExists(String email, String password) throws SQLException {
+    public boolean isCompanyExists(String email, String password) throws SQLException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,email);
         params.put(2,password);
 
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.IS_EXISTS_IN_TABLE(DBmanager.SQL_COMPANIES),params);
-        return resultSet.next()?resultSetToCompany(resultSet):null;
+        ResultSet resultSet = DButils.runQueryForResult(General.IS_EXISTS_IN_TABLE(DBmanager.SQL_COMPANIES),params);
+        while (resultSet.next()){
+            return resultSet.getInt(1) == 1;
+        }
+        return false;
+    }
+
+    @Override
+    public Client getClient(String email, String password) throws SQLException {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1,email);
+        params.put(2,password);
+
+        ResultSet resultSet = DButils.runQueryForResult(General.GET_CLIENT_IN_TABLE(DBmanager.SQL_COMPANIES),params);
+        while (resultSet.next()){
+            return resultSetToCompany(resultSet);
+        }
+        return null;
     }
 
     @Override
     public void addCompany(Company company) {
         Map<Integer, Object> params = companyToParams(company);
-        if(DButils.runQuery(SQLcommands.ADD_COMPANY,params))
+        if(DButils.runQuery(Companies.ADD_COMPANY,params))
             System.out.println("Company added\n" + company);
         else
             System.out.println("Company wasn't added");
@@ -41,7 +58,7 @@ public class CompaniesDBDAO implements CompaniesDAO {
         Map<Integer, Object> params = companyToParams(company);
         // adding id in order to update directly from id
         params.put(params.size()+1,company.getId());
-        if(DButils.runQuery(SQLcommands.UPDATE_COMPANY,params))
+        if(DButils.runQuery(Companies.UPDATE_COMPANY,params))
             System.out.println("Company updated\n" + company);
         else
             System.out.println("Company wasn't updated");
@@ -51,7 +68,7 @@ public class CompaniesDBDAO implements CompaniesDAO {
     public void deleteCompany(int companyID) {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,companyID);
-        if(DButils.runQuery(SQLcommands.DELETE_COMPANY,params))
+        if(DButils.runQuery(Companies.DELETE_COMPANY,params))
             System.out.println("Company deleted");
         else
             System.out.println("Company wasn't deleted");
@@ -59,7 +76,7 @@ public class CompaniesDBDAO implements CompaniesDAO {
 
     @Override
     public List<Company> getAllCompanies() throws SQLException {
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_COMPANY);
+        ResultSet resultSet = DButils.runQueryForResult(Companies.GET_ALL_COMPANY);
         List<Company> companies = new ArrayList<>();
         while(resultSet.next())
         {
@@ -72,9 +89,10 @@ public class CompaniesDBDAO implements CompaniesDAO {
     public Company getOneCompany(int companyID) throws SQLException {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,companyID);
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ONE_COMPANY,params);
-        if(resultSet.next())
+        ResultSet resultSet = DButils.runQueryForResult(Companies.GET_ONE_COMPANY,params);
+        while (resultSet.next()) {
             return resultSetToCompany(resultSet);
+        }
         return null;
     }
 

@@ -10,17 +10,16 @@ import exception.CustomerIsNotAdminException;
 import java.sql.SQLException;
 
 public class LoginManager {
-    private LoginManager Instance = null;
-
+    private static LoginManager Instance = null;
     //region Constructor
     private LoginManager() {}
     //endregion
 
     //region Getters && Setters
-    public LoginManager getInstance() {
+    public static LoginManager getInstance() {
         if(Instance == null){
             // DOUBLE CHECK
-            synchronized (this.getClass()){
+            synchronized (LoginManager.class){
                 if(Instance == null)
                     Instance = new LoginManager();
             }

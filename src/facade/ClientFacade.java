@@ -6,9 +6,13 @@ import database.dbdao.CompaniesDBDAO;
 import database.dbdao.CouponDBDAO;
 import database.dbdao.CustomerDBDAO;
 import exception.CustomerIsNotAdminException;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.sql.SQLException;
 //endregion
-
+@Getter
+@Setter
 public abstract class ClientFacade {
     //region Field Declarations
     protected static CustomerDBDAO customerDBDAO = new CustomerDBDAO();
@@ -22,21 +26,12 @@ public abstract class ClientFacade {
     // TODO switch login protocol to jwt (for now it's with boolean)
     public ClientFacade(String email,String password) throws CustomerIsNotAdminException, SQLException {
         client = login(email,password);
-        setLogged(client.getId()!=-1);
+       if(client != null){
+           setLogged(client.getId()!=-1);
+       }
+
         System.out.println(isLogged ? "Logged in successfully" : "Login failed");
     }
-    //endregion
-
-    //region Setters && Getters
-    public boolean isLogged() {
-        return isLogged;
-    }
-
-    public void setLogged(boolean logged) {
-        isLogged = logged;
-    }
-
-    public Client getClient() {return client;}
     //endregion
 
     //region Abstracted Methods

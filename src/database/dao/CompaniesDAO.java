@@ -12,7 +12,8 @@ import java.util.Map;
 
 public interface CompaniesDAO {
     //region Core Methods
-      Client isCompanyExists(String email, String password) throws SQLException;
+      boolean isCompanyExists(String email, String password) throws SQLException;
+      Client getClient(String email, String password) throws SQLException;
      void addCompany(Company company);
      void updateCompany(Company company);
      void deleteCompany(int companyID);

@@ -20,7 +20,10 @@ public class CustomerFacade extends ClientFacade {
     //region Overrides
     @Override
     public Client login(String email, String password) throws  SQLException {
-        return customerDBDAO.isCustomerExists(email,password);
+        if (customerDBDAO.isCustomerExists(email, password))
+            return customerDBDAO.getClient(email, password);
+        else
+            return null;
     }
     //endregion
     //region CRUD Methods

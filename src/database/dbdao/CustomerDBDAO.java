@@ -5,8 +5,9 @@ import beans.Client;
 import beans.Customer;
 import database.sql.DBmanager;
 import database.sql.DButils;
-import database.sql.SQLcommands;
+import database.sql.commands.General;
 import database.dao.CustomersDAO;
+import database.sql.commands.Customers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,20 +20,36 @@ import java.util.Map;
 public class CustomerDBDAO implements CustomersDAO {
 
     @Override
-    public Client isCustomerExists(String email, String password) throws SQLException {
+    public boolean isCustomerExists(String email, String password) throws SQLException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,email);
         params.put(2,password);
 
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.IS_EXISTS_IN_TABLE(DBmanager.SQL_CUSTOMERS),params);
+        ResultSet resultSet = DButils.runQueryForResult(General.IS_EXISTS_IN_TABLE(DBmanager.SQL_CUSTOMERS),params);
 
-        return resultSet.next()?resultSetToCustomer(resultSet):null;
+        while (resultSet.next()){
+            return resultSet.getInt(1) == 1;
+        }
+        return false;
+    }
+
+    @Override
+    public Client getClient(String email, String password) throws SQLException {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1,email);
+        params.put(2,password);
+
+        ResultSet resultSet = DButils.runQueryForResult(General.GET_CLIENT_IN_TABLE(DBmanager.SQL_CUSTOMERS),params);
+        while (resultSet.next()){
+            return resultSetToCustomer(resultSet);
+        }
+        return null;
     }
 
     @Override
     public void addCustomer(Customer customer) {
         Map<Integer, Object> params = customerToParams(customer);
-        if(DButils.runQuery(SQLcommands.ADD_CUSTOMER,params))
+        if(DButils.runQuery(Customers.ADD_CUSTOMER,params))
             System.out.println("Customer added\n" + customer);
         else
             System.out.println("Customer wasn't added");
@@ -43,7 +60,7 @@ public class CustomerDBDAO implements CustomersDAO {
         Map<Integer, Object> params = customerToParams(customer);
         // adding id in order to update directly from id
         params.put(params.size()+1,customer.getId());
-        if(DButils.runQuery(SQLcommands.UPDATE_CUSTOMER,params))
+        if(DButils.runQuery(Customers.UPDATE_CUSTOMER,params))
             System.out.println("Customer updated\n" + customer);
         else
             System.out.println("Customer wasn't updated");
@@ -53,7 +70,7 @@ public class CustomerDBDAO implements CustomersDAO {
     public void deleteCustomer(int customerID) {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,customerID);
-        if(DButils.runQuery(SQLcommands.DELETE_CUSTOMER,params))
+        if(DButils.runQuery(Customers.DELETE_CUSTOMER,params))
             System.out.println("Customer deleted");
         else
             System.out.println("Customer wasn't deleted");
@@ -61,7 +78,7 @@ public class CustomerDBDAO implements CustomersDAO {
 
     @Override
     public List<Customer> getAllCustomers() throws SQLException {
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ALL_CUSTOMERS);
+        ResultSet resultSet = DButils.runQueryForResult(Customers.GET_ALL_CUSTOMERS);
         List<Customer> customers = new ArrayList<>();
         while(resultSet.next())
         {
@@ -74,9 +91,10 @@ public class CustomerDBDAO implements CustomersDAO {
     public Customer getOneCustomer(int customerID) throws SQLException {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,customerID);
-        ResultSet resultSet = DButils.runQueryForResult(SQLcommands.GET_ONE_CUSTOMERS,params);
-        if(resultSet.next())
+        ResultSet resultSet = DButils.runQueryForResult(Customers.GET_ONE_CUSTOMERS,params);
+        while (resultSet.next()) {
             return resultSetToCustomer(resultSet);
+        }
         return null;
     }
 
