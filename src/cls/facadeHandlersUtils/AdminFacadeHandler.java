@@ -6,6 +6,7 @@ import beans.Coupon;
 import cls.LoginManager;
 import exception.ClientNotLoggedInException;
 import exception.CustomerIsNotAdminException;
+import exception.SQLDuplicateUniqueKeyException;
 import facade.AdminFacade;
 
 import java.sql.SQLException;
@@ -61,6 +62,8 @@ public class AdminFacadeHandler {
             adminFacade.updateCompany(new Company(id,name,email,password,new ArrayList<>()));
         } catch (ClientNotLoggedInException e) {
             System.out.println("Admin is not logged in!, please login");;
+        } catch (SQLDuplicateUniqueKeyException e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -81,6 +84,8 @@ public class AdminFacadeHandler {
             adminFacade.addCompany(new Company(name,email,password));
         } catch (ClientNotLoggedInException e) {
             System.out.println("Admin is not logged in!, please login");;
+        } catch (SQLDuplicateUniqueKeyException e) {
+            System.out.println(e.getMessage());
         }
 
     }

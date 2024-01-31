@@ -1,10 +1,12 @@
 package database.sql;
 
+import beans.QueryResult;
+
 import java.sql.*;
 import java.util.Map;
 
 public class DButils {
-    public static boolean runQuery(String sql){
+    public static QueryResult runQuery(String sql){
         //delete from students
         //use connection from connection sql to send queries to our DB
         Connection connection = null;
@@ -18,26 +20,17 @@ public class DButils {
 
             //run statement
             preparedStatement.execute();
-            return true;
+            return new QueryResult(true,0);
         } catch (InterruptedException | SQLException e) {
-            //for specials occasions where even though there is an exception it's actually fine
-            if(specials(e.getMessage()))
-                return true;
-            System.out.println(e.getMessage());
-            return false;
+            //If the exception is SQL related give back the error code
+            return new QueryResult(false,e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
         } finally {
             ConnectionPool.getInstance().restoreConnection(connection);
         }
 
     }
 
-    private static boolean specials(String message) {
-        if(message.contains("'categories.Name_UNIQUE'"))
-            return true;
-        return false;
-    }
-
-    public static boolean runQuery(String sql, Map<Integer, Object> params){
+    public static QueryResult runQuery(String sql, Map<Integer, Object> params){
         Connection connection = null;
         try {
             connection = ConnectionPool.getInstance().getConnection();
@@ -64,10 +57,10 @@ public class DButils {
                 }
             });
             preparedStatement.execute();
-            return true;
+            return new QueryResult(true,0);
         } catch (InterruptedException | SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
+            //If the exception is SQL related give back the error code
+            return new QueryResult(true,e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
         } finally {
             ConnectionPool.getInstance().restoreConnection(connection);
         }

@@ -4,6 +4,8 @@ import beans.*;
 import database.sql.ConnectionPool;
 import exception.ClientNotLoggedInException;
 import exception.CustomerIsNotAdminException;
+import exception.ObjectNotFoundException;
+import exception.SQLDuplicateUniqueKeyException;
 import facade.AdminFacade;
 import facade.CompanyFacade;
 import facade.CustomerFacade;
@@ -28,12 +30,15 @@ public class Test {
             //Hard coded showcase of AdminFacade
             showCaseAdminFacade();
             //Hard coded showcase of CompanyFacade
-            showCaseCompanyFacade();
+            //showCaseCompanyFacade();
             //Hard coded showcase of CustomerFacade
-            showCaseCustomerFacade();
+            //showCaseCustomerFacade();
             //Handling closing the program
             handleCloseProgram(job);
         }
+       catch (SQLDuplicateUniqueKeyException | ObjectNotFoundException e){
+           System.out.println(e.getMessage());
+       }
         catch (InterruptedException e){
             System.out.println("Something went wrong when closing the connection pool");
         }
@@ -65,7 +70,7 @@ public class Test {
      * @throws SQLException - An unhandled SQLException
      * @throws ClientNotLoggedInException - A failed attempt to use Facade while not logged in
      */
-    private static void showCaseCustomerFacade() throws SQLException, ClientNotLoggedInException, CustomerIsNotAdminException {
+    private static void showCaseCustomerFacade() throws SQLException, ClientNotLoggedInException, CustomerIsNotAdminException, SQLDuplicateUniqueKeyException, ObjectNotFoundException {
         //Login attempt as customer
         CustomerFacade customerFacade = (CustomerFacade) LoginManager.getInstance().login("hardCodedCustomer@email.com","12345678", ClientType.Customer);
         //But coupon attempt
@@ -85,7 +90,7 @@ public class Test {
      * @throws SQLException - An unhandled SQLException
      * @throws ClientNotLoggedInException - A failed attempt to use Facade while not logged in
      */
-    private static void showCaseCompanyFacade() throws ClientNotLoggedInException, CustomerIsNotAdminException, SQLException {
+    private static void showCaseCompanyFacade() throws ClientNotLoggedInException, CustomerIsNotAdminException, SQLException, SQLDuplicateUniqueKeyException, ObjectNotFoundException {
         //Login attempt as company
         CompanyFacade companyFacade = (CompanyFacade) LoginManager.getInstance().login("hardCodedCompany@email.com","12345678", ClientType.Company);
         //Adding coupon attempt
@@ -112,28 +117,38 @@ public class Test {
      * @throws SQLException - An unhandled SQLException
      * @throws ClientNotLoggedInException - A failed attempt to use Facade while not logged in
      */
-    private static void showCaseAdminFacade() throws ClientNotLoggedInException, SQLException, CustomerIsNotAdminException {
+    private static void showCaseAdminFacade() throws ClientNotLoggedInException, SQLException, CustomerIsNotAdminException, SQLDuplicateUniqueKeyException, ObjectNotFoundException {
         //Login attempt as admin
         AdminFacade adminFacade = (AdminFacade) LoginManager.getInstance().login("admin@admin.com","admin", ClientType.Adminstrator);
+
         //Adding company attempt
         adminFacade.addCompany(new Company("company","company@email.com","123456789"));
+
         //Updating company attempt
         adminFacade.updateCompany(new Company(1,"companyChanged","companyChanged@email.com","12345678910",new ArrayList<>()));
+
         //Deleting company attempt
-        adminFacade.deleteCompany(1);
+        //adminFacade.deleteCompany(1);
+
         //Get all companies and print attempt
-        adminFacade.getAllCompanies().forEach(System.out::println);
+        //adminFacade.getAllCompanies().forEach(System.out::println);
+
         //Get specific company and print attempt
-        System.out.println(adminFacade.getOneCompany(1));
+        //System.out.println(adminFacade.getOneCompany(1));
+
         //Adding customer attempt
-        adminFacade.addCustomer(new Customer("Name","LastName","customer@email.com","123456789"));
+        //adminFacade.addCustomer(new Customer("Name","LastName","customer@email.com","123456789"));
+
         //Updating customer attempt
-        adminFacade.updateCustomer(new Customer(1,"NameChanged","LastNameChanged","nameChanged@email.com","12345678910",new ArrayList<>()));
+        //adminFacade.updateCustomer(new Customer(1,"NameChanged","LastNameChanged","nameChanged@email.com","12345678910",new ArrayList<>()));
+
         //Deleting customer attempt
-        adminFacade.deleteCustomer(1);
+        //adminFacade.deleteCustomer(1);
+
         //Get all customers and print attempt
-        adminFacade.getAllCustomers().forEach(System.out::println);
+        //adminFacade.getAllCustomers().forEach(System.out::println);
+
         //Get specific customer and print attempt
-        System.out.println(adminFacade.getOneCustomer(1));
+        //System.out.println(adminFacade.getOneCustomer(1));
     }
 }

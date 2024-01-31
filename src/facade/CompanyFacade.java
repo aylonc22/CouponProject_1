@@ -4,6 +4,7 @@ package facade;
 import beans.*;
 import exception.ClientNotLoggedInException;
 import exception.CustomerIsNotAdminException;
+import exception.SQLDuplicateUniqueKeyException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,7 +23,7 @@ public class CompanyFacade extends ClientFacade {
     }
     //endregion
     //region CRUD Methods
-    public void addCoupon(Coupon coupon) throws ClientNotLoggedInException {
+    public void addCoupon(Coupon coupon) throws ClientNotLoggedInException, SQLDuplicateUniqueKeyException {
         if(isLogged())
         {
             couponDBDAO.addCoupon(coupon);

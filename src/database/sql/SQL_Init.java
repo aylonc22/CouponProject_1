@@ -1,6 +1,7 @@
 package database.sql;
 
 import beans.Category;
+import beans.QueryResult;
 import database.sql.commands.*;
 
 import java.util.HashMap;
@@ -9,40 +10,70 @@ import java.util.Map;
 
 public class SQL_Init {
     private static void createDB(){
-        if( DButils.runQuery(General.CREATE_DB))
-           System.out.println("DB Created or already exist");
-       else
-           System.out.println("DB is not created");
+        QueryResult queryResult = DButils.runQuery(General.CREATE_DB);
+        if(queryResult.isResult()) {
+            System.out.println(DBmanager.SQL_DB+ " created");
+        }
+       else {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+                System.out.println(DBmanager.SQL_DB + "  is not created");
+            }
+        }
     }
     private static void createCompaniesTable(){
-        if( DButils.runQuery(Companies.CREATE_TABLE_COMPANIES))
-            System.out.println("TABLE 'companies' Created or already exist");
-        else
-            System.out.println("TABLE 'companies' is not created");
+        QueryResult queryResult = DButils.runQuery(Companies.CREATE_TABLE_COMPANIES);
+        if(queryResult.isResult()) {
+            System.out.println("TABLE " + DBmanager.SQL_COMPANIES + " created");
+        }
+        else {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+                System.out.println("TABLE " + DBmanager.SQL_COMPANIES + " is not created");
+            }
+        }
     }
     private static void createCategoriesTable(){
-        if( DButils.runQuery(Categories.CREATE_TABLE_CATEGORIES))
-            System.out.println("TABLE 'categories' Created or already exist");
-        else
-            System.out.println("TABLE 'categories' is not created");
+        QueryResult queryResult = DButils.runQuery(Categories.CREATE_TABLE_CATEGORIES);
+        if(queryResult.isResult()) {
+            System.out.println("TABLE " + DBmanager.SQL_CATEGORIES + " Created");
+        }
+        else {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+                System.out.println("TABLE " + DBmanager.SQL_CATEGORIES + " is not created");
+            }
+        }
     }
     private static void createCouponsTable(){
-        if( DButils.runQuery(Coupons.CREATE_TABLE_COUPONS))
-            System.out.println("TABLE 'coupons' Created or already exist");
-        else
-            System.out.println("TABLE 'coupons' is not created");
+        QueryResult queryResult = DButils.runQuery(Coupons.CREATE_TABLE_COUPONS);
+        if(queryResult.isResult()) {
+            System.out.println("TABLE " + DBmanager.SQL_COUPONS + " created");
+        }
+        else {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+                System.out.println("TABLE " + DBmanager.SQL_COUPONS + " is not created");
+            }
+        }
     }
     private static void createCvcTable(){
-        if( DButils.runQuery(Cvc.CREATE_TABLE_CVC))
-            System.out.println("TABLE 'cvc' Created or already exist");
-        else
-            System.out.println("TABLE 'cvc' is not created");
+        QueryResult queryResult = DButils.runQuery(Cvc.CREATE_TABLE_CVC);
+        if(queryResult.isResult()) {
+            System.out.println("TABLE " + DBmanager.SQL_CVC + " created");
+        }
+        else {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+                System.out.println("TABLE " + DBmanager.SQL_CVC + " is not created");
+            }
+        }
     }
     private static void createCustomersTable(){
-        if( DButils.runQuery(Customers.CREATE_TABLE_CUSTOMERS))
-            System.out.println("TABLE customers Created or already exist");
-        else
-            System.out.println("TABLE customers is not created");
+        QueryResult queryResult = DButils.runQuery(Customers.CREATE_TABLE_CUSTOMERS);
+        if(queryResult.isResult()) {
+            System.out.println("TABLE " + DBmanager.SQL_CUSTOMERS + " created");
+        }
+        else {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+                System.out.println("TABLE " + DBmanager.SQL_CUSTOMERS + " is not created");
+            }
+        }
     }
     private static void  insertCategories(){
         Map<Integer,Object> params = new HashMap<>();
@@ -51,10 +82,14 @@ public class SQL_Init {
         {
             params.put(index+1,Category.values()[index].toString());
         }
-        if( DButils.runQuery(Categories.INSERT_CATEGORIES(params.size()),params))
-            System.out.println("Categories were inserted or already existed");
-        else
-            System.out.println("Categories weren't inserted");
+        QueryResult queryResult = DButils.runQuery(Categories.INSERT_CATEGORIES(params.size()),params);
+        if(queryResult.isResult())
+            System.out.println(DBmanager.SQL_CATEGORIES + " were inserted");
+        else {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+                System.out.println(DBmanager.SQL_CATEGORIES + " weren't inserted");
+            }
+        }
     }
     public static void initSQL(){
         createDB();

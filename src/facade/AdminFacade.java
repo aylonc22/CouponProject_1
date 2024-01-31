@@ -6,6 +6,8 @@ import beans.Company;
 import beans.Customer;
 import exception.ClientNotLoggedInException;
 import exception.CustomerIsNotAdminException;
+import exception.ObjectNotFoundException;
+import exception.SQLDuplicateUniqueKeyException;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -34,20 +36,20 @@ public class AdminFacade extends ClientFacade {
     //endregion
     //region Administrator CRUD Methods
     //region Company CRUD Methods
-    public void addCompany(Company company) throws ClientNotLoggedInException {
+    public void addCompany(Company company) throws ClientNotLoggedInException, SQLDuplicateUniqueKeyException {
        if(super.isLogged())
            companiesDBDAO.addCompany(company);
        else
            throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
-    public void updateCompany(Company company) throws ClientNotLoggedInException {
+    public void updateCompany(Company company) throws ClientNotLoggedInException, SQLDuplicateUniqueKeyException {
         if(super.isLogged())
             companiesDBDAO.updateCompany(company);
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
 
     }
-    public void deleteCompany(int companyID) throws ClientNotLoggedInException {
+    public void deleteCompany(int companyID) throws ClientNotLoggedInException, ObjectNotFoundException {
         if(super.isLogged())
             companiesDBDAO.deleteCompany(companyID);
         else
@@ -59,7 +61,7 @@ public class AdminFacade extends ClientFacade {
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
-    public Company getOneCompany(int companyID) throws ClientNotLoggedInException, SQLException {
+    public Company getOneCompany(int companyID) throws ClientNotLoggedInException, SQLException, ObjectNotFoundException {
         if(super.isLogged())
             return  companiesDBDAO.getOneCompany(companyID);
         else

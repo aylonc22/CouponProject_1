@@ -3,10 +3,15 @@ package database.dbdao;
 //region Imports
 import beans.Category;
 import beans.Coupon;
+import beans.QueryResult;
 import database.sql.DButils;
 import database.dao.CouponDAO;
+import database.sql.SQLExceptionErrorCodes;
+import database.sql.commands.Companies;
 import database.sql.commands.Coupons;
 import database.sql.commands.Cvc;
+import exception.ObjectNotFoundException;
+import exception.SQLDuplicateUniqueKeyException;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -21,36 +26,55 @@ public class CouponDBDAO implements CouponDAO {
 
     @Override
             //TODO in company facade you cannot add coupon with same title in the same company
-    public void addCoupon(Coupon coupon) {
+    public void addCoupon(Coupon coupon) throws SQLDuplicateUniqueKeyException {
         Map<Integer, Object> params = couponToParams(coupon);
         params.put(1,coupon.getCompanyId());
         params.put(10,coupon.getCompanyId());
         params.put(11,coupon.getTitle());
-        if(DButils.runQuery(Coupons.ADD_COUPON,params))
+        QueryResult queryResult = DButils.runQuery(Coupons.ADD_COUPON,params);
+        if(queryResult.isResult()) {
             System.out.println("Coupon added\n" + coupon);
-        else
-            System.out.println("Coupon wasn't added");
+        }
+        else {
+           if(queryResult.getExceptionID() == SQLExceptionErrorCodes.DUPLICATE_KEY) {
+               throw new SQLDuplicateUniqueKeyException(SQLDuplicateUniqueKeyException.tables.COUPON);
+           }
+        }
     }
 
     @Override
-    public void updateCoupon(Coupon coupon) {
+    public void updateCoupon(Coupon coupon) throws ObjectNotFoundException, SQLDuplicateUniqueKeyException {
         Map<Integer, Object> params = couponToParams(coupon);
         // adding id in order to update directly from id
         params.put(params.size()+1,coupon.getId());
-        if(DButils.runQuery(Coupons.UPDATE_COUPON,params))
+        QueryResult queryResult = DButils.runQuery(Coupons.UPDATE_COUPON,params);
+        if(queryResult.isResult()) {
             System.out.println("Coupon updated\n" + coupon);
-        else
-            System.out.println("Coupon wasn't updated");
+        }
+        else {
+            if(queryResult.getExceptionID() == SQLExceptionErrorCodes.DUPLICATE_KEY) {
+               throw new SQLDuplicateUniqueKeyException(SQLDuplicateUniqueKeyException.tables.COUPON);
+            }
+            else
+            {
+                throw new ObjectNotFoundException(coupon.getId(), "Coupon");
+            }
+        }
     }
 
     @Override
-    public void deleteCoupon(int couponID) {
+    public void deleteCoupon(int couponID) throws ObjectNotFoundException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,couponID);
-        if(DButils.runQuery(Coupons.DELETE_COUPON,params))
+        QueryResult queryResult = DButils.runQuery(Coupons.UPDATE_COUPON,params);
+        if(queryResult.isResult()) {
             System.out.println("Coupon deleted");
-        else
-            System.out.println("Coupon wasn't deleted");
+        }
+        else {
+            if(queryResult.getExceptionID() == SQLExceptionErrorCodes.DUPLICATE_KEY) {
+                throw new ObjectNotFoundException(couponID, "Coupon");
+            }
+        }
     }
 
     @Override
@@ -159,33 +183,39 @@ public class CouponDBDAO implements CouponDAO {
     }
 
     @Override
-    public void addCouponPurchase(int customerID, int couponID) {
+    public void addCouponPurchase(int customerID, int couponID) throws ObjectNotFoundException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,customerID);
         params.put(2,couponID);
-        if(DButils.runQuery(Cvc.ADD_CVC,params))
+        QueryResult queryResult = DButils.runQuery(Cvc.ADD_CVC,params);
+        if(queryResult.isResult()) {
             System.out.println("Customer_Vs_Coupon added");
-        else
-            System.out.println("Customer_Vs_Coupon wasn't added");
+        }
+        else {
+           throw new ObjectNotFoundException("Customer with ID: " + customerID + " or/and Coupon with ID: " + couponID + "is/are not exists!");
+        }
     }
 
     @Override
-    public void deleteCouponPurchase(int customerID, int couponID) {
+    public void deleteCouponPurchase(int customerID, int couponID) throws ObjectNotFoundException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,customerID);
         params.put(2,couponID);
-        if(DButils.runQuery(Cvc.DELETE_CVC,params))
+        QueryResult queryResult = DButils.runQuery(Cvc.DELETE_CVC,params);
+        if(queryResult.isResult()) {
             System.out.println("Customer_Vs_Coupon deleted");
-        else
-            System.out.println("Customer_Vs_Coupon wasn't deleted");
+        }
+        else {
+            throw new ObjectNotFoundException("Customer with ID: " + customerID + " or/and Coupon with ID: " + couponID + "is/are not exists!");
+        }
     }
 
     @Override
     public void deleteExpiredCoupons() {
-        if(DButils.runQuery(Coupons.DELETE_EXPIRED_COUPON))
+        QueryResult queryResult = DButils.runQuery(Coupons.DELETE_EXPIRED_COUPON);
+        if(queryResult.isResult()) {
             System.out.println("Coupons and their purchase history deleted");
-        else
-            System.out.println("Coupons and their purchase history weren't deleted");
+        }
     }
 
     @Override

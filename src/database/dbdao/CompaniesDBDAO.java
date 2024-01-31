@@ -3,11 +3,16 @@ package database.dbdao;
 //region Imports
 import beans.Client;
 import beans.Company;
+import beans.QueryResult;
 import database.sql.DBmanager;
 import database.sql.DButils;
+import database.sql.SQLExceptionErrorCodes;
+import database.sql.commands.Categories;
 import database.sql.commands.General;
 import database.dao.CompaniesDAO;
 import database.sql.commands.Companies;
+import exception.ObjectNotFoundException;
+import exception.SQLDuplicateUniqueKeyException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,33 +50,49 @@ public class CompaniesDBDAO implements CompaniesDAO {
     }
 
     @Override
-    public void addCompany(Company company) {
+    public void addCompany(Company company) throws SQLDuplicateUniqueKeyException {
         Map<Integer, Object> params = companyToParams(company);
-        if(DButils.runQuery(Companies.ADD_COMPANY,params))
+        QueryResult queryResult = DButils.runQuery(Companies.ADD_COMPANY,params);
+        if(queryResult.isResult()) {
             System.out.println("Company added\n" + company);
-        else
-            System.out.println("Company wasn't added");
+        }
+        else {
+            throw new SQLDuplicateUniqueKeyException(SQLDuplicateUniqueKeyException.tables.COMPANY);
+        }
     }
 
     @Override
-    public void updateCompany(Company company) {
+    public void updateCompany(Company company) throws SQLDuplicateUniqueKeyException, ObjectNotFoundException {
         Map<Integer, Object> params = companyToParams(company);
         // adding id in order to update directly from id
         params.put(params.size()+1,company.getId());
-        if(DButils.runQuery(Companies.UPDATE_COMPANY,params))
+        QueryResult queryResult = DButils.runQuery(Companies.UPDATE_COMPANY,params);
+        if(queryResult.isResult()) {
             System.out.println("Company updated\n" + company);
-        else
-            System.out.println("Company wasn't updated");
+        }
+        else {
+
+            if(queryResult.getExceptionID() == SQLExceptionErrorCodes.DUPLICATE_KEY) {
+                throw new SQLDuplicateUniqueKeyException(SQLDuplicateUniqueKeyException.tables.COMPANY);
+            }
+            else
+            {
+                throw new ObjectNotFoundException(company.getId(),"Company");
+            }
+        }
     }
 
     @Override
-    public void deleteCompany(int companyID) {
+    public void deleteCompany(int companyID) throws ObjectNotFoundException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,companyID);
-        if(DButils.runQuery(Companies.DELETE_COMPANY,params))
+        QueryResult queryResult = DButils.runQuery(Companies.DELETE_COMPANY,params);
+        if(queryResult.isResult()) {
             System.out.println("Company deleted");
-        else
-            System.out.println("Company wasn't deleted");
+        }
+        else {
+            throw new ObjectNotFoundException(companyID, "Company");
+        }
     }
 
     @Override
@@ -86,14 +107,14 @@ public class CompaniesDBDAO implements CompaniesDAO {
     }
 
     @Override
-    public Company getOneCompany(int companyID) throws SQLException {
+    public Company getOneCompany(int companyID) throws SQLException, ObjectNotFoundException {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,companyID);
         ResultSet resultSet = DButils.runQueryForResult(Companies.GET_ONE_COMPANY,params);
         while (resultSet.next()) {
             return resultSetToCompany(resultSet);
         }
-        return null;
+       throw new ObjectNotFoundException(companyID,"Company");
     }
 
 
