@@ -42,7 +42,7 @@ public class AdminFacade extends ClientFacade {
        else
            throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
-    public void updateCompany(Company company) throws ClientNotLoggedInException, SQLDuplicateUniqueKeyException {
+    public void updateCompany(Company company) throws ClientNotLoggedInException, SQLDuplicateUniqueKeyException, ObjectNotFoundException {
         if(super.isLogged())
             companiesDBDAO.updateCompany(company);
         else
@@ -69,21 +69,21 @@ public class AdminFacade extends ClientFacade {
     }
     //endregion
     //region Customer CRUD Methods
-    public void addCustomer(Customer customer) throws ClientNotLoggedInException {
+    public void addCustomer(Customer customer) throws ClientNotLoggedInException, SQLDuplicateUniqueKeyException {
         if(isLogged()){
             customerDBDAO.addCustomer(customer);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
-    public void updateCustomer(Customer customer) throws ClientNotLoggedInException {
+    public void updateCustomer(Customer customer) throws ClientNotLoggedInException, ObjectNotFoundException, SQLDuplicateUniqueKeyException {
         if(isLogged()){
             customerDBDAO.updateCustomer(customer);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
-    public void deleteCustomer(int customerID) throws ClientNotLoggedInException {
+    public void deleteCustomer(int customerID) throws ClientNotLoggedInException, ObjectNotFoundException {
         if(isLogged()){
             customerDBDAO.deleteCustomer(customerID);
         }
@@ -97,7 +97,7 @@ public class AdminFacade extends ClientFacade {
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
-    public Customer getOneCustomer(int customerID) throws ClientNotLoggedInException, SQLException {
+    public Customer getOneCustomer(int customerID) throws ClientNotLoggedInException, SQLException, ObjectNotFoundException {
         if(isLogged()){
             return customerDBDAO.getOneCustomer(customerID);
         }

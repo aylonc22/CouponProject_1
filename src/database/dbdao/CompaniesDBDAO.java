@@ -71,7 +71,6 @@ public class CompaniesDBDAO implements CompaniesDAO {
             System.out.println("Company updated\n" + company);
         }
         else {
-
             if(queryResult.getExceptionID() == SQLExceptionErrorCodes.DUPLICATE_KEY) {
                 throw new SQLDuplicateUniqueKeyException(SQLDuplicateUniqueKeyException.tables.COMPANY);
             }

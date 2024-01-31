@@ -22,6 +22,7 @@ public class DButils {
             preparedStatement.execute();
             return new QueryResult(true,0);
         } catch (InterruptedException | SQLException e) {
+            System.out.println(e.getMessage());
             //If the exception is SQL related give back the error code
             return new QueryResult(false,e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
         } finally {
@@ -59,8 +60,11 @@ public class DButils {
             preparedStatement.execute();
             return new QueryResult(true,0);
         } catch (InterruptedException | SQLException e) {
+            //Just for DEBUGGING
+//            System.out.println(e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
+//            System.out.println(e.getMessage());
             //If the exception is SQL related give back the error code
-            return new QueryResult(true,e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
+            return new QueryResult(false,e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
         } finally {
             ConnectionPool.getInstance().restoreConnection(connection);
         }

@@ -34,7 +34,7 @@ public class SQL_Init {
     private static void createCategoriesTable(){
         QueryResult queryResult = DButils.runQuery(Categories.CREATE_TABLE_CATEGORIES);
         if(queryResult.isResult()) {
-            System.out.println("TABLE " + DBmanager.SQL_CATEGORIES + " Created");
+            System.out.println("TABLE " + DBmanager.SQL_CATEGORIES + " created");
         }
         else {
             if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {

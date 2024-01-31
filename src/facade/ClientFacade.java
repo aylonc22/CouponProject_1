@@ -26,10 +26,7 @@ public abstract class ClientFacade {
     // TODO switch login protocol to jwt (for now it's with boolean)
     public ClientFacade(String email,String password) throws CustomerIsNotAdminException, SQLException {
         client = login(email,password);
-       if(client != null){
-           setLogged(client.getId()!=-1);
-       }
-
+        setLogged(client != null);
         System.out.println(isLogged ? "Logged in successfully" : "Login failed");
     }
     //endregion

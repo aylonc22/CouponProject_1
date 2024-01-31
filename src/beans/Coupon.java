@@ -1,5 +1,6 @@
 package beans;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,7 +39,6 @@ public class Coupon {
         this(-1,companyId,category,title,description,startDate,endDate,amount,price,image);
     }
     //endregion
-
     //region Overrides
     @Override
     public String toString() {

@@ -6,13 +6,14 @@ import beans.ClientType;
 import beans.Coupon;
 import exception.ClientNotLoggedInException;
 import exception.CustomerIsNotAdminException;
+import exception.ObjectNotFoundException;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class CustomerFacade extends ClientFacade {
     //region Constructors
-    public CustomerFacade(String email, String password) throws CustomerIsNotAdminException, SQLException {
+    public CustomerFacade(String email, String password) throws SQLException, CustomerIsNotAdminException {
         super(email, password);
     }
     //endregion
@@ -28,7 +29,7 @@ public class CustomerFacade extends ClientFacade {
     //endregion
     //region CRUD Methods
     // TODO fix buy coupon by the conditions of the exercise
-    public void buyCoupon(int couponID) throws ClientNotLoggedInException {
+    public void buyCoupon(int couponID) throws ClientNotLoggedInException, ObjectNotFoundException {
         if(isLogged())
         {
              couponDBDAO.addCouponPurchase(getClient().getId(), couponID);

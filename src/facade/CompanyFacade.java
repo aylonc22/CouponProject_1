@@ -4,6 +4,7 @@ package facade;
 import beans.*;
 import exception.ClientNotLoggedInException;
 import exception.CustomerIsNotAdminException;
+import exception.ObjectNotFoundException;
 import exception.SQLDuplicateUniqueKeyException;
 
 import java.sql.SQLException;
@@ -31,7 +32,7 @@ public class CompanyFacade extends ClientFacade {
         else
             throw new ClientNotLoggedInException(ClientType.Company);
     }
-    public void updateCoupon(Coupon coupon) throws ClientNotLoggedInException {
+    public void updateCoupon(Coupon coupon) throws ClientNotLoggedInException, ObjectNotFoundException, SQLDuplicateUniqueKeyException {
         if(isLogged())
         {
             couponDBDAO.updateCoupon(coupon);
@@ -39,7 +40,7 @@ public class CompanyFacade extends ClientFacade {
         else
             throw new ClientNotLoggedInException(ClientType.Company);
     }
-    public void deleteCoupon(int couponID) throws ClientNotLoggedInException {
+    public void deleteCoupon(int couponID) throws ClientNotLoggedInException, ObjectNotFoundException {
         if(isLogged())
         {
             couponDBDAO.deleteCoupon(couponID);
