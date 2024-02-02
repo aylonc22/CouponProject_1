@@ -22,7 +22,12 @@ public class Cvc {
                     "    ON UPDATE CASCADE);";
     //region Implementation for Customer_Vs_Coupon table
     public static final String ADD_CVC = "INSERT INTO " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC +
-            "(Customer_ID,Coupon_ID) VALUES (?,?)";
+            "(Customer_ID,Coupon_ID) VALUES (?,?) WHERE EXISTS " +
+            "(SELECT 1 FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
+            " WHERE ID  = ? AND Amount>=1); " +
+            "SET @Flag = ROW_COUNT(); " +
+            "UPDATE " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
+            " SET Amount = IF(@Flag=1 AND ID=?,Amount-1,Amount)";
     public static final String DELETE_CVC = "DELETE FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC + " WHERE Customer_ID=? AND Coupon_ID=?";
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     // aliases

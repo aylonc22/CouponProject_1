@@ -193,7 +193,7 @@ public class CouponDBDAO implements CouponDAO {
             System.out.println("Customer_Vs_Coupon added");
         }
         else {
-           throw new ObjectNotFoundException("Customer with ID: " + customerID + " or/and Coupon with ID: " + couponID + "is/are not exists!");
+           throw new ObjectNotFoundException(couponID,"Coupon");
         }
     }
 

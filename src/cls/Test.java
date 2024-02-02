@@ -32,10 +32,10 @@ public class Test {
                 //showCaseAdminFacade();
 
             //Hard coded showcase of CompanyFacade
-                showCaseCompanyFacade();
+                //showCaseCompanyFacade();
 
             //Hard coded showcase of CustomerFacade
-                //showCaseCustomerFacade();
+                showCaseCustomerFacade();
 
         }
        catch (SQLDuplicateUniqueKeyException | ObjectNotFoundException | ClientNotLoggedInException |
@@ -100,8 +100,8 @@ public class Test {
      */
     private static void showCaseCompanyFacade() throws ClientNotLoggedInException, CustomerIsNotAdminException, SQLException, SQLDuplicateUniqueKeyException, ObjectNotFoundException {
         //Login attempt as company
-        //CompanyFacade companyFacade = (CompanyFacade) LoginManager.getInstance().login("hardCodedCompany@email.com","12345678", ClientType.Company);
-        CompanyFacade companyFacade = (CompanyFacade) LoginManager.getInstance().login("company@email.com","123456789", ClientType.Company);
+        CompanyFacade companyFacade = (CompanyFacade) LoginManager.getInstance().login("hardCodedCompany@email.com","12345678", ClientType.Company);
+
         //Adding coupon attempt
         LocalDate date =  LocalDate.now();
         //companyFacade.addCoupon(new Coupon(1, Category.Electricity,"Title","Description", Date.valueOf(date),

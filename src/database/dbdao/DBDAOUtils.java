@@ -1,5 +1,6 @@
 package database.dbdao;
 
+//region Imports
 import beans.Category;
 import beans.Company;
 import beans.Coupon;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+//endregion
 
 /**
  * Auxiliary Methods for DBDAOS

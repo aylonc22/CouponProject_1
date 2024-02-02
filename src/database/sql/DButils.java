@@ -20,9 +20,10 @@ public class DButils {
 
             //run statement
             preparedStatement.execute();
-            return new QueryResult(true,0);
+            //validation that the query actually did something
+            return new QueryResult(preparedStatement.getUpdateCount() > 0,0);
         } catch (InterruptedException | SQLException e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
             //If the exception is SQL related give back the error code
             return new QueryResult(false,e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
         } finally {
@@ -58,15 +59,15 @@ public class DButils {
                 }
             });
             //Just for DEBUGGING
-            System.out.println(preparedStatement.toString());
-            preparedStatement.execute();
-            System.out.println();
+            //System.out.println(preparedStatement.toString());
+            //preparedStatement.execute();
+            //System.out.println(preparedStatement.getUpdateCount());
             //validation that the query actually did something
             return new QueryResult(preparedStatement.getUpdateCount() > 0,0);
         } catch (InterruptedException | SQLException e) {
             //Just for DEBUGGING
-            System.out.println(e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
-            System.out.println(e.getMessage());
+            //System.out.println(e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
+            //System.out.println(e.getMessage());
             //If the exception is SQL related give back the error code
             return new QueryResult(false,e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
         } finally {
@@ -116,7 +117,7 @@ public class DButils {
                 }
             });
             //Just for DEBUGGING
-            System.out.println(preparedStatement);
+            //System.out.println(preparedStatement);
             return preparedStatement.executeQuery();
         } catch (InterruptedException | SQLException e) {
             throw new RuntimeException(e);

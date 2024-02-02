@@ -15,7 +15,8 @@ public class SQL_Init {
             System.out.println(DBmanager.SQL_DB+ " created");
         }
        else {
-            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY
+                    && queryResult.getExceptionID() != 0) {
                 System.out.println(DBmanager.SQL_DB + "  is not created");
             }
         }
@@ -26,7 +27,8 @@ public class SQL_Init {
             System.out.println("TABLE " + DBmanager.SQL_COMPANIES + " created");
         }
         else {
-            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY
+                    && queryResult.getExceptionID() != 0) {
                 System.out.println("TABLE " + DBmanager.SQL_COMPANIES + " is not created");
             }
         }
@@ -37,7 +39,8 @@ public class SQL_Init {
             System.out.println("TABLE " + DBmanager.SQL_CATEGORIES + " created");
         }
         else {
-            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY
+                    && queryResult.getExceptionID() != 0) {
                 System.out.println("TABLE " + DBmanager.SQL_CATEGORIES + " is not created");
             }
         }
@@ -48,7 +51,8 @@ public class SQL_Init {
             System.out.println("TABLE " + DBmanager.SQL_COUPONS + " created");
         }
         else {
-            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY
+                    && queryResult.getExceptionID() != 0) {
                 System.out.println("TABLE " + DBmanager.SQL_COUPONS + " is not created");
             }
         }
@@ -59,7 +63,8 @@ public class SQL_Init {
             System.out.println("TABLE " + DBmanager.SQL_CVC + " created");
         }
         else {
-            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY
+                    && queryResult.getExceptionID() != 0) {
                 System.out.println("TABLE " + DBmanager.SQL_CVC + " is not created");
             }
         }
@@ -70,7 +75,8 @@ public class SQL_Init {
             System.out.println("TABLE " + DBmanager.SQL_CUSTOMERS + " created");
         }
         else {
-            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY
+                    && queryResult.getExceptionID() != 0) {
                 System.out.println("TABLE " + DBmanager.SQL_CUSTOMERS + " is not created");
             }
         }
@@ -86,8 +92,21 @@ public class SQL_Init {
         if(queryResult.isResult())
             System.out.println(DBmanager.SQL_CATEGORIES + " were inserted");
         else {
-            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY) {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY
+                    && queryResult.getExceptionID() != 0) {
                 System.out.println(DBmanager.SQL_CATEGORIES + " weren't inserted");
+            }
+        }
+    }
+    private static void createHandleExceptionProcedure(){
+        QueryResult queryResult = DButils.runQuery(Procedures.handleException);
+        if(queryResult.isResult()) {
+            System.out.println("Procedure handleException created");
+        }
+        else {
+            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY
+                    && queryResult.getExceptionID() != 0) {
+                System.out.println("Procedure handleException is not created");
             }
         }
     }
@@ -99,6 +118,7 @@ public class SQL_Init {
         createCouponsTable();
         createCvcTable();
         insertCategories();
+        createHandleExceptionProcedure();
 
     }
 }
