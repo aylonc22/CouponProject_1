@@ -27,7 +27,7 @@ public class CouponDBDAO implements CouponDAO {
     @Override
             //TODO in company facade you cannot add coupon with same title in the same company
     public void addCoupon(Coupon coupon) throws SQLDuplicateUniqueKeyException {
-        Map<Integer, Object> params = couponToParams(coupon);
+        Map<Integer, Object> params = DBDAOUtils.couponToParams(coupon);
         params.put(1,coupon.getCompanyId());
         params.put(10,coupon.getCompanyId());
         params.put(11,coupon.getTitle());
@@ -39,12 +39,13 @@ public class CouponDBDAO implements CouponDAO {
            if(queryResult.getExceptionID() == SQLExceptionErrorCodes.DUPLICATE_KEY) {
                throw new SQLDuplicateUniqueKeyException(SQLDuplicateUniqueKeyException.tables.COUPON);
            }
+            System.out.println(queryResult.getExceptionID());
         }
     }
 
     @Override
     public void updateCoupon(Coupon coupon) throws ObjectNotFoundException, SQLDuplicateUniqueKeyException {
-        Map<Integer, Object> params = couponToParams(coupon);
+        Map<Integer, Object> params = DBDAOUtils.couponToParams(coupon);
         // adding id in order to update directly from id
         params.put(params.size()+1,coupon.getId());
         QueryResult queryResult = DButils.runQuery(Coupons.UPDATE_COUPON,params);
@@ -63,17 +64,17 @@ public class CouponDBDAO implements CouponDAO {
     }
 
     @Override
-    public void deleteCoupon(int couponID) throws ObjectNotFoundException {
+    public void deleteCoupon(int couponID,int companyID) throws ObjectNotFoundException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,couponID);
-        QueryResult queryResult = DButils.runQuery(Coupons.UPDATE_COUPON,params);
+        params.put(2,couponID);
+        QueryResult queryResult = DButils.runQuery(Coupons.DELETE_COUPON,params);
         if(queryResult.isResult()) {
             System.out.println("Coupon deleted");
         }
         else {
-            if(queryResult.getExceptionID() == SQLExceptionErrorCodes.DUPLICATE_KEY) {
-                throw new ObjectNotFoundException(couponID, "Coupon");
-            }
+                throw new ObjectNotFoundException("Coupon with id: "+couponID +
+                        " is not exists or it doesn't belong to company with id: " + companyID);
         }
     }
 
@@ -83,7 +84,7 @@ public class CouponDBDAO implements CouponDAO {
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
-            coupons.add(resultSetToCoupon(resultSet));
+            coupons.add(DBDAOUtils.resultSetToCoupon(resultSet));
         }
         return coupons;
     }
@@ -96,7 +97,7 @@ public class CouponDBDAO implements CouponDAO {
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
-            coupons.add(resultSetToCoupon(resultSet));
+            coupons.add(DBDAOUtils.resultSetToCoupon(resultSet));
         }
         return coupons;
     }
@@ -105,12 +106,12 @@ public class CouponDBDAO implements CouponDAO {
     public List<Coupon> getAllCouponsOfCompanyByCategory(int companyID,Category category) throws SQLException {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,companyID);
-        params.put(2,category.ordinal());
+        params.put(2,category.ordinal()+1);
         ResultSet resultSet = DButils.runQueryForResult(Coupons.GET_ALL_COUPON_OF_COMPANY_BY_CATEGORY,params);
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
-            coupons.add(resultSetToCoupon(resultSet));
+            coupons.add(DBDAOUtils.resultSetToCoupon(resultSet));
         }
         return coupons;
     }
@@ -125,7 +126,7 @@ public class CouponDBDAO implements CouponDAO {
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
-            coupons.add(resultSetToCoupon(resultSet));
+            coupons.add(DBDAOUtils.resultSetToCoupon(resultSet));
         }
         return coupons;
     }
@@ -138,7 +139,7 @@ public class CouponDBDAO implements CouponDAO {
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
-            coupons.add(resultSetToCoupon(resultSet));
+            coupons.add(DBDAOUtils.resultSetToCoupon(resultSet));
         }
         return coupons;
     }
@@ -147,12 +148,12 @@ public class CouponDBDAO implements CouponDAO {
     public List<Coupon> getAllCouponsOfCustomerByCategory(int customerID, Category category) throws SQLException {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,customerID);
-        params.put(2,category.ordinal());
+        params.put(2,category.ordinal()+1);
         ResultSet resultSet = DButils.runQueryForResult(Cvc.GET_ALL_COUPON_OF_CUSTOMER_BY_CATEGORY,params);
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
-            coupons.add(resultSetToCoupon(resultSet));
+            coupons.add(DBDAOUtils.resultSetToCoupon(resultSet));
         }
         return coupons;
     }
@@ -166,7 +167,7 @@ public class CouponDBDAO implements CouponDAO {
         List<Coupon> coupons = new ArrayList<>();
         while(resultSet.next())
         {
-            coupons.add(resultSetToCoupon(resultSet));
+            coupons.add(DBDAOUtils.resultSetToCoupon(resultSet));
         }
         return coupons;
     }
@@ -177,7 +178,7 @@ public class CouponDBDAO implements CouponDAO {
         params.put(1,couponID);
         ResultSet resultSet = DButils.runQueryForResult(Coupons.GET_ONE_COUPON,params);
         while (resultSet.next()) {
-            return resultSetToCoupon(resultSet);
+            return DBDAOUtils.resultSetToCoupon(resultSet);
         }
         return null;
     }
@@ -216,38 +217,5 @@ public class CouponDBDAO implements CouponDAO {
         if(queryResult.isResult()) {
             System.out.println("Coupons and their purchase history deleted");
         }
-    }
-
-    @Override
-    public Map<Integer, Object> couponToParams(Coupon coupon) {
-        Map<Integer, Object> params = new HashMap<>();
-        params.put(2,Category.valueOf(coupon.getCategory().toString()).ordinal() +1);
-        params.put(3,coupon.getTitle());
-        params.put(4,coupon.getDescription());
-        params.put(5,coupon.getStartDate());
-        params.put(6,coupon.getEndDate());
-        params.put(7,coupon.getAmount());
-        params.put(8,coupon.getPrice());
-        params.put(9,coupon.getImage());
-
-
-
-        return params;
-    }
-
-    @Override
-    public Coupon resultSetToCoupon(ResultSet resultSet) throws SQLException {
-        int id = resultSet.getInt(1);
-        int companyId = resultSet.getInt(2);
-        int categoryId = resultSet.getInt(3);
-        String title = resultSet.getString(4);
-        String description = resultSet.getString(5);
-        Date startDate = resultSet.getDate(6);
-        Date endDate = resultSet.getDate(7);
-        int amount = resultSet.getInt(8);
-        double price = resultSet.getDouble(9);
-        String image = resultSet.getString(9);
-//TODO check that category id really sync with enum and database!!!
-        return new Coupon(id,companyId, Category.values()[categoryId],title,description,startDate,endDate,amount,price,image);
     }
 }

@@ -41,17 +41,33 @@ public class CompaniesDBDAO implements CompaniesDAO {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,email);
         params.put(2,password);
-
-        ResultSet resultSet = DButils.runQueryForResult(General.GET_CLIENT_IN_TABLE(DBmanager.SQL_COMPANIES),params);
+        Company company = null;
+        ResultSet resultSet = DButils.runQueryForResult(Companies.GET_COMPANY_WITH_COUPONS,params);
+        //If there are any coupons
         while (resultSet.next()){
-            return resultSetToCompany(resultSet);
+            if (company==null) {
+                company = DBDAOUtils.resultSetToCompany(resultSet);
+                company.getCoupons().add(DBDAOUtils.resultSetToCouponOfCompanies(resultSet));
+            }
+            else{
+                company.getCoupons().add(DBDAOUtils.resultSetToCouponOfCompanies(resultSet));
+            }
+
         }
-        return null;
+        // If there were no coupons the query will return nothing then we need another query to
+        // get at least the basic details of the company
+         resultSet = DButils.runQueryForResult(Companies.GET_COMPANY,params);
+        if(company == null) {
+            while (resultSet.next()) {
+                company = DBDAOUtils.resultSetToCompany(resultSet);
+            }
+        }
+        return company;
     }
 
     @Override
     public void addCompany(Company company) throws SQLDuplicateUniqueKeyException {
-        Map<Integer, Object> params = companyToParams(company);
+        Map<Integer, Object> params = DBDAOUtils.companyToParams(company);
         QueryResult queryResult = DButils.runQuery(Companies.ADD_COMPANY,params);
         if(queryResult.isResult()) {
             System.out.println("Company added\n" + company);
@@ -63,7 +79,7 @@ public class CompaniesDBDAO implements CompaniesDAO {
 
     @Override
     public void updateCompany(Company company) throws SQLDuplicateUniqueKeyException, ObjectNotFoundException {
-        Map<Integer, Object> params = companyToParams(company);
+        Map<Integer, Object> params = DBDAOUtils.companyToParams(company);
         // adding id in order to update directly from id
         params.put(params.size()+1,company.getId());
         QueryResult queryResult = DButils.runQuery(Companies.UPDATE_COMPANY,params);
@@ -100,7 +116,7 @@ public class CompaniesDBDAO implements CompaniesDAO {
         List<Company> companies = new ArrayList<>();
         while(resultSet.next())
         {
-            companies.add(resultSetToCompany(resultSet));
+            companies.add(DBDAOUtils.resultSetToCompany(resultSet));
         }
         return companies;
     }
@@ -111,27 +127,9 @@ public class CompaniesDBDAO implements CompaniesDAO {
         params.put(1,companyID);
         ResultSet resultSet = DButils.runQueryForResult(Companies.GET_ONE_COMPANY,params);
         while (resultSet.next()) {
-            return resultSetToCompany(resultSet);
+            return DBDAOUtils.resultSetToCompany(resultSet);
         }
        throw new ObjectNotFoundException(companyID,"Company");
     }
 
-
-    @Override
-    public Map<Integer, Object> companyToParams(Company company) {
-        Map<Integer, Object> params = new HashMap<>();
-        params.put(1,company.getName());
-        params.put(2,company.getEmail());
-        params.put(3,company.getPassword());
-        return params;
-    }
-    @Override
-    public Company resultSetToCompany(ResultSet resultSet) throws SQLException {
-        int id = resultSet.getInt(1);
-        String name = resultSet.getString(2);
-        String email = resultSet.getString(3);
-        String password = resultSet.getString(4);
-        //TODO eventually ill need to sync coupons
-        return new Company(id,name,email,password,new ArrayList<>());
-    }
 }

@@ -46,7 +46,7 @@ public class CustomerFacade extends ClientFacade {
     }
     public List<Coupon> getAllCouponsByCategory(Category category) throws ClientNotLoggedInException, SQLException {
         if(isLogged()){
-            return couponDBDAO.getAllCouponsOfCustomerByCategory(getClient().getId(),category);
+            return couponDBDAO.getAllCouponsOfCustomerByCategory(getClient().getId()+1,category);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Customer);

@@ -1,3 +1,4 @@
+import beans.Category;
 import cls.SystemManager;
 import cls.Test;
 import database.sql.SQL_Init;

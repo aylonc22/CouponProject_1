@@ -4,6 +4,7 @@ import beans.Client;
 import beans.ClientType;
 import beans.Company;
 import beans.Customer;
+import database.sql.DBmanager;
 import exception.ClientNotLoggedInException;
 import exception.CustomerIsNotAdminException;
 import exception.ObjectNotFoundException;
@@ -24,7 +25,7 @@ public class AdminFacade extends ClientFacade {
     public Client login(String email, String password) throws CustomerIsNotAdminException, SQLException {
         //hard coded check to check if the client is answering the criteria to be an admin
         //not best practice!! BUT, that's what they asked for...
-        if(email.equals("admin@admin.com") && password.equals("admin")) {
+        if(email.equals(DBmanager.SQL_ADMIN_EMAIL) && password.equals(DBmanager.SQL_ADMIN_PASSWORD)) {
             if (customerDBDAO.isCustomerExists(email, password))
                 return customerDBDAO.getClient(email, password);
             else

@@ -43,7 +43,7 @@ public class CompanyFacade extends ClientFacade {
     public void deleteCoupon(int couponID) throws ClientNotLoggedInException, ObjectNotFoundException {
         if(isLogged())
         {
-            couponDBDAO.deleteCoupon(couponID);
+            couponDBDAO.deleteCoupon(couponID, getClient().getId());
         }
         else
             throw new ClientNotLoggedInException(ClientType.Company);

@@ -13,4 +13,7 @@ public class DBmanager {
     public static final String SQL_COMPANIES = "companies";
     public static final String SQL_COUPONS = "coupons";
     public static final String SQL_CVC="customers_vs_coupons";
+
+    public static final String SQL_ADMIN_EMAIL = "admin@admin.com";
+    public static final String SQL_ADMIN_PASSWORD = "admin";
 }

@@ -22,9 +22,5 @@ public interface CompaniesDAO {
      List<Company> getAllCompanies() throws SQLException;
      Company getOneCompany(int companyID) throws SQLException, ObjectNotFoundException;
     //endregion
-    //region Auxiliary Methods
-     Map<Integer,Object> companyToParams(Company company);
-     Company resultSetToCompany(ResultSet resultSet) throws SQLException;
-    //endregion
 
 }

@@ -20,9 +20,4 @@ public interface CustomersDAO {
     public List<Customer> getAllCustomers() throws SQLException;
     public Customer getOneCustomer(int customerID) throws SQLException, ObjectNotFoundException;
     //endregion
-
-    //region Auxiliary Methods
-    public Map<Integer,Object> customerToParams(Customer customer);
-    public Customer resultSetToCustomer(ResultSet resultSet) throws SQLException;
-    //endregion
 }
