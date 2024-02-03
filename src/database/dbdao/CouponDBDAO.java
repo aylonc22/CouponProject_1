@@ -7,13 +7,12 @@ import beans.QueryResult;
 import database.sql.DButils;
 import database.dao.CouponDAO;
 import database.sql.SQLExceptionErrorCodes;
-import database.sql.commands.Companies;
 import database.sql.commands.Coupons;
 import database.sql.commands.Cvc;
 import exception.ObjectNotFoundException;
+import exception.OutOfStockException;
 import exception.SQLDuplicateUniqueKeyException;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -184,15 +183,36 @@ public class CouponDBDAO implements CouponDAO {
     }
 
     @Override
-    public void addCouponPurchase(int customerID, int couponID) throws ObjectNotFoundException {
-        Map<Integer, Object> params = new HashMap<>();
+    public void addCouponPurchase(int customerID, int couponID) throws ObjectNotFoundException, SQLDuplicateUniqueKeyException, OutOfStockException, SQLException {
+        Map<Integer,Object> params = new HashMap<>();
         params.put(1,customerID);
         params.put(2,couponID);
-        QueryResult queryResult = DButils.runQuery(Cvc.ADD_CVC,params);
+        params.put(3,couponID);
+        QueryResult queryResult = DButils.runQuery(Cvc.ADD_CVC_STEP1,params);
         if(queryResult.isResult()) {
-            System.out.println("Customer_Vs_Coupon added");
+
+            params.clear();
+            params.put(1,couponID);
+           queryResult = DButils.runQuery(Cvc.ADD_CVC_STEP2,params);
+           if(queryResult.isResult()){
+               System.out.println("Customer_Vs_Coupon added");
+           }
+           else{
+               throw new ObjectNotFoundException(couponID,"Coupon");
+           }
         }
         else {
+            if(queryResult.getExceptionID() == SQLExceptionErrorCodes.DUPLICATE_KEY) {
+                throw new SQLDuplicateUniqueKeyException(SQLDuplicateUniqueKeyException.tables.CVC);
+            }
+            //checking if the reason the query didn't work is the coupon is out of stock
+            params.clear();
+            params.put(1,couponID);
+            ResultSet resultSet = DButils.runQueryForResult(Cvc.VALIDATE_OUT_OF_STOCK,params);
+           while(resultSet.next()){
+               if(resultSet.getInt(1)==1)
+                    throw new OutOfStockException(couponID);
+            }
            throw new ObjectNotFoundException(couponID,"Coupon");
         }
     }

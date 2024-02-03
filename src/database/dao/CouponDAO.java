@@ -4,6 +4,7 @@ package database.dao;
 import beans.Category;
 import beans.Coupon;
 import exception.ObjectNotFoundException;
+import exception.OutOfStockException;
 import exception.SQLDuplicateUniqueKeyException;
 
 import java.sql.ResultSet;
@@ -27,7 +28,7 @@ public interface CouponDAO {
     // return all the coupons of the customer which price are below or equal to the criteria
     List<Coupon> getAllCouponsOfCustomerUpToPrice(int customerID, double price) throws SQLException;
      Coupon getOneCoupon(int couponID) throws SQLException;
-     void addCouponPurchase(int customerID,int couponID) throws ObjectNotFoundException;
+     void addCouponPurchase(int customerID,int couponID) throws ObjectNotFoundException, SQLDuplicateUniqueKeyException, OutOfStockException, SQLException;
      void deleteCouponPurchase(int customerID,int couponID) throws ObjectNotFoundException;
      void deleteExpiredCoupons();
     //endregion

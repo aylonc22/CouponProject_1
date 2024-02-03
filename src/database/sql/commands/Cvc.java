@@ -21,13 +21,14 @@ public class Cvc {
                     "    ON DELETE CASCADE" +
                     "    ON UPDATE CASCADE);";
     //region Implementation for Customer_Vs_Coupon table
-    public static final String ADD_CVC = "INSERT INTO " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC +
-            "(Customer_ID,Coupon_ID) VALUES (?,?) WHERE EXISTS " +
-            "(SELECT 1 FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
-            " WHERE ID  = ? AND Amount>=1); " +
-            "SET @Flag = ROW_COUNT(); " +
-            "UPDATE " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
-            " SET Amount = IF(@Flag=1 AND ID=?,Amount-1,Amount)";
+    public static final String ADD_CVC_STEP1 = "INSERT INTO " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC +
+            " (Customer_ID,Coupon_ID)" +
+            " SELECT ?,?" +
+            " WHERE EXISTS (SELECT 1 FROM " + DBmanager.SQL_DB + "."+ DBmanager.SQL_COUPONS + " WHERE ID=? AND Amount >=1);";
+    public static final String ADD_CVC_STEP2 = " UPDATE " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
+            " SET Amount = Amount - 1 WHERE ID=?";
+    public static final String VALIDATE_OUT_OF_STOCK = "SELECT COUNT(*) FROM "+ DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
+            " WHERE ID=? AND AMOUNT = 0";
     public static final String DELETE_CVC = "DELETE FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC + " WHERE Customer_ID=? AND Coupon_ID=?";
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     // aliases

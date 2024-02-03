@@ -21,7 +21,8 @@ public class SQLDuplicateUniqueKeyException extends Exception{
     public enum tables{
         COUPON("Coupon has same title as another coupon of the same company"),
         CUSTOMER("Customer has same email as another customer"),
-        COMPANY("Company has same name or email as another company");
+        COMPANY("Company has same name or email as another company"),
+       CVC("Customer already has that coupon");
         private final String action;
         }
 }

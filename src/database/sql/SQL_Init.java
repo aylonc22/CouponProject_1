@@ -98,18 +98,6 @@ public class SQL_Init {
             }
         }
     }
-    private static void createHandleExceptionProcedure(){
-        QueryResult queryResult = DButils.runQuery(Procedures.handleException);
-        if(queryResult.isResult()) {
-            System.out.println("Procedure handleException created");
-        }
-        else {
-            if (queryResult.getExceptionID() != SQLExceptionErrorCodes.DUPLICATE_KEY
-                    && queryResult.getExceptionID() != 0) {
-                System.out.println("Procedure handleException is not created");
-            }
-        }
-    }
     public static void initSQL(){
         createDB();
         createCompaniesTable();
@@ -118,7 +106,5 @@ public class SQL_Init {
         createCouponsTable();
         createCvcTable();
         insertCategories();
-        createHandleExceptionProcedure();
-
     }
 }

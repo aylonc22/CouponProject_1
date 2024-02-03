@@ -4,9 +4,7 @@ import beans.Category;
 import beans.Client;
 import beans.ClientType;
 import beans.Coupon;
-import exception.ClientNotLoggedInException;
-import exception.CustomerIsNotAdminException;
-import exception.ObjectNotFoundException;
+import exception.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -29,7 +27,7 @@ public class CustomerFacade extends ClientFacade {
     //endregion
     //region CRUD Methods
     // TODO fix buy coupon by the conditions of the exercise
-    public void buyCoupon(int couponID) throws ClientNotLoggedInException, ObjectNotFoundException {
+    public void buyCoupon(int couponID) throws ClientNotLoggedInException, ObjectNotFoundException, SQLDuplicateUniqueKeyException, OutOfStockException, SQLException {
         if(isLogged())
         {
              couponDBDAO.addCouponPurchase(getClient().getId(), couponID);

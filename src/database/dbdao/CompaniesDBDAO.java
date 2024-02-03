@@ -7,7 +7,6 @@ import beans.QueryResult;
 import database.sql.DBmanager;
 import database.sql.DButils;
 import database.sql.SQLExceptionErrorCodes;
-import database.sql.commands.Categories;
 import database.sql.commands.General;
 import database.dao.CompaniesDAO;
 import database.sql.commands.Companies;

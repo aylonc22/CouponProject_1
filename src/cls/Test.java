@@ -3,10 +3,7 @@ package cls;
 import beans.*;
 import database.sql.ConnectionPool;
 import database.sql.DBmanager;
-import exception.ClientNotLoggedInException;
-import exception.CustomerIsNotAdminException;
-import exception.ObjectNotFoundException;
-import exception.SQLDuplicateUniqueKeyException;
+import exception.*;
 import facade.AdminFacade;
 import facade.CompanyFacade;
 import facade.CustomerFacade;
@@ -42,6 +39,11 @@ public class Test {
               CustomerIsNotAdminException e){
            System.out.println(e.getMessage());
        }
+        //JUST FOR HARD CODED REASONS
+        //WHEN COMMENTING showCaseCustomerFacade this catch should be commented as well
+        catch (OutOfStockException e){
+            System.out.println(e.getMessage());
+        }
         catch (SQLException e) {
             System.out.println("Something went wrong, unhandled exception");
             System.out.println(e.getMessage());
@@ -76,11 +78,11 @@ public class Test {
      *@throws SQLDuplicateUniqueKeyException - A failed attempt to add or update something with the same unique name
      * @throws ObjectNotFoundException - A failed attempt to use none existing object from SQL
      */
-    private static void showCaseCustomerFacade() throws SQLException, ClientNotLoggedInException, CustomerIsNotAdminException, SQLDuplicateUniqueKeyException, ObjectNotFoundException {
+    private static void showCaseCustomerFacade() throws SQLException, ClientNotLoggedInException, CustomerIsNotAdminException, SQLDuplicateUniqueKeyException, ObjectNotFoundException, OutOfStockException {
         //Login attempt as customer
         CustomerFacade customerFacade = (CustomerFacade) LoginManager.getInstance().login("hardCodedCustomer@email.com","12345678", ClientType.Customer);
         //But coupon attempt
-        customerFacade.buyCoupon(1);
+        customerFacade.buyCoupon(13);
         //Get all coupons of customer and print attempt
         //customerFacade.getAllCoupons().forEach(System.out::println);
         //Get all coupons from category of customer and print attempt
@@ -110,7 +112,7 @@ public class Test {
         //companyFacade.updateCoupon(new Coupon(1,1, Category.Electricity,"TitleChanged","DescriptionChanged", Date.valueOf(date),
                 //Date.valueOf(date.plusDays(8)),10,5.5,"imageChanged"));
         //Deleting coupon attempt
-        //companyFacade.deleteCoupon(14);
+        companyFacade.deleteCoupon(14);
         //Get all coupons of company and print attempt
         //companyFacade.getAllCoupons().forEach(System.out::println);
         //Get all coupons from category of company and print attempt
