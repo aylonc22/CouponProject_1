@@ -24,7 +24,6 @@ import java.util.Map;
 public class CouponDBDAO implements CouponDAO {
 
     @Override
-            //TODO in company facade you cannot add coupon with same title in the same company
     public void addCoupon(Coupon coupon) throws SQLDuplicateUniqueKeyException {
         Map<Integer, Object> params = DBDAOUtils.couponToParams(coupon);
         params.put(1,coupon.getCompanyId());

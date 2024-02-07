@@ -5,7 +5,7 @@ import database.sql.DBmanager;
 public class Companies {
     //create companies table
     /**
-     * A Query responsible for creating the table when initializing the project
+     * A Query responsible for creating the company table when initializing the project
      */
     public static final String CREATE_TABLE_COMPANIES =
             "CREATE TABLE IF NOT EXISTS " +  DBmanager.SQL_DB + "."+DBmanager.SQL_COMPANIES + "(" +
@@ -36,7 +36,7 @@ public class Companies {
             "INSERT INTO " + DBmanager.SQL_DB + "." + DBmanager.SQL_COMPANIES +
             "(name,email,password) VALUES (?,?,?)";
     /**
-     * A Query responsible for UPDATING one new company.
+     * A Query responsible for UPDATING one company.
      * Company can't have the same Name and Email as another company
      */
     public static final String UPDATE_COMPANY = "UPDATE " + DBmanager.SQL_DB + "." + DBmanager.SQL_COMPANIES +

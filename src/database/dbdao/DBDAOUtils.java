@@ -32,7 +32,6 @@ public class DBDAOUtils {
         String name = resultSet.getString(2);
         String email = resultSet.getString(3);
         String password = resultSet.getString(4);
-        //TODO eventually ill need to sync coupons
         return new Company(id,name,email,password,new ArrayList<>());
     }
 
@@ -47,7 +46,6 @@ public class DBDAOUtils {
         int amount = resultSet.getInt(12);
         double price = resultSet.getDouble(13);
         String image = resultSet.getString(14);
-//TODO check that category id really sync with enum and database!!!
         return new Coupon(id,companyId, Category.values()[categoryId],title,description,startDate,endDate,amount,price,image);
     }
     //endregion
@@ -75,7 +73,6 @@ public class DBDAOUtils {
         int amount = resultSet.getInt(8);
         double price = resultSet.getDouble(9);
         String image = resultSet.getString(10);
-//TODO check that category id really sync with enum and database!!!
         return new Coupon(id,companyId, Category.values()[categoryId],title,description,startDate,endDate,amount,price,image);
     }
     //endregion
@@ -95,7 +92,6 @@ public class DBDAOUtils {
         String lastName = resultSet.getString(3);
         String email = resultSet.getString(4);
         String password = resultSet.getString(5);
-        //TODO eventually ill need to sync coupons
         return new Customer(id,firstName,lastName,email,password,new ArrayList<>());
     }
     //endregion

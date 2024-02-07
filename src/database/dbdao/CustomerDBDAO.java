@@ -109,7 +109,7 @@ public class CustomerDBDAO implements CustomersDAO {
     public Customer getOneCustomer(int customerID) throws SQLException, ObjectNotFoundException {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,customerID);
-        ResultSet resultSet = DButils.runQueryForResult(Customers.GET_ONE_CUSTOMERS,params);
+        ResultSet resultSet = DButils.runQueryForResult(Customers.GET_ONE_CUSTOMER,params);
         while (resultSet.next()) {
             return DBDAOUtils.resultSetToCustomer(resultSet);
         }

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-/**
+/*
  * A class for handling query results ()
  * @param result - if the query were successful
  * @param exceptionID - if the query weren't successful the exceptionID will showcase the correct exception

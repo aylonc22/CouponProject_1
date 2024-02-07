@@ -26,7 +26,6 @@ public class CustomerFacade extends ClientFacade {
     }
     //endregion
     //region CRUD Methods
-    // TODO fix buy coupon by the conditions of the exercise
     public void buyCoupon(int couponID) throws ClientNotLoggedInException, ObjectNotFoundException, SQLDuplicateUniqueKeyException, OutOfStockException, SQLException {
         if(isLogged())
         {
