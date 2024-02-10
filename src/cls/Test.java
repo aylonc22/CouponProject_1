@@ -3,6 +3,7 @@ package cls;
 import beans.*;
 import database.sql.ConnectionPool;
 import database.sql.DBmanager;
+import database.sql.SQL_Init;
 import exception.*;
 import facade.AdminFacade;
 import facade.CompanyFacade;
@@ -18,12 +19,16 @@ public class Test {
      * hard coded test class to check and showcase the coupon system project
      */
     public static void testAll(){
+        //Initializing database and its tables
+        SQL_Init.initSQL();
+
         // Starting the daily job
         CouponExpirationDailyJob job = new CouponExpirationDailyJob();
         Thread task = new Thread(job);
         task.setDaemon(true);
         task.start();
 
+       //Showcasing the facades
         try{
             //Hard coded showcase of AdminFacade
                 //showCaseAdminFacade();
@@ -90,7 +95,7 @@ public class Test {
         //Get all coupons from customer by up to price
         //customerFacade.getAllCouponsByUpToPrice(6).forEach(System.out::println);
         //Show customer details
-        System.out.println(customerFacade.getCustomerDetails());
+        //System.out.println(customerFacade.getCustomerDetails());
     }
     /**
      * ShowCasing the Company Facade logic and functionalities
@@ -112,16 +117,16 @@ public class Test {
         //companyFacade.updateCoupon(new Coupon(1,1, Category.Electricity,"TitleChanged","DescriptionChanged", Date.valueOf(date),
                 //Date.valueOf(date.plusDays(8)),10,5.5,"imageChanged"));
         //Deleting coupon attempt
-        companyFacade.deleteCoupon(14);
+        //companyFacade.deleteCoupon(14);
         //Get all coupons of company and print attempt
         //companyFacade.getAllCoupons().forEach(System.out::println);
         //Get all coupons from category of company and print attempt
-        System.out.println(companyFacade.getAllCouponsByCategory(Category.Electricity).size());
+        //System.out.println(companyFacade.getAllCouponsByCategory(Category.Electricity).size());
         //companyFacade.getAllCouponsByCategory(Category.Electricity).forEach(System.out::println);
         //Get all coupons from company by up to price
         //companyFacade.getAllCouponsByUpToPrice(6).forEach(System.out::println);
         //Show company details
-        System.out.println(companyFacade.returnCompanyDetails());
+        //System.out.println(companyFacade.returnCompanyDetails());
     }
     /**
      * ShowCasing the Admin Facade logic and functionalities
@@ -137,7 +142,7 @@ public class Test {
                 DBmanager.SQL_ADMIN_PASSWORD, ClientType.Adminstrator);
 
         //Adding company attempt
-        adminFacade.addCompany(new Company("company","company@email.com","123456789"));
+        //adminFacade.addCompany(new Company("company","company@email.com","123456789"));
 
         //Updating company attempt
         // adminFacade.updateCompany(new Company(1,"companyChanged","companyChanged@email.com","12345678910",new ArrayList<>()));

@@ -1,9 +1,15 @@
 package database.sql;
 
 import beans.Category;
+import beans.Company;
+import beans.Customer;
 import beans.QueryResult;
+import database.dbdao.CompaniesDBDAO;
+import database.dbdao.CustomerDBDAO;
 import database.sql.commands.*;
+import exception.SQLDuplicateUniqueKeyException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,6 +104,17 @@ public class SQL_Init {
             }
         }
     }
+
+    /**
+     * Inserting demo data for showcasing the program
+     */
+    private static void insertDemoData() throws SQLDuplicateUniqueKeyException {
+        new CustomerDBDAO().addCustomer(new Customer("Demmy", "Data",
+                "hardCodedCustomer@email.com","12345678"));
+        new CompaniesDBDAO().addCompany(new Company("Demmy",
+                "hardCodedCompany@email.com","12345678"));
+
+    }
     public static void initSQL(){
         createDB();
         createCompaniesTable();
@@ -106,5 +123,11 @@ public class SQL_Init {
         createCouponsTable();
         createCvcTable();
         insertCategories();
+        try{
+            insertDemoData();
+        } catch (SQLDuplicateUniqueKeyException e) {
+            //There is no reason to panic
+            //It just means the demo data is already inside the database...
+        }
     }
 }

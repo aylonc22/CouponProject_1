@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.util.List;
 @Data
+
 public abstract class Client {
     //region Field Declaration
     private final Integer id;

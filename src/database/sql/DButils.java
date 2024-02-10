@@ -59,18 +59,14 @@ public class DButils {
                     throw new RuntimeException(e);
                 }
             });
-            //Just for DEBUGGING
             preparedStatement.execute();
             //validation that the query actually did something
             //IF NOT THROW CUSTOM EXCEPTION FROM MYSQL ITSELF
-
-            // to disable an option for infinite loop, second usage return true,
-            // unless throws an exception which will be handled in the catch scope
             return new QueryResult(preparedStatement.getUpdateCount()>0,0);
         } catch (InterruptedException | SQLException e) {
             //Just for DEBUGGING
-            System.out.println(e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
-            System.out.println(e.getMessage());
+            //System.out.println(e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
+            //System.out.println(e.getMessage());
             //If the exception is SQL related give back the error code
             return new QueryResult(false,e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
         } finally {
