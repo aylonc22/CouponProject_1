@@ -38,32 +38,32 @@ public class AdminFacade extends ClientFacade {
     //region Administrator CRUD Methods
     //region Company CRUD Methods
     public void addCompany(Company company) throws ClientNotLoggedInException, SQLDuplicateUniqueKeyException {
-       if(super.isLogged())
+       if(isLogged())
            companiesDBDAO.addCompany(company);
        else
            throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public void updateCompany(Company company) throws ClientNotLoggedInException, SQLDuplicateUniqueKeyException, ObjectNotFoundException {
-        if(super.isLogged())
+        if(isLogged())
             companiesDBDAO.updateCompany(company);
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
 
     }
     public void deleteCompany(int companyID) throws ClientNotLoggedInException, ObjectNotFoundException {
-        if(super.isLogged())
+        if(isLogged())
             companiesDBDAO.deleteCompany(companyID);
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public List<Company> getAllCompanies() throws ClientNotLoggedInException, SQLException {
-        if(super.isLogged())
+        if(isLogged())
             return  companiesDBDAO.getAllCompanies();
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public Company getOneCompany(int companyID) throws ClientNotLoggedInException, SQLException, ObjectNotFoundException {
-        if(super.isLogged())
+        if(isLogged())
             return  companiesDBDAO.getOneCompany(companyID);
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
