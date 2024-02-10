@@ -86,14 +86,19 @@ public class Test {
     private static void showCaseCustomerFacade() throws SQLException, ClientNotLoggedInException, CustomerIsNotAdminException, SQLDuplicateUniqueKeyException, ObjectNotFoundException, OutOfStockException {
         //Login attempt as customer
         CustomerFacade customerFacade = (CustomerFacade) LoginManager.getInstance().login("hardCodedCustomer@email.com","12345678", ClientType.Customer);
+
         //But coupon attempt
-        customerFacade.buyCoupon(13);
+        //customerFacade.buyCoupon(1);
+
         //Get all coupons of customer and print attempt
         //customerFacade.getAllCoupons().forEach(System.out::println);
+
         //Get all coupons from category of customer and print attempt
         //customerFacade.getAllCouponsByCategory(Category.Electricity).forEach(System.out::println);
+
         //Get all coupons from customer by up to price
         //customerFacade.getAllCouponsByUpToPrice(6).forEach(System.out::println);
+
         //Show customer details
         //System.out.println(customerFacade.getCustomerDetails());
     }
@@ -113,18 +118,23 @@ public class Test {
         LocalDate date =  LocalDate.now();
         //companyFacade.addCoupon(new Coupon(1, Category.Electricity,"Title","Description", Date.valueOf(date),
                 //Date.valueOf(date.plusDays(5)),5,5.5,"image"));
+
         //Updating coupon attempt
         //companyFacade.updateCoupon(new Coupon(1,1, Category.Electricity,"TitleChanged","DescriptionChanged", Date.valueOf(date),
                 //Date.valueOf(date.plusDays(8)),10,5.5,"imageChanged"));
+
         //Deleting coupon attempt
-        //companyFacade.deleteCoupon(14);
+        //companyFacade.deleteCoupon(1);
+
         //Get all coupons of company and print attempt
         //companyFacade.getAllCoupons().forEach(System.out::println);
+
         //Get all coupons from category of company and print attempt
-        //System.out.println(companyFacade.getAllCouponsByCategory(Category.Electricity).size());
         //companyFacade.getAllCouponsByCategory(Category.Electricity).forEach(System.out::println);
+
         //Get all coupons from company by up to price
         //companyFacade.getAllCouponsByUpToPrice(6).forEach(System.out::println);
+
         //Show company details
         //System.out.println(companyFacade.returnCompanyDetails());
     }
@@ -145,7 +155,7 @@ public class Test {
         //adminFacade.addCompany(new Company("company","company@email.com","123456789"));
 
         //Updating company attempt
-        // adminFacade.updateCompany(new Company(1,"companyChanged","companyChanged@email.com","12345678910",new ArrayList<>()));
+        // adminFacade.updateCompany(new Company(2,"companyChanged","companyChanged@email.com","12345678910",new ArrayList<>()));
 
         //Deleting company attempt
         //adminFacade.deleteCompany(2);
@@ -163,7 +173,7 @@ public class Test {
         //adminFacade.updateCustomer(new Customer(2,"NameChanged","LastNameChanged","nameChanged@email.com","12345678910",new ArrayList<>()));
 
         //Deleting customer attempt
-        //adminFacade.deleteCustomer(4);
+        //adminFacade.deleteCustomer(2);
 
         //Get all customers and print attempt
         //adminFacade.getAllCustomers().forEach(System.out::println);
