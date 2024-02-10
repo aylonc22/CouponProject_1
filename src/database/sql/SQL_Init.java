@@ -109,6 +109,8 @@ public class SQL_Init {
      * Inserting demo data for showcasing the program
      */
     private static void insertDemoData() throws SQLDuplicateUniqueKeyException {
+        new CustomerDBDAO().addCustomer(new Customer("Admin", "Nimda",
+                DBmanager.SQL_ADMIN_EMAIL,DBmanager.SQL_ADMIN_PASSWORD));
         new CustomerDBDAO().addCustomer(new Customer("Demmy", "Data",
                 "hardCodedCustomer@email.com","12345678"));
         new CompaniesDBDAO().addCompany(new Company("Demmy",

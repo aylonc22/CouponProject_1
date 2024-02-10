@@ -170,10 +170,10 @@ public class Test {
         //adminFacade.addCustomer(new Customer("Name","LastName","customer@email.com","123456789"));
 
         //Updating customer attempt
-        //adminFacade.updateCustomer(new Customer(2,"NameChanged","LastNameChanged","nameChanged@email.com","12345678910",new ArrayList<>()));
+        //adminFacade.updateCustomer(new Customer(3,"NameChanged","LastNameChanged","nameChanged@email.com","12345678910",new ArrayList<>()));
 
         //Deleting customer attempt
-        //adminFacade.deleteCustomer(2);
+        //adminFacade.deleteCustomer(3);
 
         //Get all customers and print attempt
         //adminFacade.getAllCustomers().forEach(System.out::println);
