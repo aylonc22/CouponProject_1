@@ -40,28 +40,9 @@ public class CompaniesDBDAO implements CompaniesDAO {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,email);
         params.put(2,password);
-        Company company = null;
         ResultSet resultSet = DButils.runQueryForResult(Companies.GET_COMPANY_WITH_COUPONS,params);
-        //If there are any coupons
-        while (resultSet.next()){
-            if (company==null) {
-                company = DBDAOUtils.resultSetToCompany(resultSet);
-                company.getCoupons().add(DBDAOUtils.resultSetToCouponOfCompanies(resultSet));
-            }
-            else{
-                company.getCoupons().add(DBDAOUtils.resultSetToCouponOfCompanies(resultSet));
-            }
 
-        }
-        // If there were no coupons the query will return nothing then we need another query to
-        // get at least the basic details of the company
-         resultSet = DButils.runQueryForResult(Companies.GET_COMPANY,params);
-        if(company == null) {
-            while (resultSet.next()) {
-                company = DBDAOUtils.resultSetToCompany(resultSet);
-            }
-        }
-        return company;
+        return DBDAOUtils.handleBuildCompanyFromResultSet(resultSet,params);
     }
 
     @Override
@@ -115,7 +96,14 @@ public class CompaniesDBDAO implements CompaniesDAO {
         List<Company> companies = new ArrayList<>();
         while(resultSet.next())
         {
-            companies.add(DBDAOUtils.resultSetToCompany(resultSet));
+            Map<Integer, Object> params = new HashMap<>();
+            params.put(1,resultSet.getString(3));
+            params.put(2,resultSet.getString(4));
+
+            ResultSet resultSetForSpecificCompany = DButils.runQueryForResult(Companies.GET_COMPANY_WITH_COUPONS,params);
+            Company company = DBDAOUtils.handleBuildCompanyFromResultSet(resultSetForSpecificCompany,params);
+            if(company != null)
+                companies.add(company);
         }
         return companies;
     }
@@ -125,10 +113,20 @@ public class CompaniesDBDAO implements CompaniesDAO {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,companyID);
         ResultSet resultSet = DButils.runQueryForResult(Companies.GET_ONE_COMPANY,params);
-        while (resultSet.next()) {
-            return DBDAOUtils.resultSetToCompany(resultSet);
+
+        params.clear();
+        while (resultSet.next())
+        {
+            params.put(1,resultSet.getString(3));
+            params.put(2,resultSet.getString(4));
+
+            ResultSet resultSetForSpecificCompany = DButils.runQueryForResult(Companies.GET_COMPANY_WITH_COUPONS,params);
+            Company company = DBDAOUtils.handleBuildCompanyFromResultSet(resultSetForSpecificCompany,params);
+            if(company!= null){
+                return  company;
+            }
         }
-       throw new ObjectNotFoundException(companyID,"Company");
+        throw new ObjectNotFoundException(companyID,"Company");
     }
 
 }

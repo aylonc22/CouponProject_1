@@ -18,8 +18,8 @@ public class CompanyFacade extends ClientFacade {
     //region Overrides
     @Override
     public Client login(String email, String password) throws  SQLException {
-        if(companiesDBDAO.isCompanyExists(email, password))
-            return  companiesDBDAO.getClient(email,password);
+        if(companiesDAO.isCompanyExists(email, password))
+            return  companiesDAO.getClient(email,password);
         return null;
     }
     //endregion
@@ -27,7 +27,7 @@ public class CompanyFacade extends ClientFacade {
     public void addCoupon(Coupon coupon) throws ClientNotLoggedInException, SQLDuplicateUniqueKeyException {
         if(isLogged())
         {
-            couponDBDAO.addCoupon(coupon);
+            couponDAO.addCoupon(coupon);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Company);
@@ -35,7 +35,7 @@ public class CompanyFacade extends ClientFacade {
     public void updateCoupon(Coupon coupon) throws ClientNotLoggedInException, ObjectNotFoundException, SQLDuplicateUniqueKeyException {
         if(isLogged())
         {
-            couponDBDAO.updateCoupon(coupon);
+            couponDAO.updateCoupon(coupon);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Company);
@@ -43,7 +43,7 @@ public class CompanyFacade extends ClientFacade {
     public void deleteCoupon(int couponID) throws ClientNotLoggedInException, ObjectNotFoundException {
         if(isLogged())
         {
-            couponDBDAO.deleteCoupon(couponID, getClient().getId());
+            couponDAO.deleteCoupon(couponID, getClient().getId());
         }
         else
             throw new ClientNotLoggedInException(ClientType.Company);
@@ -51,7 +51,7 @@ public class CompanyFacade extends ClientFacade {
     public List<Coupon> getAllCoupons() throws ClientNotLoggedInException, SQLException {
         if(isLogged())
         {
-            return couponDBDAO.getAllCouponsOfCompany(getClient().getId());
+            return couponDAO.getAllCouponsOfCompany(getClient().getId());
         }
         else
             throw new ClientNotLoggedInException(ClientType.Company);
@@ -59,7 +59,7 @@ public class CompanyFacade extends ClientFacade {
     public List<Coupon> getAllCouponsByCategory(Category category) throws ClientNotLoggedInException, SQLException {
         if(isLogged())
         {
-            return couponDBDAO.getAllCouponsOfCompanyByCategory(getClient().getId(), category);
+            return couponDAO.getAllCouponsOfCompanyByCategory(getClient().getId(), category);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Company);
@@ -68,15 +68,15 @@ public class CompanyFacade extends ClientFacade {
     public List<Coupon> getAllCouponsByUpToPrice(double price) throws ClientNotLoggedInException, SQLException {
         if(isLogged())
         {
-            return couponDBDAO.getAllCouponsOfCompanyUpToPrice(getClient().getId(), price);
+            return couponDAO.getAllCouponsOfCompanyUpToPrice(getClient().getId(), price);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Company);
     }
-    public String returnCompanyDetails() throws ClientNotLoggedInException {
+    public String returnCompanyDetails() throws ClientNotLoggedInException, SQLException, ObjectNotFoundException {
         if(isLogged())
         {
-            return getClient().toString();
+            return companiesDAO.getOneCompany(getClient().getId()).toString();
         }
         else
             throw new ClientNotLoggedInException(ClientType.Company);

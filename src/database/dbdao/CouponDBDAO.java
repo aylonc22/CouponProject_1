@@ -4,6 +4,7 @@ package database.dbdao;
 import beans.Category;
 import beans.Coupon;
 import beans.QueryResult;
+import database.sql.ConnectionPool;
 import database.sql.DButils;
 import database.dao.CouponDAO;
 import database.sql.SQLExceptionErrorCodes;
@@ -13,6 +14,7 @@ import exception.ObjectNotFoundException;
 import exception.OutOfStockException;
 import exception.SQLDuplicateUniqueKeyException;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ public class CouponDBDAO implements CouponDAO {
 
     @Override
     public void updateCoupon(Coupon coupon) throws ObjectNotFoundException, SQLDuplicateUniqueKeyException {
-        Map<Integer, Object> params = DBDAOUtils.couponToParams(coupon);
+        Map<Integer, Object> params = DBDAOUtils.couponToParamsV2(coupon);
         // adding id in order to update directly from id
         params.put(params.size()+1,coupon.getId());
         QueryResult queryResult = DButils.runQuery(Coupons.UPDATE_COUPON,params);
@@ -65,7 +67,7 @@ public class CouponDBDAO implements CouponDAO {
     public void deleteCoupon(int couponID,int companyID) throws ObjectNotFoundException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,couponID);
-        params.put(2,couponID);
+        params.put(2,companyID);
         QueryResult queryResult = DButils.runQuery(Coupons.DELETE_COUPON,params);
         if(queryResult.isResult()) {
             System.out.println("Coupon deleted");

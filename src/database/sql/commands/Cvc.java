@@ -89,6 +89,6 @@ public class Cvc {
      */
     public static final String GET_ALL_COUPON_OF_CUSTOMER_UP_TO_PRICE = "SELECT * FROM " + DBmanager.SQL_DB + "." + DBmanager.SQL_COUPONS +
             " coup JOIN " + DBmanager.SQL_DB + "." + DBmanager.SQL_CVC + " cvc ON coup.ID=cvc.Coupon_ID"+
-            " WHERE cvc.Customer_ID = ? AND coup.Price <=";;
+            " WHERE cvc.Customer_ID = ? AND coup.Price <= ?";;
     //endregion
 }

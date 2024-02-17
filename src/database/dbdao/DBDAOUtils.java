@@ -5,6 +5,8 @@ import beans.Category;
 import beans.Company;
 import beans.Coupon;
 import beans.Customer;
+import database.sql.DButils;
+import database.sql.commands.Companies;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -48,6 +50,29 @@ public class DBDAOUtils {
         String image = resultSet.getString(14);
         return new Coupon(id,companyId, Category.values()[categoryId],title,description,startDate,endDate,amount,price,image);
     }
+    public static Company handleBuildCompanyFromResultSet(ResultSet resultSet,Map<Integer,Object> params) throws SQLException {
+        Company company = null;
+        //If there are any coupons
+        while (resultSet.next()){
+            if (company==null) {
+                company = resultSetToCompany(resultSet);
+                company.getCoupons().add(resultSetToCouponOfCompanies(resultSet));
+            }
+            else{
+                company.getCoupons().add(resultSetToCouponOfCompanies(resultSet));
+            }
+
+        }
+        // If there were no coupons the query will return nothing then we need another query to
+        // get at least the basic details of the company
+        ResultSet resultSetNoCoupons = DButils.runQueryForResult(Companies.GET_COMPANY,params);
+        if(company == null) {
+            while (resultSetNoCoupons.next()) {
+                company = resultSetToCompany(resultSetNoCoupons);
+            }
+        }
+        return  company;
+    }
     //endregion
     //region Methods For Coupon DBDAO
     public static Map<Integer, Object> couponToParams(Coupon coupon) {
@@ -60,6 +85,24 @@ public class DBDAOUtils {
         params.put(7,coupon.getAmount());
         params.put(8,coupon.getPrice());
         params.put(9,coupon.getImage());
+        return params;
+    }
+
+    /**
+     * In order to update coupon the order of params need to be a bit different
+     * @param coupon - coupon with changes
+     * @return - params to insert into a preparedStatement
+     */
+    public static Map<Integer, Object> couponToParamsV2(Coupon coupon) {
+        Map<Integer, Object> params = new HashMap<>();
+        params.put(1,Category.valueOf(coupon.getCategory().toString()).ordinal() +1);
+        params.put(2,coupon.getTitle());
+        params.put(3,coupon.getDescription());
+        params.put(4,coupon.getStartDate());
+        params.put(5,coupon.getEndDate());
+        params.put(6,coupon.getAmount());
+        params.put(7,coupon.getPrice());
+        params.put(8,coupon.getImage());
         return params;
     }
     public static Coupon resultSetToCoupon(ResultSet resultSet) throws SQLException {

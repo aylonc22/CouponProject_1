@@ -1,6 +1,7 @@
 package cls;
 
 import beans.*;
+import database.dbdao.CouponDBDAO;
 import database.sql.ConnectionPool;
 import database.sql.DBmanager;
 import database.sql.SQL_Init;
@@ -21,9 +22,8 @@ public class Test {
     public static void testAll(){
         //Initializing database and its tables
         SQL_Init.initSQL();
-
         // Starting the daily job
-        CouponExpirationDailyJob job = new CouponExpirationDailyJob();
+       CouponExpirationDailyJob job = new CouponExpirationDailyJob();
         Thread task = new Thread(job);
         task.setDaemon(true);
         task.start();
@@ -31,24 +31,19 @@ public class Test {
        //Showcasing the facades
         try{
             //Hard coded showcase of AdminFacade
-                //showCaseAdminFacade();
+                showCaseAdminFacade();
 
             //Hard coded showcase of CompanyFacade
-                //showCaseCompanyFacade();
+                showCaseCompanyFacade();
 
             //Hard coded showcase of CustomerFacade
                 showCaseCustomerFacade();
 
         }
        catch (SQLDuplicateUniqueKeyException | ObjectNotFoundException | ClientNotLoggedInException |
-              CustomerIsNotAdminException e){
+              CustomerIsNotAdminException | OutOfStockException e){
            System.out.println(e.getMessage());
        }
-        //JUST FOR HARD CODED REASONS
-        //WHEN COMMENTING showCaseCustomerFacade this catch should be commented as well
-        catch (OutOfStockException e){
-            System.out.println(e.getMessage());
-        }
         catch (SQLException e) {
             System.out.println("Something went wrong, unhandled exception");
             System.out.println(e.getMessage());
@@ -85,22 +80,28 @@ public class Test {
      */
     private static void showCaseCustomerFacade() throws SQLException, ClientNotLoggedInException, CustomerIsNotAdminException, SQLDuplicateUniqueKeyException, ObjectNotFoundException, OutOfStockException {
         //Login attempt as customer
+        System.out.println("Customer Login");
         CustomerFacade customerFacade = (CustomerFacade) LoginManager.getInstance().login("hardCodedCustomer@email.com","12345678", ClientType.Customer);
 
-        //But coupon attempt
-        //customerFacade.buyCoupon(1);
+        //Buy coupon attempt
+        System.out.println("Buy coupon attempt");
+        customerFacade.buyCoupon(1);
 
         //Get all coupons of customer and print attempt
-        //customerFacade.getAllCoupons().forEach(System.out::println);
+        System.out.println("All coupons");
+        customerFacade.getAllCoupons().forEach(System.out::println);
 
         //Get all coupons from category of customer and print attempt
-        //customerFacade.getAllCouponsByCategory(Category.Electricity).forEach(System.out::println);
+        System.out.println("All coupons by category");
+        customerFacade.getAllCouponsByCategory(Category.Electricity).forEach(System.out::println);
 
         //Get all coupons from customer by up to price
-        //customerFacade.getAllCouponsByUpToPrice(6).forEach(System.out::println);
+        System.out.println("All coupons by up to price");
+        customerFacade.getAllCouponsByUpToPrice(6).forEach(System.out::println);
 
         //Show customer details
-        //System.out.println(customerFacade.getCustomerDetails());
+        System.out.println("Customer Details");
+        System.out.println(customerFacade.getCustomerDetails());
     }
     /**
      * ShowCasing the Company Facade logic and functionalities
@@ -112,31 +113,39 @@ public class Test {
      */
     private static void showCaseCompanyFacade() throws ClientNotLoggedInException, CustomerIsNotAdminException, SQLException, SQLDuplicateUniqueKeyException, ObjectNotFoundException {
         //Login attempt as company
+        System.out.println("Company login");
         CompanyFacade companyFacade = (CompanyFacade) LoginManager.getInstance().login("hardCodedCompany@email.com","12345678", ClientType.Company);
 
         //Adding coupon attempt
         LocalDate date =  LocalDate.now();
-        //companyFacade.addCoupon(new Coupon(1, Category.Electricity,"Title","Description", Date.valueOf(date),
-                //Date.valueOf(date.plusDays(5)),5,5.5,"image"));
+        System.out.println("Adding coupon");
+        companyFacade.addCoupon(new Coupon(1, Category.Electricity,"Title","Description", Date.valueOf(date),
+                Date.valueOf(date.plusDays(5)),5,5.5,"image"));
 
         //Updating coupon attempt
-        //companyFacade.updateCoupon(new Coupon(1,1, Category.Electricity,"TitleChanged","DescriptionChanged", Date.valueOf(date),
-                //Date.valueOf(date.plusDays(8)),10,5.5,"imageChanged"));
+        System.out.println("Updating coupon");
+        companyFacade.updateCoupon(new Coupon(5,1, Category.Electricity,"TitleChanged","DescriptionChanged", Date.valueOf(date),
+                Date.valueOf(date.plusDays(8)),10,5.5,"imageChanged"));
 
         //Deleting coupon attempt
-        //companyFacade.deleteCoupon(1);
+        System.out.println("Deleting coupon");
+        companyFacade.deleteCoupon(4);
 
         //Get all coupons of company and print attempt
-        //companyFacade.getAllCoupons().forEach(System.out::println);
+        System.out.println("All coupons");
+        companyFacade.getAllCoupons().forEach(System.out::println);
 
         //Get all coupons from category of company and print attempt
-        //companyFacade.getAllCouponsByCategory(Category.Electricity).forEach(System.out::println);
+        System.out.println("All coupons by category");
+        companyFacade.getAllCouponsByCategory(Category.Electricity).forEach(System.out::println);
 
         //Get all coupons from company by up to price
-        //companyFacade.getAllCouponsByUpToPrice(6).forEach(System.out::println);
+        System.out.println("All coupons by up to price");
+        companyFacade.getAllCouponsByUpToPrice(6).forEach(System.out::println);
 
         //Show company details
-        //System.out.println(companyFacade.returnCompanyDetails());
+        System.out.println("Company Details");
+        System.out.println(companyFacade.returnCompanyDetails());
     }
     /**
      * ShowCasing the Admin Facade logic and functionalities
@@ -148,37 +157,48 @@ public class Test {
      */
     private static void showCaseAdminFacade() throws ClientNotLoggedInException, SQLException, CustomerIsNotAdminException, SQLDuplicateUniqueKeyException, ObjectNotFoundException {
         //Login attempt as admin
+        System.out.println("Admin loging");
         AdminFacade adminFacade = (AdminFacade) LoginManager.getInstance().login(DBmanager.SQL_ADMIN_EMAIL,
                 DBmanager.SQL_ADMIN_PASSWORD, ClientType.Adminstrator);
 
         //Adding company attempt
-        //adminFacade.addCompany(new Company("company","company@email.com","123456789"));
+        System.out.println("Adding company");
+        adminFacade.addCompany(new Company("company","company@email.com","123456789"));
 
         //Updating company attempt
-        // adminFacade.updateCompany(new Company(2,"companyChanged","companyChanged@email.com","12345678910",new ArrayList<>()));
+        System.out.println("Updating company");
+         adminFacade.updateCompany(new Company(3,"companyChanged","companyChanged@email.com","12345678910",new ArrayList<>()));
 
         //Deleting company attempt
-        //adminFacade.deleteCompany(2);
+        System.out.println("Deleting company");
+        adminFacade.deleteCompany(3);
 
         //Get all companies and print attempt
-        //adminFacade.getAllCompanies().forEach(System.out::println);
+        System.out.println("All companies");
+        adminFacade.getAllCompanies().forEach(System.out::println);
 
         //Get specific company and print attempt
-        //System.out.println(adminFacade.getOneCompany(1));
+        System.out.println("Specific Company");
+        System.out.println(adminFacade.getOneCompany(1));
 
         //Adding customer attempt
-        //adminFacade.addCustomer(new Customer("Name","LastName","customer@email.com","123456789"));
+        System.out.println("Add customer");
+        adminFacade.addCustomer(new Customer("Name","LastName","customer@email.com","123456789"));
 
         //Updating customer attempt
-        //adminFacade.updateCustomer(new Customer(3,"NameChanged","LastNameChanged","nameChanged@email.com","12345678910",new ArrayList<>()));
+        System.out.println("Update customer");
+        adminFacade.updateCustomer(new Customer(4,"NameChanged","LastNameChanged","nameChanged@email.com","12345678910",new ArrayList<>()));
 
         //Deleting customer attempt
-        //adminFacade.deleteCustomer(3);
+        System.out.println("Deleting customer");
+        adminFacade.deleteCustomer(4);
 
         //Get all customers and print attempt
-        //adminFacade.getAllCustomers().forEach(System.out::println);
+        System.out.println("All customers");
+        adminFacade.getAllCustomers().forEach(System.out::println);
 
         //Get specific customer and print attempt
-        //System.out.println(adminFacade.getOneCustomer(1));
+        System.out.println("Specific customer");
+        System.out.println(adminFacade.getOneCustomer(3));
     }
 }

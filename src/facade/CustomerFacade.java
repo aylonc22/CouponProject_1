@@ -19,8 +19,8 @@ public class CustomerFacade extends ClientFacade {
     //region Overrides
     @Override
     public Client login(String email, String password) throws  SQLException {
-        if (customerDBDAO.isCustomerExists(email, password))
-            return customerDBDAO.getClient(email, password);
+        if (customerDAO.isCustomerExists(email, password))
+            return customerDAO.getClient(email, password);
         else
             return null;
     }
@@ -29,36 +29,36 @@ public class CustomerFacade extends ClientFacade {
     public void buyCoupon(int couponID) throws ClientNotLoggedInException, ObjectNotFoundException, SQLDuplicateUniqueKeyException, OutOfStockException, SQLException {
         if(isLogged())
         {
-             couponDBDAO.addCouponPurchase(getClient().getId(), couponID);
+             couponDAO.addCouponPurchase(getClient().getId(), couponID);
         }
         else
             throw  new ClientNotLoggedInException(ClientType.Customer);
     }
     public List<Coupon> getAllCoupons() throws ClientNotLoggedInException, SQLException {
         if(isLogged()){
-            return couponDBDAO.getAllCouponsOfCustomer(getClient().getId());
+            return couponDAO.getAllCouponsOfCustomer(getClient().getId());
         }
         else
             throw new ClientNotLoggedInException(ClientType.Customer);
     }
     public List<Coupon> getAllCouponsByCategory(Category category) throws ClientNotLoggedInException, SQLException {
         if(isLogged()){
-            return couponDBDAO.getAllCouponsOfCustomerByCategory(getClient().getId()+1,category);
+            return couponDAO.getAllCouponsOfCustomerByCategory(getClient().getId()+1,category);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Customer);
     }
     public List<Coupon> getAllCouponsByUpToPrice(double price) throws ClientNotLoggedInException, SQLException {
         if(isLogged()){
-            return couponDBDAO.getAllCouponsOfCustomerUpToPrice(getClient().getId(),price);
+            return couponDAO.getAllCouponsOfCustomerUpToPrice(getClient().getId(),price);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Customer);
     }
     //endregion
-    public String getCustomerDetails() throws ClientNotLoggedInException {
+    public String getCustomerDetails() throws ClientNotLoggedInException, SQLException, ObjectNotFoundException {
         if(isLogged()){
-            return getClient().toString();
+            return customerDAO.getOneCustomer(getClient().getId()).toString();
         }
         else
             throw new ClientNotLoggedInException(ClientType.Customer);

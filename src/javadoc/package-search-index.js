@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"beans"},{"l":"cls"},{"l":"database.dao"},{"l":"database.dbdao"},{"l":"database.sql"},{"l":"database.sql.commands"},{"l":"exception"},{"l":"facade"}];updateSearchResults();

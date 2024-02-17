@@ -4,6 +4,7 @@ package database.dbdao;
 import beans.Client;
 import beans.Customer;
 import beans.QueryResult;
+import database.dao.CouponDAO;
 import database.sql.DBmanager;
 import database.sql.DButils;
 import database.sql.SQLExceptionErrorCodes;
@@ -45,7 +46,9 @@ public class CustomerDBDAO implements CustomersDAO {
 
         ResultSet resultSet = DButils.runQueryForResult(General.GET_CLIENT_IN_TABLE(DBmanager.SQL_CUSTOMERS),params);
         while (resultSet.next()){
-            return DBDAOUtils.resultSetToCustomer(resultSet);
+            Client customer = DBDAOUtils.resultSetToCustomer(resultSet);
+            customer.getCoupons().addAll(new CouponDBDAO().getAllCouponsOfCustomer(customer.getId()));
+                return customer;
         }
         return null;
     }
@@ -100,7 +103,9 @@ public class CustomerDBDAO implements CustomersDAO {
         List<Customer> customers = new ArrayList<>();
         while(resultSet.next())
         {
-            customers.add(DBDAOUtils.resultSetToCustomer(resultSet));
+            Customer customer = DBDAOUtils.resultSetToCustomer(resultSet);
+            customer.getCoupons().addAll(new CouponDBDAO().getAllCouponsOfCustomer(customer.getId()));
+            customers.add(customer);
         }
         return customers;
     }
@@ -111,7 +116,9 @@ public class CustomerDBDAO implements CustomersDAO {
         params.put(1,customerID);
         ResultSet resultSet = DButils.runQueryForResult(Customers.GET_ONE_CUSTOMER,params);
         while (resultSet.next()) {
-            return DBDAOUtils.resultSetToCustomer(resultSet);
+            Customer customer = DBDAOUtils.resultSetToCustomer(resultSet);
+            customer.getCoupons().addAll(new CouponDBDAO().getAllCouponsOfCustomer(customer.getId()));
+            return customer;
         }
         throw new ObjectNotFoundException(customerID,"Customer");
     }

@@ -2,6 +2,9 @@ package facade;
 
 //region Imports
 import beans.Client;
+import database.dao.CompaniesDAO;
+import database.dao.CouponDAO;
+import database.dao.CustomersDAO;
 import database.dbdao.CompaniesDBDAO;
 import database.dbdao.CouponDBDAO;
 import database.dbdao.CustomerDBDAO;
@@ -15,9 +18,9 @@ import java.sql.SQLException;
 @Setter
 public abstract class ClientFacade {
     //region Field Declarations
-    protected static CustomerDBDAO customerDBDAO = new CustomerDBDAO();
-    protected static CompaniesDBDAO companiesDBDAO = new CompaniesDBDAO();
-    protected static CouponDBDAO couponDBDAO = new CouponDBDAO();
+    protected static CustomersDAO customerDAO = new CustomerDBDAO();
+    protected static CompaniesDAO companiesDAO = new CompaniesDBDAO();
+    protected static CouponDAO couponDAO = new CouponDBDAO();
     private boolean isLogged;
     private final Client client;
     //endregion

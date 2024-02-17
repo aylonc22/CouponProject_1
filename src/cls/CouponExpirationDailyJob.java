@@ -1,7 +1,11 @@
 package cls;
 
 import database.dbdao.CouponDBDAO;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class CouponExpirationDailyJob implements  Runnable{
     //region Field Declaration
     private final CouponDBDAO couponDBDAO;
@@ -11,25 +15,16 @@ public class CouponExpirationDailyJob implements  Runnable{
     //endregion
 
     public CouponExpirationDailyJob() {
-        setQuit(false);
+        this.quit = false;
         couponDBDAO = new CouponDBDAO();
-    }
 
-    //region Getters && Setters
-    public Boolean getQuit() {
-        return quit;
     }
-
-    public void setQuit(Boolean quit) {
-        this.quit = quit;
-    }
-    //endregion
 
     //region Override
     @Override
     public void run() {
-        while(!quit){
-            needToDeleteCoupons();
+        while(!this.quit){
+                needToDeleteCoupons();
             try {
                 Thread.sleep(TIME);
             } catch (InterruptedException e) {
@@ -40,10 +35,10 @@ public class CouponExpirationDailyJob implements  Runnable{
     //endregion
     //region Core Methods
     public void stop(){
-        setQuit(true);
+        this.quit=true;
     }
     //CHECK IF COUPON IS EXPIRED AND DELETE IT AND ALL ITS PURCHASES
-    private void needToDeleteCoupons() {
+    private void needToDeleteCoupons(){
         couponDBDAO.deleteExpiredCoupons();
     }
     //endregion

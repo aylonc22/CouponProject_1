@@ -19,12 +19,15 @@ public class DButils {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
             //run statement
+
             preparedStatement.execute();
             //validation that the query actually did something
+            //System.out.println(preparedStatement);
             return new QueryResult(preparedStatement.getUpdateCount() > 0,0);
         } catch (InterruptedException | SQLException e) {
-//            System.out.println(e.getMessage());
-//            System.out.println(e instanceof SQLException ? ((SQLException) e).getErrorCode():0);
+
+           //System.out.println(e.getMessage());
+            //System.out.println(e instanceof SQLException ? ((SQLException) e).getErrorCode():0);
             //If the exception is SQL related give back the error code
             return new QueryResult(false,e instanceof SQLException ? ((SQLException) e).getErrorCode() : 0);
         } finally {
@@ -59,6 +62,7 @@ public class DButils {
                     throw new RuntimeException(e);
                 }
             });
+            //System.out.println(preparedStatement);
             preparedStatement.execute();
             //validation that the query actually did something
             //IF NOT THROW CUSTOM EXCEPTION FROM MYSQL ITSELF
@@ -125,4 +129,5 @@ public class DButils {
             ConnectionPool.getInstance().restoreConnection(connection);
         }
     }
+
 }

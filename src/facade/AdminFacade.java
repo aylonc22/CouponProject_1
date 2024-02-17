@@ -26,8 +26,8 @@ public class AdminFacade extends ClientFacade {
         //hard coded check to check if the client is answering the criteria to be an admin
         //not best practice!! BUT, that's what they asked for...
         if(email.equals(DBmanager.SQL_ADMIN_EMAIL) && password.equals(DBmanager.SQL_ADMIN_PASSWORD)) {
-            if (customerDBDAO.isCustomerExists(email, password))
-                return customerDBDAO.getClient(email, password);
+            if (customerDAO.isCustomerExists(email, password))
+                return customerDAO.getClient(email, password);
             else
                 return null;
         }
@@ -39,32 +39,32 @@ public class AdminFacade extends ClientFacade {
     //region Company CRUD Methods
     public void addCompany(Company company) throws ClientNotLoggedInException, SQLDuplicateUniqueKeyException {
        if(isLogged())
-           companiesDBDAO.addCompany(company);
+           companiesDAO.addCompany(company);
        else
            throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public void updateCompany(Company company) throws ClientNotLoggedInException, SQLDuplicateUniqueKeyException, ObjectNotFoundException {
         if(isLogged())
-            companiesDBDAO.updateCompany(company);
+            companiesDAO.updateCompany(company);
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
 
     }
     public void deleteCompany(int companyID) throws ClientNotLoggedInException, ObjectNotFoundException {
         if(isLogged())
-            companiesDBDAO.deleteCompany(companyID);
+            companiesDAO.deleteCompany(companyID);
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public List<Company> getAllCompanies() throws ClientNotLoggedInException, SQLException {
         if(isLogged())
-            return  companiesDBDAO.getAllCompanies();
+            return  companiesDAO.getAllCompanies();
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public Company getOneCompany(int companyID) throws ClientNotLoggedInException, SQLException, ObjectNotFoundException {
         if(isLogged())
-            return  companiesDBDAO.getOneCompany(companyID);
+            return  companiesDAO.getOneCompany(companyID);
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
@@ -72,35 +72,35 @@ public class AdminFacade extends ClientFacade {
     //region Customer CRUD Methods
     public void addCustomer(Customer customer) throws ClientNotLoggedInException, SQLDuplicateUniqueKeyException {
         if(isLogged()){
-            customerDBDAO.addCustomer(customer);
+            customerDAO.addCustomer(customer);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public void updateCustomer(Customer customer) throws ClientNotLoggedInException, ObjectNotFoundException, SQLDuplicateUniqueKeyException {
         if(isLogged()){
-            customerDBDAO.updateCustomer(customer);
+            customerDAO.updateCustomer(customer);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public void deleteCustomer(int customerID) throws ClientNotLoggedInException, ObjectNotFoundException {
         if(isLogged()){
-            customerDBDAO.deleteCustomer(customerID);
+            customerDAO.deleteCustomer(customerID);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public List<Customer> getAllCustomers() throws ClientNotLoggedInException, SQLException {
         if(isLogged()){
-            return  customerDBDAO.getAllCustomers();
+            return  customerDAO.getAllCustomers();
         }
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
     }
     public Customer getOneCustomer(int customerID) throws ClientNotLoggedInException, SQLException, ObjectNotFoundException {
         if(isLogged()){
-            return customerDBDAO.getOneCustomer(customerID);
+            return customerDAO.getOneCustomer(customerID);
         }
         else
             throw new ClientNotLoggedInException(ClientType.Adminstrator);
