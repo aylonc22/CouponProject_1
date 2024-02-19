@@ -1,11 +1,11 @@
 package cls;
 
 import beans.ClientType;
+import exception.CouponSystemException;
 import facade.AdminFacade;
 import facade.ClientFacade;
 import facade.CompanyFacade;
 import facade.CustomerFacade;
-import exception.CustomerIsNotAdminException;
 
 import java.sql.SQLException;
 
@@ -28,7 +28,7 @@ public class LoginManager {
     }
     //endregion
     //region Methods
-    public ClientFacade login(String email, String password, ClientType clientType) throws CustomerIsNotAdminException, SQLException {
+    public ClientFacade login(String email, String password, ClientType clientType) throws CouponSystemException, SQLException {
         return switch (clientType) {
             case Company -> new CompanyFacade(email, password);
             case Customer -> new CustomerFacade(email, password);

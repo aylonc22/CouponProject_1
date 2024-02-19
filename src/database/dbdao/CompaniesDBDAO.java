@@ -10,8 +10,8 @@ import database.sql.SQLExceptionErrorCodes;
 import database.sql.commands.General;
 import database.dao.CompaniesDAO;
 import database.sql.commands.Companies;
-import exception.ObjectNotFoundException;
-import exception.SQLDuplicateUniqueKeyException;
+import exception.CouponSystemException;
+import exception.ErrorMsg;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,19 +46,19 @@ public class CompaniesDBDAO implements CompaniesDAO {
     }
 
     @Override
-    public void addCompany(Company company) throws SQLDuplicateUniqueKeyException {
+    public void addCompany(Company company) throws CouponSystemException {
         Map<Integer, Object> params = DBDAOUtils.companyToParams(company);
         QueryResult queryResult = DButils.runQuery(Companies.ADD_COMPANY,params);
         if(queryResult.isResult()) {
             System.out.println("Company added\n" + company);
         }
         else {
-            throw new SQLDuplicateUniqueKeyException(SQLDuplicateUniqueKeyException.tables.COMPANY);
+            throw new CouponSystemException(ErrorMsg.SQL_DUPLICATE);
         }
     }
 
     @Override
-    public void updateCompany(Company company) throws SQLDuplicateUniqueKeyException, ObjectNotFoundException {
+    public void updateCompany(Company company) throws CouponSystemException {
         Map<Integer, Object> params = DBDAOUtils.companyToParams(company);
         // adding id in order to update directly from id
         params.put(params.size()+1,company.getId());
@@ -68,17 +68,17 @@ public class CompaniesDBDAO implements CompaniesDAO {
         }
         else {
             if(queryResult.getExceptionID() == SQLExceptionErrorCodes.DUPLICATE_KEY) {
-                throw new SQLDuplicateUniqueKeyException(SQLDuplicateUniqueKeyException.tables.COMPANY);
+                throw new CouponSystemException(ErrorMsg.SQL_DUPLICATE);
             }
             else
             {
-                throw new ObjectNotFoundException(company.getId(),"Company");
+                throw new CouponSystemException(ErrorMsg.COMPANY_NOT_FOUND);
             }
         }
     }
 
     @Override
-    public void deleteCompany(int companyID) throws ObjectNotFoundException {
+    public void deleteCompany(int companyID) throws CouponSystemException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,companyID);
         QueryResult queryResult = DButils.runQuery(Companies.DELETE_COMPANY,params);
@@ -86,7 +86,7 @@ public class CompaniesDBDAO implements CompaniesDAO {
             System.out.println("Company deleted");
         }
         else {
-            throw new ObjectNotFoundException(companyID, "Company");
+            throw new CouponSystemException(ErrorMsg.COMPANY_NOT_FOUND);
         }
     }
 
@@ -109,7 +109,7 @@ public class CompaniesDBDAO implements CompaniesDAO {
     }
 
     @Override
-    public Company getOneCompany(int companyID) throws SQLException, ObjectNotFoundException {
+    public Company getOneCompany(int companyID) throws SQLException, CouponSystemException {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,companyID);
         ResultSet resultSet = DButils.runQueryForResult(Companies.GET_ONE_COMPANY,params);
@@ -126,7 +126,7 @@ public class CompaniesDBDAO implements CompaniesDAO {
                 return  company;
             }
         }
-        throw new ObjectNotFoundException(companyID,"Company");
+        throw new CouponSystemException(ErrorMsg.COMPANY_NOT_FOUND);
     }
 
 }

@@ -4,17 +4,14 @@ package database.dbdao;
 import beans.Category;
 import beans.Coupon;
 import beans.QueryResult;
-import database.sql.ConnectionPool;
 import database.sql.DButils;
 import database.dao.CouponDAO;
 import database.sql.SQLExceptionErrorCodes;
 import database.sql.commands.Coupons;
 import database.sql.commands.Cvc;
-import exception.ObjectNotFoundException;
-import exception.OutOfStockException;
-import exception.SQLDuplicateUniqueKeyException;
+import exception.CouponSystemException;
+import exception.ErrorMsg;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ import java.util.Map;
 public class CouponDBDAO implements CouponDAO {
 
     @Override
-    public void addCoupon(Coupon coupon) throws SQLDuplicateUniqueKeyException {
+    public void addCoupon(Coupon coupon) throws CouponSystemException {
         Map<Integer, Object> params = DBDAOUtils.couponToParams(coupon);
         params.put(1,coupon.getCompanyId());
         params.put(10,coupon.getCompanyId());
@@ -37,14 +34,13 @@ public class CouponDBDAO implements CouponDAO {
         }
         else {
            if(queryResult.getExceptionID() == SQLExceptionErrorCodes.DUPLICATE_KEY) {
-               throw new SQLDuplicateUniqueKeyException(SQLDuplicateUniqueKeyException.tables.COUPON);
+               throw new CouponSystemException(ErrorMsg.SQL_DUPLICATE);
            }
-            System.out.println(queryResult.getExceptionID());
         }
     }
 
     @Override
-    public void updateCoupon(Coupon coupon) throws ObjectNotFoundException, SQLDuplicateUniqueKeyException {
+    public void updateCoupon(Coupon coupon) throws CouponSystemException {
         Map<Integer, Object> params = DBDAOUtils.couponToParamsV2(coupon);
         // adding id in order to update directly from id
         params.put(params.size()+1,coupon.getId());
@@ -54,17 +50,17 @@ public class CouponDBDAO implements CouponDAO {
         }
         else {
             if(queryResult.getExceptionID() == SQLExceptionErrorCodes.DUPLICATE_KEY) {
-               throw new SQLDuplicateUniqueKeyException(SQLDuplicateUniqueKeyException.tables.COUPON);
+               throw new CouponSystemException(ErrorMsg.SQL_DUPLICATE);
             }
             else
             {
-                throw new ObjectNotFoundException(coupon.getId(), "Coupon");
+                throw new CouponSystemException(ErrorMsg.COUPON_NOT_FOUND);
             }
         }
     }
 
     @Override
-    public void deleteCoupon(int couponID,int companyID) throws ObjectNotFoundException {
+    public void deleteCoupon(int couponID,int companyID) throws CouponSystemException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,couponID);
         params.put(2,companyID);
@@ -73,8 +69,7 @@ public class CouponDBDAO implements CouponDAO {
             System.out.println("Coupon deleted");
         }
         else {
-                throw new ObjectNotFoundException("Coupon with id: "+couponID +
-                        " is not exists or it doesn't belong to company with id: " + companyID);
+                throw new CouponSystemException(ErrorMsg.COUPON_NOT_FOUND);
         }
     }
 
@@ -184,7 +179,7 @@ public class CouponDBDAO implements CouponDAO {
     }
 
     @Override
-    public void addCouponPurchase(int customerID, int couponID) throws ObjectNotFoundException, SQLDuplicateUniqueKeyException, OutOfStockException, SQLException {
+    public void addCouponPurchase(int customerID, int couponID) throws CouponSystemException ,SQLException {
         Map<Integer,Object> params = new HashMap<>();
         params.put(1,customerID);
         params.put(2,couponID);
@@ -199,12 +194,12 @@ public class CouponDBDAO implements CouponDAO {
                System.out.println("Customer_Vs_Coupon added");
            }
            else{
-               throw new ObjectNotFoundException(couponID,"Coupon");
+               throw new CouponSystemException(ErrorMsg.COUPON_NOT_FOUND);
            }
         }
         else {
             if(queryResult.getExceptionID() == SQLExceptionErrorCodes.DUPLICATE_KEY) {
-                throw new SQLDuplicateUniqueKeyException(SQLDuplicateUniqueKeyException.tables.CVC);
+                throw new CouponSystemException(ErrorMsg.SQL_DUPLICATE);
             }
             //checking if the reason the query didn't work is the coupon is out of stock
             params.clear();
@@ -212,14 +207,14 @@ public class CouponDBDAO implements CouponDAO {
             ResultSet resultSet = DButils.runQueryForResult(Cvc.VALIDATE_OUT_OF_STOCK,params);
            while(resultSet.next()){
                if(resultSet.getInt(1)==1)
-                    throw new OutOfStockException(couponID);
+                    throw new CouponSystemException(ErrorMsg.OUT_OF_STOCK);
             }
-           throw new ObjectNotFoundException(couponID,"Coupon");
+           throw new CouponSystemException(ErrorMsg.COUPON_NOT_FOUND);
         }
     }
 
     @Override
-    public void deleteCouponPurchase(int customerID, int couponID) throws ObjectNotFoundException {
+    public void deleteCouponPurchase(int customerID, int couponID) throws CouponSystemException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,customerID);
         params.put(2,couponID);
@@ -228,7 +223,7 @@ public class CouponDBDAO implements CouponDAO {
             System.out.println("Customer_Vs_Coupon deleted");
         }
         else {
-            throw new ObjectNotFoundException("Customer with ID: " + customerID + " or/and Coupon with ID: " + couponID + "is/are not exists!");
+            throw new CouponSystemException(ErrorMsg.COUPON_NOT_FOUND);
         }
     }
 

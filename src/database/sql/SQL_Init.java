@@ -5,14 +5,11 @@ import database.dbdao.CompaniesDBDAO;
 import database.dbdao.CouponDBDAO;
 import database.dbdao.CustomerDBDAO;
 import database.sql.commands.*;
-import exception.ObjectNotFoundException;
-import exception.OutOfStockException;
-import exception.SQLDuplicateUniqueKeyException;
+import exception.CouponSystemException;
 
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,7 +76,7 @@ public class SQL_Init {
     /**
      * Inserting demo data for showcasing the program
      */
-    private static void insertDemoData() throws SQLDuplicateUniqueKeyException, OutOfStockException, SQLException, ObjectNotFoundException {
+    private static void insertDemoData() throws CouponSystemException, SQLException {
         //Adding demmy companies
         new CompaniesDBDAO().addCompany(new Company("Demmy",
                 "hardCodedCompany@email.com","12345678"));
@@ -145,7 +142,7 @@ public class SQL_Init {
         try{
             System.out.println("Adding demo data...");
             insertDemoData();
-        } catch (SQLDuplicateUniqueKeyException | OutOfStockException | SQLException | ObjectNotFoundException e) {
+        } catch (CouponSystemException | SQLException e) {
             //There is no reason to panic
             //It just means the demo data is already inside the database...
         }

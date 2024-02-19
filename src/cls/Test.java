@@ -1,7 +1,6 @@
 package cls;
 
 import beans.*;
-import database.dbdao.CouponDBDAO;
 import database.sql.ConnectionPool;
 import database.sql.DBmanager;
 import database.sql.SQL_Init;
@@ -40,8 +39,7 @@ public class Test {
                 showCaseCustomerFacade();
 
         }
-       catch (SQLDuplicateUniqueKeyException | ObjectNotFoundException | ClientNotLoggedInException |
-              CustomerIsNotAdminException | OutOfStockException e){
+       catch (CouponSystemException e){
            System.out.println(e.getMessage());
        }
         catch (SQLException e) {
@@ -74,13 +72,10 @@ public class Test {
 
     /**
      * ShowCasing the Customer Facade logic and functionalities
-     * @throws CustomerIsNotAdminException - Part of ClientFacade, important only to AdminFacade
+     @throws CouponSystemException - System exception handler
      * @throws SQLException - An unhandled SQLException
-     * @throws ClientNotLoggedInException - A failed attempt to use Facade while not logged in
-     *@throws SQLDuplicateUniqueKeyException - A failed attempt to add or update something with the same unique name
-     * @throws ObjectNotFoundException - A failed attempt to use none existing object from SQL
      */
-    private static void showCaseCustomerFacade() throws SQLException, ClientNotLoggedInException, CustomerIsNotAdminException, SQLDuplicateUniqueKeyException, ObjectNotFoundException, OutOfStockException {
+    private static void showCaseCustomerFacade() throws SQLException, CouponSystemException {
         //Login attempt as customer
         System.out.println("Customer Login");
         CustomerFacade customerFacade = (CustomerFacade) LoginManager.getInstance().login("hardCodedCustomer@email.com","12345678", ClientType.Customer);
@@ -107,13 +102,10 @@ public class Test {
     }
     /**
      * ShowCasing the Company Facade logic and functionalities
-     * @throws CustomerIsNotAdminException - Part of ClientFacade, important only to AdminFacade
+     * @throws CouponSystemException - System exception handler
      * @throws SQLException - An unhandled SQLException
-     * @throws ClientNotLoggedInException - A failed attempt to use Facade while not logged in
-     * @throws SQLDuplicateUniqueKeyException - A failed attempt to add or update something with the same unique name
-     * @throws ObjectNotFoundException - A failed attempt to use none existing object from SQL
      */
-    private static void showCaseCompanyFacade() throws ClientNotLoggedInException, CustomerIsNotAdminException, SQLException, SQLDuplicateUniqueKeyException, ObjectNotFoundException {
+    private static void showCaseCompanyFacade() throws SQLException, CouponSystemException {
         //Login attempt as company
         System.out.println("Company login");
         CompanyFacade companyFacade = (CompanyFacade) LoginManager.getInstance().login("hardCodedCompany@email.com","12345678", ClientType.Company);
@@ -151,13 +143,10 @@ public class Test {
     }
     /**
      * ShowCasing the Admin Facade logic and functionalities
-     * @throws CustomerIsNotAdminException - Part of ClientFacade, important only to AdminFacade
+     * @throws CouponSystemException - System exception handler
      * @throws SQLException - An unhandled SQLException
-     * @throws ClientNotLoggedInException - A failed attempt to use Facade while not logged in
-     * @throws SQLDuplicateUniqueKeyException - A failed attempt to add or update something with the same unique name
-     * @throws ObjectNotFoundException - A failed attempt to use none existing object from SQL
      */
-    private static void showCaseAdminFacade() throws ClientNotLoggedInException, SQLException, CustomerIsNotAdminException, SQLDuplicateUniqueKeyException, ObjectNotFoundException {
+    private static void showCaseAdminFacade() throws  SQLException, CouponSystemException{
         //Login attempt as admin
         System.out.println("Admin loging");
         AdminFacade adminFacade = (AdminFacade) LoginManager.getInstance().login(DBmanager.SQL_ADMIN_EMAIL,
