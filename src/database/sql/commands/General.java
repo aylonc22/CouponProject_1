@@ -31,6 +31,9 @@ public class General {
         return "Select * FROM " +DBmanager.SQL_DB + "." + table +" WHERE email=? and password=?";
     }
 
+    /**
+     * A query responsible for dropping the database when finishing the tests
+     */
     public static String DROP_DATABASE = "Drop DATABASE " + DBmanager.SQL_DB;
 
 
