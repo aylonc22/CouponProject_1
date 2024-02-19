@@ -22,6 +22,12 @@ public class SQL_Init {
         QueryResult queryResult = DButils.runQuery(General.CREATE_DB);
         handleInsertTable(queryResult,DBmanager.SQL_DB);
     }
+    public static void dropDB(){
+        QueryResult queryResult = DButils.runQuery(General.DROP_DATABASE);
+        if(queryResult.isResult()){
+            System.out.println(DBmanager.SQL_DB + " database is dropped");
+        }
+    }
     private static void createCompaniesTable(){
         QueryResult queryResult = DButils.runQuery(Companies.CREATE_TABLE_COMPANIES);
         handleInsertTable(queryResult,DBmanager.SQL_COMPANIES);

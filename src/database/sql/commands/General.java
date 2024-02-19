@@ -31,6 +31,8 @@ public class General {
         return "Select * FROM " +DBmanager.SQL_DB + "." + table +" WHERE email=? and password=?";
     }
 
+    public static String DROP_DATABASE = "Drop DATABASE " + DBmanager.SQL_DB;
+
 
 
 

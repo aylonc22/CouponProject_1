@@ -67,7 +67,9 @@ public class Test {
      */
     private static void handleCloseProgram(CouponExpirationDailyJob job) throws InterruptedException {
         job.stop();
+        SQL_Init.dropDB();
         ConnectionPool.getInstance().closeAllConnections();
+
     }
 
     /**
