@@ -38,18 +38,16 @@ public class CustomerDBDAO implements CustomersDAO {
     }
 
     @Override
-    public Client getClient(String email, String password) throws SQLException {
+    public int getClientID(String email, String password) throws SQLException, CouponSystemException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,email);
         params.put(2,password);
 
-        ResultSet resultSet = DButils.runQueryForResult(General.GET_CLIENT_IN_TABLE(DBmanager.SQL_CUSTOMERS),params);
+        ResultSet resultSet = DButils.runQueryForResult(General.GET_CLIENT_ID_IN_TABLE(DBmanager.SQL_CUSTOMERS),params);
         while (resultSet.next()){
-            Client customer = DBDAOUtils.resultSetToCustomer(resultSet);
-            customer.getCoupons().addAll(new CouponDBDAO().getAllCouponsOfCustomer(customer.getId()));
-                return customer;
+                return resultSet.getInt(1);
         }
-        return null;
+        throw new CouponSystemException(ErrorMsg.Customer_NOT_FOUND);
     }
 
     @Override

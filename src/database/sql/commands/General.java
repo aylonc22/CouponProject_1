@@ -27,8 +27,8 @@ public class General {
      * @param table the table which the query will run on
      * @return returning the query
      */
-    public static String GET_CLIENT_IN_TABLE(String table){
-        return "Select * FROM " +DBmanager.SQL_DB + "." + table +" WHERE email=? and password=?";
+    public static String GET_CLIENT_ID_IN_TABLE(String table){
+        return "Select ID FROM " +DBmanager.SQL_DB + "." + table +" WHERE email=? and password=?";
     }
 
     /**

@@ -12,7 +12,7 @@ import java.util.List;
 public interface CompaniesDAO {
     //region Core Methods
       boolean isCompanyExists(String email, String password) throws SQLException;
-      Client getClient(String email, String password) throws SQLException;
+      int getClientID(String email, String password) throws SQLException, CouponSystemException;
      void addCompany(Company company) throws CouponSystemException;
      void updateCompany(Company company) throws CouponSystemException;
      void deleteCompany(int companyID) throws CouponSystemException;

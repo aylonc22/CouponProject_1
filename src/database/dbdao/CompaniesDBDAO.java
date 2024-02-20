@@ -36,13 +36,15 @@ public class CompaniesDBDAO implements CompaniesDAO {
     }
 
     @Override
-    public Client getClient(String email, String password) throws SQLException {
+    public int getClientID(String email, String password) throws SQLException, CouponSystemException {
         Map<Integer, Object> params = new HashMap<>();
         params.put(1,email);
         params.put(2,password);
-        ResultSet resultSet = DButils.runQueryForResult(Companies.GET_COMPANY_WITH_COUPONS,params);
-
-        return DBDAOUtils.handleBuildCompanyFromResultSet(resultSet,params);
+        ResultSet resultSet = DButils.runQueryForResult(General.GET_CLIENT_ID_IN_TABLE(DBmanager.SQL_COMPANIES),params);
+        while (resultSet.next()){
+        return resultSet.getInt(1);
+        }
+        throw new CouponSystemException(ErrorMsg.COMPANY_NOT_FOUND);
     }
 
     @Override

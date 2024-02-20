@@ -25,9 +25,8 @@ public class AdminFacade extends ClientFacade {
         //not best practice!! BUT, that's what they asked for...
         if(email.equals(DBmanager.SQL_ADMIN_EMAIL) && password.equals(DBmanager.SQL_ADMIN_PASSWORD)) {
             if (customerDAO.isCustomerExists(email, password))
-                return customerDAO.getClient(email, password).getId();
-            else
-                return 0;
+                return customerDAO.getClientID(email, password);
+            else return 0;
         }
         else
             throw new CouponSystemException(ErrorMsg.CLIENT_NOT_ADMIN);

@@ -18,9 +18,9 @@ public class CustomerFacade extends ClientFacade {
 
     //region Overrides
     @Override
-    public int login(String email, String password) throws  SQLException {
+    public int login(String email, String password) throws SQLException, CouponSystemException {
         if (customerDAO.isCustomerExists(email, password))
-            return customerDAO.getClient(email, password).getId();
+            return customerDAO.getClientID(email, password);
         else
             return 0;
     }
